@@ -1,13 +1,11 @@
-import Navbar from "./Main Page/components/Navbar";
+import Header from "./Main Page/components/Header";
 import "./index.css"; 
 
 function App() {
   return (
     <>
-      <Navbar />
-      <div className="container mt-5">
-        <h1>Welcome to OnComma</h1>
-      </div>
+      <Header />
+      <div className="container mt-5"></div>
     </>
   );
 }
