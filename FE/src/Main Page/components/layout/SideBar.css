@@ -1,0 +1,35 @@
+.sidebar {
+  width: 200px;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-right: 1px solid #dee2e6;
+  position: sticky;
+  top: 0;
+}
+
+.sidebar-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  display: flex;
+  align-items: center;
+  padding: 12px 8px;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.sidebar-menu li i {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.sidebar-menu li:hover {
+  background-color: #e9ecef;
+  border-radius: 6px;
+}

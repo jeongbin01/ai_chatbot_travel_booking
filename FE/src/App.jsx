@@ -1,11 +1,15 @@
-import Header from "./Main Page/components/Header";
-import "./index.css"; 
+import Footer from "./Main Page/components/layout/Footer";
+import Header from "./Main Page/components/layout/Header";
+import Main from "./Main Page/components/layout/Main";
+import SideBar from "./Main Page/components/layout/SideBar";
 
 function App() {
   return (
     <>
-      <Header />
-      <div className="container mt-5"></div>
+    <Header />
+    <SideBar />
+    <Main />
+    <Footer />
     </>
   );
 }
