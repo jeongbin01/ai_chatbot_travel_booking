@@ -1,19 +1,80 @@
-/* src/styles/layout/Header.css */
-
 .header {
+  width: 100%;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-section {
   display: flex;
   align-items: center;
-  padding: 0.75rem 1.5rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.header__logo {
-  /* 좌측 정렬, 필요 시 마진 추가 */
-  margin-right: auto;
+.logo {
+  height: 40px;
+  cursor: pointer;
 }
 
-.header__logo img {
-  height: 40px;       /* 로고 높이 지정 */
-  display: block;     /* 링크 내부 여백 방지 */
+.center-section {
+  flex: 1;
+  margin: 0 40px;
+}
+
+.menu-list {
+  display: flex;
+  justify-content: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-list li span {
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.menu-list li span:hover {
+  color: #007bff;
+}
+
+.right-section {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.right-section li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.right-section li:hover {
+  color: #007bff;
+}
+
+.bi {
+  font-size: 18px;
 }
