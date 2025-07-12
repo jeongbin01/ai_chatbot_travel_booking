@@ -1,10 +1,12 @@
 .footer-light {
   background-color: #eee;
-  padding: 40px 20px;
+  padding: 20px 20px;
   font-family: 'Pretendard', sans-serif;
   border-top: 1px solid #ddd;
-  color: #333;
+  color: #ddd;
   font-size: 14px;
+  line-height: 1.4;
+  margin-top: 0;
 }
 
 .footer-container {
@@ -18,25 +20,29 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  row-gap: 8px;
+  margin-bottom: 12px;
 }
 
 .footer-brand h5 {
   font-size: 16px;
   font-weight: 600;
-  margin-bottom: 6px;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
 }
 
 .footer-brand p {
   color: #666;
   font-size: 13px;
   margin: 0;
+  line-height: 1.4;
 }
 
 .footer-links {
   display: flex;
-  gap: 20px;
+  gap: 14px;
   flex-wrap: wrap;
+  line-height: 1.4;
 }
 
 .footer-links a {
@@ -55,50 +61,61 @@
   justify-content: space-between;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding-top: 16px;
   font-size: 13px;
   color: #777;
-  margin-bottom: 16px;
+  padding-top: 8px;
+  margin-bottom: 8px;
+  row-gap: 6px;
+  line-height: 1.4;
+}
+
+.company-info {
+  max-width: 800px;
+  text-align: left;
+  line-height: 1.6;
 }
 
 .company-info p {
-  margin: 4px 0;
+  margin: 2px 0;
+  line-height: 1.6;
 }
 
-/* 🔹 SNS 아이콘 – 항상 컬러 */
+/* 🔹 SNS 아이콘 */
 .footer-sns {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-top: 12px;
+  gap: 12px;
+  margin-top: 4px;
 }
 
 .footer-sns a {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   transition: transform 0.2s ease;
+  line-height: 1;
 }
 
-/* ✅ 브랜드 컬러 적용 (회색 없음) */
 .footer-sns .bi-facebook {
-  color: #1877f2; /* Facebook Blue */
+  color: #1877f2;
 }
 
 .footer-sns .bi-instagram {
-  color: #e4405f; /* Instagram Pink */
+  color: #e4405f;
 }
 
 .footer-sns .bi-twitter-x {
-  color: #1a1a1a; /* Twitter(X) Black */
+  color: #1a1a1a;
 }
 
 .footer-sns .bi-youtube {
-  color: #ff0000; /* YouTube Red */
+  color: #ff0000;
 }
 
 /* 🔹 하단: 카피라이트 */
 .footer-copyright {
   text-align: center;
-  font-size: 13px;
+  font-size: 12px;
   color: #777;
-  padding-top: 8px;
+  padding-top: 4px;
+  margin: 0;
+  line-height: 1.4;
 }

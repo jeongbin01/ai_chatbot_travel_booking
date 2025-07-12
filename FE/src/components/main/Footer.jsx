@@ -7,7 +7,7 @@ function Footer() {
         {/* 상단 */}
         <div className="footer-top">
           <div className="footer-brand">
-            <h5>온쉼 여행 플랫폼</h5>
+            <p>(주)온쉼 여행 플랫폼</p>
             <p>
               편안한 여행의 시작, 온쉼과 함께 믿을 수 있는 예약 서비스를
               경험하세요.
@@ -34,16 +34,32 @@ function Footer() {
             </p>
           </div>
           <div className="footer-sns">
-            <a href="#">
+            <a
+              href="https://www.facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i className="bi bi-facebook"></i>
             </a>
-            <a href="#">
+            <a
+              href="https://www.instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i className="bi bi-instagram"></i>
             </a>
-            <a href="#">
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i className="bi bi-twitter-x"></i>
             </a>
-            <a href="#">
+            <a
+              href="https://www.youtube.com" 
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <i className="bi bi-youtube"></i>
             </a>
           </div>
