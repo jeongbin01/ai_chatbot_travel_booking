@@ -16,13 +16,12 @@ function HeroBanner() {
         style={{ backgroundImage: `url(${bgImage})` }}
       >
         <div className="hero-overlay">
-          <div className="hero-text">
-            <h1>
-              나이아가라의 물안개 속으로,
-              <br />
-              잊지 못할 여행
-            </h1>
-          </div>
+            {/* 문구: 왼쪽 정렬 */}
+            <div className="hero-text">
+                <h1>나이아가라의 물안개 속으로,<br />
+                잊지 못할 여행
+                </h1>
+            </div>    
 
           <div className="search-box">
             <div className="tab-buttons" role="tablist">
