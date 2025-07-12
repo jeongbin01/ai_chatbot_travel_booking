@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import '../../styles/layout/HeroBanner.css';
-import bgImage from '../../assets/images/나이아가라강.jpg';
+import React, { useState } from "react";
+import "../../styles/layout/HeroBanner.css";
+import bgImage from "../../assets/images/나이아가라강.jpg";
 
 function HeroBanner() {
-  const [activeTab, setActiveTab] = useState('domestic');
+  const [activeTab, setActiveTab] = useState("domestic");
 
   const handleSearch = () => {
-    console.log('검색 실행');
+    console.log("검색 실행");
   };
 
   return (
@@ -18,26 +18,27 @@ function HeroBanner() {
         <div className="hero-overlay">
           <div className="hero-text">
             <h1>
-              여수 풀빌라부터 발리 리조트까지,<br />
-              여행할땐 여기어때
+              나이아가라의 물안개 속으로,
+              <br />
+              잊지 못할 여행
             </h1>
           </div>
 
           <div className="search-box">
             <div className="tab-buttons" role="tablist">
               <button
-                className={activeTab === 'domestic' ? 'active' : ''}
-                onClick={() => setActiveTab('domestic')}
+                className={activeTab === "domestic" ? "active" : ""}
+                onClick={() => setActiveTab("domestic")}
                 role="tab"
-                aria-selected={activeTab === 'domestic'}
+                aria-selected={activeTab === "domestic"}
               >
                 국내 숙소
               </button>
               <button
-                className={activeTab === 'overseas' ? 'active' : ''}
-                onClick={() => setActiveTab('overseas')}
+                className={activeTab === "overseas" ? "active" : ""}
+                onClick={() => setActiveTab("overseas")}
                 role="tab"
-                aria-selected={activeTab === 'overseas'}
+                aria-selected={activeTab === "overseas"}
               >
                 해외 숙소
               </button>
