@@ -1,0 +1,11 @@
+template: |
+  Settings:
+    
+
+  Question:
+    - {question}
+
+  Output format:
+    - 관련 기사라면 URL만 출력.
+    - 관련 없는 기사라면 'irrelevant'만 출력.
+    - 추가적인 단어나 설명은 출력하지 않음.
