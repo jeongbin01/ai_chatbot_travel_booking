@@ -15,66 +15,48 @@ import java.util.Optional;
 public class BookingService {
 	
 	private final BookingRepository bookingRepository;
-	
-	/**
-     * 예약 ID로 예약 단건 조회
-     */
+
+    // 예약 ID로 조회
     public Optional<Booking> getBookingById(Integer bookingId) {
         return bookingRepository.findByBookingId(bookingId);
     }
 
-    /**
-     * 특정 사용자 ID의 예약 목록 조회
-     */
+    // 사용자 ID로 예약 목록 조회
     public List<Booking> getBookingsByUserId(Integer userId) {
         return bookingRepository.findByUser_UserId(userId);
     }
 
-    /**
-     * 특정 숙소 ID의 예약 목록 조회
-     */
+    // 숙소 ID로 예약 목록 조회
     public List<Booking> getBookingsByAccommodationId(Integer accommodationId) {
         return bookingRepository.findByAccommodation_AccommodationId(accommodationId);
     }
 
-    /**
-     * 특정 룸타입 ID의 예약 목록 조회
-     */
+    // 룸타입 ID로 예약 목록 조회
     public List<Booking> getBookingsByRoomTypeId(Integer roomTypeId) {
         return bookingRepository.findByRoomType_RoomTypeId(roomTypeId);
     }
 
-    /**
-     * 예약 상태로 예약 목록 필터링
-     */
+    // 상태로 예약 목록 필터링
     public List<Booking> getBookingsByStatus(String status) {
         return bookingRepository.findByStatus(status);
     }
 
-    /**
-     * 체크인 날짜 범위로 예약 조회
-     */
+    // 체크인 날짜 범위로 예약 조회
     public List<Booking> getBookingsBetweenDates(LocalDate start, LocalDate end) {
         return bookingRepository.findByCheckInDateBetween(start, end);
     }
 
-    /**
-     * 사용자 ID와 상태로 예약 조회
-     */
+    // 사용자 ID + 상태로 예약 목록 조회
     public List<Booking> getBookingsByUserIdAndStatus(Integer userId, String status) {
         return bookingRepository.findByUser_UserIdAndStatus(userId, status);
     }
 
-    /**
-     * 숙소 ID와 체크인 날짜로 예약 조회
-     */
+    // 숙소 ID + 체크인 날짜로 예약 목록 조회
     public List<Booking> getBookingsByAccommodationIdAndCheckInDate(Integer accommodationId, LocalDate checkInDate) {
         return bookingRepository.findByAccommodation_AccommodationIdAndCheckInDate(accommodationId, checkInDate);
     }
 
-    /**
-     * 상태 기준으로 최신순 예약 목록 조회
-     */
+    // 상태 기준으로 최신순 예약 목록 조회
     public List<Booking> getRecentBookingsByStatus(String status) {
         return bookingRepository.findByStatusOrderByBookingDateDesc(status);
     }

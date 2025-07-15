@@ -15,37 +15,27 @@ public class BookingGuestServuce {
 
     private final BookingGuestRepository bookingGuestRepository;
 
-    /**
-     * guestId로 단일 게스트 조회
-     */
+    // 게스트 ID로 조회
     public Optional<BookingGuest> getGuestById(Integer guestId) {
         return bookingGuestRepository.findByGuestId(guestId);
     }
 
-    /**
-     * 예약 ID로 모든 게스트 조회
-     */
+    // 예약 ID로 게스트 목록 조회
     public List<BookingGuest> getGuestsByBookingId(Integer bookingId) {
         return bookingGuestRepository.findByBooking_BookingId(bookingId);
     }
 
-    /**
-     * 예약 ID 내 대표 연락자 조회
-     */
+    // 예약 ID로 대표 연락자 조회
     public Optional<BookingGuest> getPrimaryContactByBookingId(Integer bookingId) {
         return bookingGuestRepository.findByBooking_BookingIdAndIsPrimaryContactTrue(bookingId);
     }
 
-    /**
-     * 이름 또는 성에 일치하는 게스트 검색
-     */
+    // 이름 또는 성으로 게스트 검색
     public List<BookingGuest> searchGuestsByName(String name) {
         return bookingGuestRepository.findByFirstNameContainingOrLastNameContaining(name, name);
     }
 
-    /**
-     * 이메일로 게스트 조회
-     */
+    // 이메일로 게스트 조회
     public Optional<BookingGuest> getGuestByEmail(String email) {
         return bookingGuestRepository.findByContactEmail(email);
     }
