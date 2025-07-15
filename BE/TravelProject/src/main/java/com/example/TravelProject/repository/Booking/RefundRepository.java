@@ -15,15 +15,15 @@ public interface RefundRepository extends JpaRepository<Refund, Long> {
     // 환불 ID로 조회
     Optional<Refund> findByRefundId(Integer refundId);
 
-    // 결제 ID로 해당 결제에 대한 환불 내역 조회
+    // 결제 ID로 환불 목록 조회
     List<Refund> findByPayment_PaymentId(Integer paymentId);
 
-    // 상태로 필터링 
+    // 상태로 환불 목록 조회
     List<Refund> findByStatus(String status);
 
-    // 환불 날짜 범위로 조회
+    // 환불일 범위로 조회
     List<Refund> findByRefundDateBetween(LocalDateTime start, LocalDateTime end);
 
-    // 특정 결제 ID + 환불 상태로 조회
+    // 결제 ID + 상태로 환불 목록 조회
     List<Refund> findByPayment_PaymentIdAndStatus(Integer paymentId, String status);
 }
