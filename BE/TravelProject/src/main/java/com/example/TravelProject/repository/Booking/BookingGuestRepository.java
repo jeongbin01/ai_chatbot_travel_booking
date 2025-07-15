@@ -1,11 +1,28 @@
 package com.example.TravelProject.repository.Booking;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.TravelProject.entity.Booking.BookingGuest;
 
 @Repository
-public interface BookingGuestRepository extends JpaRepository<BookingGuest, Long> {
-    // 필요 시 커스텀 메서드 추가
+public interface BookingGuestRepository extends JpaRepository<BookingGuest, Integer> {
+
+    // guestId 기준 단일 조회
+    Optional<BookingGuest> findByGuestId(Integer guestId);
+
+    // 특정 예약 ID로 모든 게스트 조회
+    List<BookingGuest> findByBooking_BookingId(Integer bookingId);
+
+    // 예약 ID 내에서 대표 연락자 여부로 조회
+    Optional<BookingGuest> findByBooking_BookingIdAndIsPrimaryContactTrue(Integer bookingId);
+
+    // 이름으로 게스트 검색
+    List<BookingGuest> findByFirstNameContainingOrLastNameContaining(String firstName, String lastName);
+
+    // 이메일로 조회
+    Optional<BookingGuest> findByContactEmail(String contactEmail);
 }
