@@ -15,7 +15,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     // 예약 ID로 조회
     Optional<Booking> findByBookingId(Integer bookingId);
 
-    // 특정 사용자의 예약 전체 조회
+    // 특정 사용자의 예약 전체 조회?
     List<Booking> findByUser_UserId(Integer userId);
 
     // 특정 숙소에서 예약 전체 조회
