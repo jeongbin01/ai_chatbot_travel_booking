@@ -2,7 +2,6 @@ package com.example.TravelProject.service.Booking;
 
 import com.example.TravelProject.entity.Booking.Booking;
 import com.example.TravelProject.repository.Booking.BookingRepository;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +12,8 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BookingServuce {
-	
-	private final BookingRepository bookingRepository;
+
+    private final BookingRepository bookingRepository;
 
     // 예약 ID로 조회
     public Optional<Booking> getBookingById(Integer bookingId) {

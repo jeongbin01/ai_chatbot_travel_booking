@@ -1,80 +1,62 @@
 package com.example.TravelProject.controller.Booking;
 
 import com.example.TravelProject.entity.Booking.Booking;
-import com.example.TravelProject.service.Booking.BookingService;
-
+import com.example.TravelProject.repository.Booking.BookingRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/api/booking")
+@Service
 @RequiredArgsConstructor
 public class BookingController {
 
-    private final BookingService bookingService;
+    private final BookingRepository bookingRepository;
 
     // 예약 ID로 조회
-    @GetMapping("/{id}")
-    public Optional<Booking> getBookingById(@PathVariable Integer id) {
-        return bookingService.getBookingById(id);
+    public Optional<Booking> getBookingById(Integer bookingId) {
+        return bookingRepository.findByBookingId(bookingId);
     }
 
     // 사용자 ID로 예약 목록 조회
-    @GetMapping("/user/{userId}")
-    public List<Booking> getBookingsByUserId(@PathVariable Integer userId) {
-        return bookingService.getBookingsByUserId(userId);
+    public List<Booking> getBookingsByUserId(Integer userId) {
+        return bookingRepository.findByUser_UserId(userId);
     }
 
     // 숙소 ID로 예약 목록 조회
-    @GetMapping("/accommodation/{accommodationId}")
-    public List<Booking> getBookingsByAccommodationId(@PathVariable Integer accommodationId) {
-        return bookingService.getBookingsByAccommodationId(accommodationId);
+    public List<Booking> getBookingsByAccommodationId(Integer accommodationId) {
+        return bookingRepository.findByAccommodation_AccommodationId(accommodationId);
     }
 
     // 룸타입 ID로 예약 목록 조회
-    @GetMapping("/roomtype/{roomTypeId}")
-    public List<Booking> getBookingsByRoomTypeId(@PathVariable Integer roomTypeId) {
-        return bookingService.getBookingsByRoomTypeId(roomTypeId);
+    public List<Booking> getBookingsByRoomTypeId(Integer roomTypeId) {
+        return bookingRepository.findByRoomType_RoomTypeId(roomTypeId);
     }
 
     // 상태로 예약 목록 필터링
-    @GetMapping("/status")
-    public List<Booking> getBookingsByStatus(@RequestParam String status) {
-        return bookingService.getBookingsByStatus(status);
+    public List<Booking> getBookingsByStatus(String status) {
+        return bookingRepository.findByStatus(status);
     }
 
     // 체크인 날짜 범위로 예약 조회
-    @GetMapping("/daterange")
-    public List<Booking> getBookingsBetweenDates(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate start,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate end) {
-        return bookingService.getBookingsBetweenDates(start, end);
+    public List<Booking> getBookingsBetweenDates(LocalDate start, LocalDate end) {
+        return bookingRepository.findByCheckInDateBetween(start, end);
     }
 
     // 사용자 ID + 상태로 예약 목록 조회
-    @GetMapping("/user/{userId}/status")
-    public List<Booking> getBookingsByUserIdAndStatus(
-            @PathVariable Integer userId,
-            @RequestParam String status) {
-        return bookingService.getBookingsByUserIdAndStatus(userId, status);
+    public List<Booking> getBookingsByUserIdAndStatus(Integer userId, String status) {
+        return bookingRepository.findByUser_UserIdAndStatus(userId, status);
     }
 
     // 숙소 ID + 체크인 날짜로 예약 목록 조회
-    @GetMapping("/accommodation/{accommodationId}/checkin")
-    public List<Booking> getBookingsByAccommodationIdAndCheckInDate(
-            @PathVariable Integer accommodationId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate) {
-        return bookingService.getBookingsByAccommodationIdAndCheckInDate(accommodationId, checkInDate);
+    public List<Booking> getBookingsByAccommodationIdAndCheckInDate(Integer accommodationId, LocalDate checkInDate) {
+        return bookingRepository.findByAccommodation_AccommodationIdAndCheckInDate(accommodationId, checkInDate);
     }
 
     // 상태 기준으로 최신순 예약 목록 조회
-    @GetMapping("/recent")
-    public List<Booking> getRecentBookingsByStatus(@RequestParam String status) {
-        return bookingService.getRecentBookingsByStatus(status);
+    public List<Booking> getRecentBookingsByStatus(String status) {
+        return bookingRepository.findByStatusOrderByBookingDateDesc(status);
     }
 }
