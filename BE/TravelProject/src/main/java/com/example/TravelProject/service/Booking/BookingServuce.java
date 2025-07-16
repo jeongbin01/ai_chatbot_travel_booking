@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BookingController {
+public class BookingServuce {
 	
 	private final BookingRepository bookingRepository;
 
