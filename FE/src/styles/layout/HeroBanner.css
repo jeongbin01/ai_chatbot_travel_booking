@@ -1,292 +1,231 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+}
+
 /* 전체 배너 영역 */
 .hero-banner {
   position: relative;
   width: 100%;
-  height: 500px;
-  font-family: 'Pretendard', sans-serif;
+  height: 600px;
   overflow: hidden;
 }
 
 /* 배경 이미지 */
 .hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  background-position: center center;
   background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
-  position: relative;
+  transition: background-image 0.5s ease-in-out;
 }
 
-/* 어두운 반투명 오버레이 */
+/* 어두운 오버레이 */
 .hero-overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
+  background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 20px;
-  box-sizing: border-box;
 }
 
-/* 메인 텍스트 */
+/* 텍스트 영역 */
 .hero-text {
-  text-align: left;
-  max-width: 900px;
-  width: 100%;
-  margin-bottom: 30px;
+  text-align: center;
   color: white;
-  z-index: 1;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  margin-bottom: 30px;
 }
 
 .hero-text h1 {
-  font-size: 2.5rem;
-  line-height: 1.3;
+  font-size: 2.8rem;
+  margin-bottom: 0.5rem;
   font-weight: 700;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  margin: 0; /* 기본 마진 제거 */
 }
 
-/* 검색 박스 */
-.search-box {
-  width: 100%;
-  max-width: 960px;
-  padding: 20px;
+.hero-text p {
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+
+/* Glass UI 검색 박스 */
+.search-box.glass-effect {
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 20px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  padding: 24px 32px;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  max-width: 900px;
+  width: 95%;
 }
 
-/* 탭 버튼 */
+/* 탭 버튼 영역 */
 .tab-buttons {
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .tab-buttons button {
-  padding: 10px 20px;
-  font-size: 14px;
+  padding: 8px 18px;
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  border: 1px solid #ccc;
+  background-color: white;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  font-family: inherit; /* 폰트 상속 */
+  transition: all 0.3s ease;
 }
 
-.tab-buttons button.active {
-  background-color: #007bff;
+.tab-buttons button:hover {
+  background-color: #f0f0f0;
+}
+
+.tab-buttons .active {
+  background-color: #2563eb;
   color: white;
-  font-weight: bold;
-  border-color: #007bff; /* 활성 상태 보더 색상 */
+  border-color: #2563eb;
 }
 
-.tab-buttons button:hover:not(.active) {
-  background-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-1px);
-}
-
-/* 검색 필드 전체 (가로 정렬) */
+/* 검색 필드 영역 */
 .search-fields {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr;
   gap: 12px;
-  flex-wrap: wrap;
-  align-items: stretch; /* 높이 일치 */
-  justify-content: center;
+  align-items: center;
 }
 
-/* 입력 필드 공통 */
 .input-with-icon {
   position: relative;
-  flex: 1 1 160px;
-  min-width: 160px;
-  display: flex; /* 플렉스 컨테이너로 설정 */
+  display: flex;
+  align-items: center;
 }
 
 .input-with-icon i {
   position: absolute;
-  top: 50%;
   left: 12px;
-  transform: translateY(-50%);
-  color: #fff;
-  font-size: 16px;
+  color: #666;
   z-index: 1;
-  pointer-events: none; /* 아이콘 클릭 방지 */
 }
 
 .input-with-icon input {
   width: 100%;
-  padding: 12px 12px 12px 36px;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 10px 12px 10px 36px;
   border-radius: 8px;
-  color: white;
+  border: 1px solid #ccc;
   font-size: 14px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  box-sizing: border-box;
-  font-family: inherit; /* 폰트 상속 */
-  outline: none; /* 포커스 아웃라인 제거 */
-}
-
-/* 입력 필드 포커스 상태 */
-.input-with-icon input:focus {
-  border-color: #007bff;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* 플레이스홀더 스타일 */
-.input-with-icon input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* 인원수 조절 */
-.guest-selector {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px 12px 36px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  font-size: 14px;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  position: relative; /* 아이콘 위치 기준 */
-  flex: 1 1 160px;
-  min-width: 160px;
-}
-
-.guest-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto;
-}
-
-.guest-controls button {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.4);
-  color: #000;
-  border: none;
-  font-weight: bold;
-  font-size: 18px;
-  cursor: pointer;
+  background: rgba(255, 255, 255, 0.9);
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.guest-controls button:hover {
-  background-color: rgba(255, 255, 255, 0.6);
-  transform: scale(1.1);
+.input-with-icon input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
 
-.guest-controls button:active {
-  transform: scale(0.95);
-}
+/* 인원 선택 */
 
-.guest-controls span {
-  color: white;
-  font-weight: 500;
-  min-width: 50px; /* 숫자 변경 시 레이아웃 안정성 */
-  text-align: center;
-}
+
 
 /* 검색 버튼 */
 .search-btn {
-  padding: 12px 24px;
-  background-color: #007bff;
+  background-color: #2563eb;
   color: white;
-  border: none;
+  padding: 10px 16px;
   border-radius: 8px;
+  border: none;
   font-weight: bold;
-  font-size: 15px;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  flex-shrink: 0; /* 버튼 크기 고정 */
-  font-family: inherit; /* 폰트 상속 */
+  transition: background-color 0.2s ease;
+  font-size: 14px;
 }
 
 .search-btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.03);
+  background-color: #1e40af;
 }
 
-.search-btn:active {
-  transform: scale(0.98);
+/* 슬라이드 인디케이터 */
+.slide-indicators {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+  background: white;
 }
 
 /* 반응형 */
 @media (max-width: 768px) {
-  .hero-banner {
-    height: 450px; /* 모바일에서 높이 조정 */
-  }
-  
-  .hero-text {
-    text-align: center; /* 모바일에서 중앙 정렬 */
-  }
-  
   .hero-text h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
 
   .search-fields {
-    flex-direction: column;
-    gap: 15px;
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
-  .input-with-icon,
-  .guest-selector {
-    flex: 1 1 auto;
-    min-width: auto;
+  .search-box.glass-effect {
+    padding: 16px;
   }
 
-  .search-btn {
-    width: 100%;
-    justify-content: center;
-  }
-  
   .tab-buttons {
     flex-wrap: wrap;
     gap: 8px;
+  }
+
+  .tab-buttons button {
+    padding: 6px 12px;
+    font-size: 13px;
   }
 }
 
 @media (max-width: 480px) {
   .hero-banner {
-    height: 400px;
+    height: 500px;
   }
-  
+
   .hero-text h1 {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
   }
-  
-  .search-box {
-    padding: 15px;
-    border-radius: 15px;
+
+  .hero-text p {
+    font-size: 1rem;
   }
-  
-  .tab-buttons button {
-    padding: 8px 16px;
-    font-size: 13px;
+
+  .search-box.glass-effect {
+    padding: 12px;
   }
 }
