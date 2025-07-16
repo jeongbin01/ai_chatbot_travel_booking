@@ -28,7 +28,6 @@ public class UserCouponController {
         return userCouponService.getUsableCoupons(userId);
     }
 
-
     // 특정 사용자와 쿠폰 ID로 발급 여부 확인
     @GetMapping("/check")
     public ResponseEntity<UserCoupon> checkUserCoupon(
@@ -37,8 +36,7 @@ public class UserCouponController {
         Optional<UserCoupon> result = userCouponService.getUserCoupon(userId, couponId);
         return result.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
-
-
+    
     // UserCoupon 직접 등록 (관리자)
     @PostMapping
     public ResponseEntity<UserCoupon> issueUserCoupon(@RequestBody UserCoupon userCoupon) {
