@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CouponDTO {
-
+	
 	// 쿠폰 ID
     private Integer couponId;
     
