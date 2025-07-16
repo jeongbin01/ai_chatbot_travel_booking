@@ -30,9 +30,11 @@
   position: relative;
 }
 
+
 /* 로고 */
 .logo img {
-  height: 48px;
+  height: 56px;
+  width: auto;
 }
 
 /* 오른쪽 영역 */
