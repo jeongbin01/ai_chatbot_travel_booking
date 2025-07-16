@@ -32,7 +32,7 @@ const Header = () => {
             <li><a href="/accommodations?region=global">해외 숙소</a></li>
             <li><a href="/products?category=항공권">항공</a></li>
             <li><a href="/products?category=렌터카">렌터카</a></li>
-            <li><a href="/mypage"> 패키지 여행 </a></li>
+            <li><a href="/mypage"> 액티비티 </a></li>
           </ul>
         </nav>
 
