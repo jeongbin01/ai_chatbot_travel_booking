@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../../assets/images/On_Comma.png';
+import logo from '../../assets/images/Main/On_Comma.png';
 import '../../styles/layout/Header.css'; 
 
 const Header = () => {

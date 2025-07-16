@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/layout/HeroBanner.css";
 
-import bg1 from "../../assets/images/나이아가라강.jpg";
-import bg2 from "../../assets/images/나이아가라강.jpg";
-import bg3 from "../../assets/images/나이아가라강.jpg";
-import bg4 from "../../assets/images/나이아가라강.jpg";
+import bg1 from "../../assets/images/Main/나이아가라강.jpg";
+import bg2 from "../../assets/images/Main/나이아가라강.jpg";
+import bg3 from "../../assets/images/Main/나이아가라강.jpg";
+import bg4 from "../../assets/images/Main/나이아가라강.jpg";
 
 const bannerData = [
   {
