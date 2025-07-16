@@ -2,10 +2,12 @@ package com.example.TravelProject.service.Coupon;
 
 import com.example.TravelProject.entity.Coupon.UserCoupon;
 import com.example.TravelProject.repository.Coupon.UserCouponRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +41,20 @@ public class UserCouponService {
     // 쿠폰 저장
     public UserCoupon saveUserCoupon(UserCoupon userCoupon) {
         return userCouponRepository.save(userCoupon);
+    }
+
+    // 쿠폰 사용 처리
+    public void useCoupon(Integer userCouponId) {
+        UserCoupon userCoupon = userCouponRepository.findById(userCouponId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 쿠폰을 찾을 수 없습니다."));
+
+        if (userCoupon.getIsUsed() != null && userCoupon.getIsUsed()) {
+            throw new IllegalStateException("이미 사용된 쿠폰입니다.");
+        }
+
+        userCoupon.setIsUsed(true);
+        userCoupon.setUsedDate(LocalDateTime.now());
+
+        userCouponRepository.save(userCoupon);
     }
 }
