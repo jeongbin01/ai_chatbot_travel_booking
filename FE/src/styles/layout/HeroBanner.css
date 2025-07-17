@@ -107,15 +107,17 @@ body {
 /* 검색 필드 영역 */
 .search-fields {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.5fr 1fr;
+  grid-template-columns: 2fr 1.7fr 1.5fr 1.2fr 1fr;
   gap: 12px;
   align-items: center;
+  position: relative;
 }
 
 .input-with-icon {
   position: relative;
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .input-with-icon i {
@@ -125,7 +127,8 @@ body {
   z-index: 1;
 }
 
-.input-with-icon input {
+.input-with-icon input,
+.input-with-icon span {
   width: 100%;
   padding: 10px 12px 10px 36px;
   border-radius: 8px;
@@ -141,9 +144,49 @@ body {
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
 }
 
+/* 달력 팝업 */
+.calendar-popup {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  z-index: 1000;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
 /* 인원 선택 */
+.guest-selector {
+  display: flex;
+  align-items: center;
+}
 
+.guest-controls {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding-left: 36px;
+  gap: 6px;
+}
 
+.guest-controls button {
+  background-color: #eee;
+  border: none;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.guest-controls input {
+  width: 40px;
+  text-align: center;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
 
 /* 검색 버튼 */
 .search-btn {
@@ -194,7 +237,7 @@ body {
 
   .search-fields {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 12px;
   }
 
   .search-box.glass-effect {
@@ -209,6 +252,11 @@ body {
   .tab-buttons button {
     padding: 6px 12px;
     font-size: 13px;
+  }
+
+  .calendar-popup {
+    width: 100%;
+    left: 0;
   }
 }
 
