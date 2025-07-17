@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 import HeroBanner from './components/main/HeroBanner';
 import MainPage from './components/main/MainPage';
@@ -8,10 +8,10 @@ import Footer from './components/common/Footer';
 function App() {
   return (
     <>
-    <Header />
-    <HeroBanner />
-    <MainPage />
-    <Footer />
+      <Header />
+      <HeroBanner />
+      <MainPage />
+      <Footer />
     </>
   );
 }
