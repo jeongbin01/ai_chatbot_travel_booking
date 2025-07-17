@@ -58,6 +58,7 @@ const Header = () => {
           {/* 오른쪽 로그인 상태 표시 */}
           <div className="header-right">
             <LoginStatus isLoggedIn={isLoggedIn} user={user} />
+            
 
             {/* 햄버거 메뉴 버튼 */}
             <div
