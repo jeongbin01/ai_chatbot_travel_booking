@@ -7,7 +7,12 @@ import bg3 from "../../assets/images/Main/제주도.jpg";
 import bg4 from "../../assets/images/Main/두바이.jpg";
 
 const BANNER_DATA = [
-  { id: 1, image: bg1, text: "나이아가라의 물안개 속으로", alt: "나이아가라 폭포" },
+  {
+    id: 1,
+    image: bg1,
+    text: "나이아가라의 물안개 속으로",
+    alt: "나이아가라 폭포",
+  },
   { id: 2, image: bg2, text: "몽블랑의 설경 속에서", alt: "몽블랑 설경" },
   { id: 3, image: bg3, text: "제주의 푸른 바다", alt: "제주 해안" },
   { id: 4, image: bg4, text: "두바이의 사막 위에", alt: "두바이 도시" },
@@ -35,16 +40,24 @@ const HeroBanner = () => {
   }, []);
 
   const validateSearch = useCallback(() => {
-    if (!destination.trim()) return { isValid: false, message: "여행지를 입력해주세요." };
-    if (!checkIn) return { isValid: false, message: "체크인 날짜를 선택해주세요." };
-    if (!checkOut) return { isValid: false, message: "체크아웃 날짜를 선택해주세요." };
+    if (!destination.trim())
+      return { isValid: false, message: "여행지를 입력해주세요." };
+    if (!checkIn)
+      return { isValid: false, message: "체크인 날짜를 선택해주세요." };
+    if (!checkOut)
+      return { isValid: false, message: "체크아웃 날짜를 선택해주세요." };
 
     const todayDate = new Date(today);
     const checkInDate = new Date(checkIn);
     const checkOutDate = new Date(checkOut);
 
-    if (checkInDate < todayDate) return { isValid: false, message: "체크인은 오늘 이후여야 합니다." };
-    if (checkOutDate <= checkInDate) return { isValid: false, message: "체크아웃 날짜는 체크인 이후여야 합니다." };
+    if (checkInDate < todayDate)
+      return { isValid: false, message: "체크인은 오늘 이후여야 합니다." };
+    if (checkOutDate <= checkInDate)
+      return {
+        isValid: false,
+        message: "체크아웃 날짜는 체크인 이후여야 합니다.",
+      };
 
     return { isValid: true };
   }, [destination, checkIn, checkOut, today]);
@@ -59,7 +72,9 @@ const HeroBanner = () => {
     setIsSearching(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      alert(`검색 완료!\n여행지: ${destination}\n체크인: ${checkIn}\n체크아웃: ${checkOut}\n인원: ${guests}`);
+      alert(
+        `검색 완료!\n여행지: ${destination}\n체크인: ${checkIn}\n체크아웃: ${checkOut}\n인원: ${guests}`
+      );
     } catch (error) {
       console.error("검색 중 오류:", error);
       alert("검색 중 오류가 발생했습니다.");
@@ -69,7 +84,9 @@ const HeroBanner = () => {
   }, [validateSearch, destination, checkIn, checkOut, guests]);
 
   const handleGuestChange = useCallback((diff) => {
-    setGuests((prev) => Math.max(GUEST_LIMITS.MIN, Math.min(GUEST_LIMITS.MAX, prev + diff)));
+    setGuests((prev) =>
+      Math.max(GUEST_LIMITS.MIN, Math.min(GUEST_LIMITS.MAX, prev + diff))
+    );
   }, []);
 
   const handleSlideChange = useCallback((index) => setCurrentIndex(index), []);
@@ -109,7 +126,8 @@ const HeroBanner = () => {
                   role="tab"
                   aria-selected={activeTab === tab}
                 >
-                  {tab === "domestic" ? "국내 숙소" : tab === "overseas" ? "해외 숙소" : "액티비티"}
+                  {tab === "domestic" && "국내 숙소"}
+                  {tab === "overseas" && "해외 숙소"}
                 </button>
               ))}
             </div>
@@ -149,16 +167,31 @@ const HeroBanner = () => {
               <div className="input-with-icon guest-selector">
                 <i className="bi bi-people" />
                 <div className="guest-controls">
-                  <button onClick={() => handleGuestChange(-1)} disabled={guests <= GUEST_LIMITS.MIN || isSearching}>
+                  <button
+                    onClick={() => handleGuestChange(-1)}
+                    disabled={guests <= GUEST_LIMITS.MIN || isSearching}
+                  >
                     <i className="bi bi-dash" />
                   </button>
-                  <input type="number" value={guests} readOnly className="guest-input" />
-                  <button onClick={() => handleGuestChange(1)} disabled={guests >= GUEST_LIMITS.MAX || isSearching}>
+                  <input
+                    type="number"
+                    value={guests}
+                    readOnly
+                    className="guest-input"
+                  />
+                  <button
+                    onClick={() => handleGuestChange(1)}
+                    disabled={guests >= GUEST_LIMITS.MAX || isSearching}
+                  >
                     <i className="bi bi-plus" />
                   </button>
                 </div>
               </div>
-              <button className="search-btn" onClick={handleSearch} disabled={isSearching}>
+              <button
+                className="search-btn"
+                onClick={handleSearch}
+                disabled={isSearching}
+              >
                 {isSearching ? "검색 중..." : "검색"}
               </button>
             </div>
