@@ -1,14 +1,17 @@
+/* ===== 전역 변수 ===== */
 :root {
-  --primary-color: #007bff;
-  --text-color: #333;
-  --bg-white: #fff;
-  --bg-light-gray: #f9f9f9;
-  --border-color: #e5e5e5;
-  --badge-color: #ff5a5a;
-  --z-header: 1000;
+  --primary-color: #4e6ef2;         /* 메인 색상: 부드러운 블루 */
+  --text-color: #2c2c2c;           /* 기본 텍스트 색상 */
+  --bg-white: #ffffff;             /* 기본 배경 */
+  --bg-light-gray: #f4f6fb;        /* 부드러운 회색 배경 */
+  --border-color: #dce0e5;         /* 테두리 색상 */
+  --badge-color: #ff5b5b;          /* 쿠폰/뱃지 색상 */
+  --accent-blue: #5a7bfc;          /* 강조 파란색 */
+  --accent-purple: #6c5dd3;        /* 보조 보라색 */
+  --z-header: 1000;                /* 헤더 z-index */
 }
 
-/* ===== 기본 헤더 구조 ===== */
+/* ===== 헤더 영역 ===== */
 .header-wrapper {
   width: 100%;
   background-color: var(--bg-white);
@@ -34,7 +37,7 @@
   width: auto;
 }
 
-/* ===== GNB 가운데 메뉴 영역 ===== */
+/* ===== 상단 GNB 네비게이션 ===== */
 .gnb-nav {
   flex: 1;
   display: flex;
@@ -59,10 +62,10 @@
 }
 
 .gnb-menu li a:hover {
-  color: var(--primary-color);
+  color: var(--accent-blue);
 }
 
-/* ===== 오른쪽 메뉴 ===== */
+/* ===== 우측 로그인/메뉴 ===== */
 .header-right {
   display: flex;
   align-items: center;
@@ -70,39 +73,7 @@
   position: relative;
 }
 
-.auth-buttons .header-button,
-.user-info .header-button {
-  padding: 6px 12px;
-  background-color: transparent;
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-  color: var(--text-color);
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.2s ease;
-}
-
-.header-button:hover {
-  background-color: var(--bg-light-gray);
-}
-
-/* ===== 사용자 정보 ===== */
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.profile-image {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid #ccc;
-}
-
-/* ===== 햄버거 메뉴 ===== */
-.header-button[role="button"] {
+.header-button {
   cursor: pointer;
   font-size: 24px;
   border: none;
@@ -110,22 +81,21 @@
   padding: 6px;
 }
 
-/* ===== 팝오버 메뉴 ===== */
+/* ===== 팝오버 메뉴 박스 ===== */
 .popover-menu {
   position: absolute;
   top: 64px;
   right: 0;
-  width: 260px;
+  width: 280px;
   background-color: var(--bg-white);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
   padding: 16px;
   z-index: var(--z-header);
   animation: fadeIn 0.2s ease-in-out;
 }
 
-/* ===== 팝오버 공통 스타일 ===== */
 .popover-section {
   margin-bottom: 20px;
 }
@@ -134,10 +104,11 @@
   font-size: 14px;
   font-weight: bold;
   margin-bottom: 8px;
-  display: block;
   color: var(--text-color);
+  display: block;
 }
 
+/* ===== 메뉴 리스트 ===== */
 .popover-menu-list {
   list-style: none;
   padding: 0;
@@ -149,8 +120,8 @@
 }
 
 .popover-menu-list a {
-  color: var(--text-color);
   text-decoration: none;
+  color: var(--text-color);
   font-size: 14px;
   display: flex;
   justify-content: space-between;
@@ -158,10 +129,106 @@
 }
 
 .popover-menu-list a:hover {
-  color: var(--primary-color);
+  color: var(--accent-blue);
 }
 
-/* ===== 쿠폰 뱃지 ===== */
+/* ===== 로그인 버튼 ===== */
+.side-login-btn {
+  display: block;
+  background-color: var(--accent-blue);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  text-decoration: none;
+  margin-bottom: 16px;
+}
+
+/* ===== 요약 카드 (내 정보) ===== */
+.my-summary-card {
+  background-color: var(--bg-light-gray);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 14px;
+}
+
+.my-nickname {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.arrow-icon {
+  font-size: 18px;
+  color: #999;
+}
+
+/* ===== 멤버십 정보 ===== */
+.membership-info {
+  background-color: #ebedff;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+}
+
+.membership-tier {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  color: var(--accent-purple);
+}
+
+.upgrade-hint {
+  font-size: 12px;
+  color: var(--accent-purple);
+  margin-top: 4px;
+}
+
+.benefit-link {
+  font-size: 12px;
+  color: var(--accent-purple);
+  text-decoration: none;
+}
+
+/* ===== 포인트 / 쿠폰 박스 ===== */
+.point-coupon-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+}
+
+.point-item {
+  flex: 1;
+  text-align: center;
+}
+
+.point-item .label {
+  font-size: 12px;
+  color: #999;
+  display: block;
+}
+
+.point-item .value {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* ===== 구분선 ===== */
+.divider {
+  width: 1px;
+  height: 100%;
+  background-color: #ddd;
+}
+
+/* ===== 뱃지 ===== */
 .coupon-badge {
   background-color: var(--badge-color);
   color: white;
@@ -172,24 +239,10 @@
   margin-left: 4px;
 }
 
-/* ===== 로그인 버튼 (사이드 전용) ===== */
-.side-login-btn {
-  display: block;
-  background-color: var(--primary-color);
-  color: white;
-  text-align: center;
-  padding: 10px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-/* ===== New 뱃지 ===== */
 .badge-new {
   font-size: 10px;
   color: white;
-  background-color: #f03e3e;
+  background-color: #e64040;
   border-radius: 6px;
   padding: 2px 6px;
   margin-left: 6px;
@@ -207,7 +260,7 @@
   }
 }
 
-/* ===== 반응형 대응 ===== */
+/* ===== 반응형 ===== */
 @media (max-width: 768px) {
   .header-inner {
     flex-wrap: wrap;
@@ -215,7 +268,7 @@
   }
 
   .gnb-nav {
-    display: none; /* 모바일에선 GNB 숨김 */
+    display: none;
   }
 
   .popover-menu {
@@ -223,7 +276,7 @@
     right: 5vw;
   }
 
-  .user-info span {
+  .nickname {
     display: none;
   }
 }
