@@ -39,18 +39,21 @@ function DomesticAccommodations() {
   return (
     <section className="domestic-container">
       <h2 className="section-title">국내 인기 여행지</h2>
+
       <div className="slider-wrapper">
         <button className="arrow left" onClick={scrollLeft}>
           <i className="bi bi-chevron-left"></i>
         </button>
+
         <div className="destination-scroll" ref={scrollRef}>
           {destinations.map((item, idx) => (
             <a href={item.link} className="destination-card" key={idx}>
               <img src={item.image} alt={item.name} />
-              <span>{item.name}</span>
+              <h3>{item.name}</h3>
             </a>
           ))}
         </div>
+
         <button className="arrow right" onClick={scrollRight}>
           <i className="bi bi-chevron-right"></i>
         </button>
