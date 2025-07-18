@@ -1,5 +1,5 @@
 .event-banner-section {
-  padding: 40px 5%;
+  padding: 32px 5%; /* 상하 패딩 축소(40 → 32px) */
   background-color: #fff;
 }
 
@@ -7,17 +7,20 @@
   display: flex;
   align-items: center;
   position: relative;
-  max-width: 1300px;
+  max-width: 1200px;  /* 1300 → 1200px */
   margin: 0 auto;
+  padding: 0 12px;    /* 내부 좌우 여백 소폭 축소 */
+  box-sizing: border-box;
 }
 
+/* 좌우 화살표 */
 .event-arrow {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1.2rem;
+  width: 32px;       /* 40 → 32px */
+  height: 32px;
+  font-size: 1rem;   /* 1.2 → 1.0rem */
   color: #333;
   display: flex;
   align-items: center;
@@ -25,6 +28,7 @@
   cursor: pointer;
   z-index: 10;
 }
+
 .event-arrow.disabled {
   opacity: 0.3;
   cursor: not-allowed;
@@ -34,27 +38,30 @@
   overflow: hidden;
   width: 100%;
 }
+
 .event-slider-inner {
   display: flex;
   transition: transform 0.5s ease-in-out;
 }
 
+/* 한 화면에 보여줄 카드 그룹 */
 .promo-slide-group {
   flex: 0 0 100%;
   display: flex;
-  gap: 20px;
+  gap: 16px;           /* 20 → 16px */
   justify-content: center;
   align-items: center;
 }
 
+/* 카드 */
 .promo-card {
   position: relative;
-  width: 600px;
-  height: 180px;
+  width: 540px;        /* 600 → 540px */
+  height: 160px;       /* 180 → 160px */
   flex: 0 0 auto;
-  border-radius: 16px;
+  border-radius: 12px; /* 16 → 12px */
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   text-decoration: none;
   color: inherit;
 }
@@ -63,7 +70,6 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 .promo-overlay {
@@ -72,7 +78,7 @@
   left: 0;
   height: 100%;
   width: 100%;
-  padding: 24px;
+  padding: 20px;       /* 24 → 20px */
   background: linear-gradient(to right, rgba(0, 0, 0, 0.55), transparent 60%);
   display: flex;
   flex-direction: column;
@@ -81,43 +87,26 @@
 }
 
 .promo-badge {
-  background-color: #00aaff;
-  color: #fff;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 600;
-  display: inline-block;
-  line-height: 1;
-  white-space: nowrap;
-  width: fit-content;
+  padding: 2px 5px;    /* 가로 패딩 소폭 축소 */
 }
 
 .promo-title {
-  font-size: 1.4rem;
-  margin: 0;
-  font-weight: 700;
+  font-size: 1.3rem;   /* 1.4 → 1.3rem */
 }
 
 .promo-desc {
-  font-size: 1rem;
-  margin-top: 6px;
-  opacity: 0.9;
+  font-size: 0.95rem;  /* 1.0 → 0.95rem */
+  margin-top: 4px;     /* 상단 여백 소폭 축소 */
 }
 
 /* 페이지 인디케이터 */
 .slide-indicators {
-  margin-top: 16px;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
+  margin-top: 12px;    /* 16 → 12px */
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: #ccc;
-  transition: background-color 0.3s ease;
+  width: 8px;          /* 10 → 8px */
+  height: 8px;
 }
 
 .dot.active {
@@ -127,7 +116,7 @@
 /* 반응형 대응 */
 @media (max-width: 767px) {
   .promo-card {
-    width: 90%;
+    width: 85%;        /* 90% → 85% */
     height: auto;
   }
 
