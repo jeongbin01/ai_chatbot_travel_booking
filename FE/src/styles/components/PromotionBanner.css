@@ -1,106 +1,137 @@
-/* 섹션 전체 */
-.promo-carousel-section {
-  padding: 40px 5% 20px;
+.event-banner-section {
+  padding: 40px 5%;
   background-color: #fff;
-  position: relative;
 }
 
-/* 제목 */
-.promo-carousel-title {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #111;
-  text-align: center;
-}
-
-/* 버튼 + 슬라이드 감싸는 래퍼 (가운데 정렬) */
-.promo-carousel-wrapper {
+.event-banner-wrapper {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 16px;
-  max-width: 1200px;
-  margin: 0 auto;
   position: relative;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
-/* 카드 리스트 영역 */
-.promo-carousel-container {
-  display: flex;
-  gap: 16px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  padding-bottom: 10px;
-  scrollbar-width: none;
-  width: 100%;
-  max-width: 1000px;
-}
-
-.promo-carousel-container::-webkit-scrollbar {
-  display: none;
-}
-
-/* 개별 카드 */
-.promo-carousel-card {
-  flex: 0 0 auto;
-  width: 200px;
-  background-color: #f7f7f7;
-  border-radius: 16px;
-  padding: 12px;
-  text-align: center;
-  text-decoration: none;
-  color: #111;
-  scroll-snap-align: start;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.promo-carousel-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* 카드 이미지 */
-.promo-carousel-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-/* 카드 텍스트 */
-.promo-carousel-text {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #333;
-}
-
-/* 좌우 버튼 */
-.promo-btn {
-  background-color: #fff;
+.event-arrow {
+  background: #fff;
   border: 1px solid #ddd;
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  cursor: pointer;
+  width: 40px;
+  height: 40px;
   font-size: 1.2rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-  flex-shrink: 0;
+  color: #333;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+.event-arrow.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.event-slider-outer {
+  overflow: hidden;
+  width: 100%;
+}
+.event-slider-inner {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.promo-slide-group {
+  flex: 0 0 100%;
+  display: flex;
+  gap: 20px;
   justify-content: center;
   align-items: center;
-  transition: background-color 0.2s ease;
 }
 
-.promo-btn:hover {
-  background-color: #f0f0f0;
+.promo-card {
+  position: relative;
+  width: 600px;
+  height: 180px;
+  flex: 0 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: inherit;
 }
 
-.promo-btn.left {
-  order: -1;
+.promo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.promo-btn.right {
-  order: 1;
+.promo-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 24px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.55), transparent 60%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+}
+
+.promo-badge {
+  background-color: #00aaff;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.promo-title {
+  font-size: 1.4rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.promo-desc {
+  font-size: 1rem;
+  margin-top: 6px;
+  opacity: 0.9;
+}
+
+/* 페이지 인디케이터 */
+.slide-indicators {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: #007bff;
+}
+
+/* 반응형 대응 */
+@media (max-width: 767px) {
+  .promo-card {
+    width: 90%;
+    height: auto;
+  }
+
+  .promo-slide-group {
+    flex-direction: column;
+  }
 }
