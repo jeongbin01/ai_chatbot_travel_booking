@@ -1,15 +1,19 @@
+/* PromotionBanner.css */
+
+/* 전체 섹션 */
 .event-banner-section {
-  padding: 32px 5%; /* 상하 패딩 축소(40 → 32px) */
+  padding: 32px 5%;
   background-color: #fff;
 }
 
+/* 슬라이더 전체 래퍼 */
 .event-banner-wrapper {
   display: flex;
   align-items: center;
   position: relative;
-  max-width: 1200px;  /* 1300 → 1200px */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 12px;    /* 내부 좌우 여백 소폭 축소 */
+  padding: 0 12px;
   box-sizing: border-box;
 }
 
@@ -18,109 +22,146 @@
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 50%;
-  width: 32px;       /* 40 → 32px */
+  width: 32px;
   height: 32px;
-  font-size: 1rem;   /* 1.2 → 1.0rem */
+  font-size: 1rem;
   color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   z-index: 10;
+  flex-shrink: 0;
 }
-
 .event-arrow.disabled {
   opacity: 0.3;
   cursor: not-allowed;
 }
+/* 화살표 위치 (JSX에서 left/right 클래스 붙임) */
+.event-arrow.left {
+  margin-left: -8px;
+}
+.event-arrow.right {
+  margin-right: -8px;
+}
 
+/* 슬라이드 보여지는 영역 (overflow 숨김) */
 .event-slider-outer {
   overflow: hidden;
   width: 100%;
 }
 
+/* 슬라이드 트랙 */
 .event-slider-inner {
   display: flex;
   transition: transform 0.5s ease-in-out;
 }
 
-/* 한 화면에 보여줄 카드 그룹 */
+/* 그룹별 카드 묶음 */
 .promo-slide-group {
   flex: 0 0 100%;
   display: flex;
-  gap: 16px;           /* 20 → 16px */
+  gap: 16px;
   justify-content: center;
   align-items: center;
 }
 
-/* 카드 */
+/* 개별 프로모션 카드 */
 .promo-card {
   position: relative;
-  width: 540px;        /* 600 → 540px */
-  height: 160px;       /* 180 → 160px */
-  flex: 0 0 auto;
-  border-radius: 12px; /* 16 → 12px */
+  flex: 0 0 540px;
+  height: 160px;
+  border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   text-decoration: none;
   color: inherit;
 }
 
+/* 카드 이미지 */
 .promo-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
+/* 카드 오버레이 (배지/텍스트) */
 .promo-overlay {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
   width: 100%;
-  padding: 20px;       /* 24 → 20px */
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.55), transparent 60%);
+  height: 100%;
+  padding: 20px;
+  background: linear-gradient(to right, rgba(0,0,0,0.55), transparent 60%);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: white;
+  color: #fff;
 }
 
+/* 배지 */
 .promo-badge {
-  padding: 2px 5px;    /* 가로 패딩 소폭 축소 */
+  background-color: #00aaff;
+  color: #fff;
+  padding: 2px 2px;        /* 좌우 여백을 최소화 */
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  width: max-content;      /* 내용에 딱 맞춘 너비 */
 }
 
+
+/* 제목 */
 .promo-title {
-  font-size: 1.3rem;   /* 1.4 → 1.3rem */
+  font-size: 1.3rem;
+  margin: 8px 0 0;
+  font-weight: 700;
 }
 
+/* 설명 */
 .promo-desc {
-  font-size: 0.95rem;  /* 1.0 → 0.95rem */
-  margin-top: 4px;     /* 상단 여백 소폭 축소 */
+  font-size: 0.95rem;
+  margin-top: 4px;
+  opacity: 0.9;
 }
 
-/* 페이지 인디케이터 */
+/* 슬라이드 인디케이터 */
 .slide-indicators {
-  margin-top: 12px;    /* 16 → 12px */
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
 }
-
 .dot {
-  width: 8px;          /* 10 → 8px */
+  width: 8px;
   height: 8px;
+  border-radius: 50%;
+  background-color: #ccc;
+  transition: background-color 0.3s ease;
 }
-
 .dot.active {
   background-color: #007bff;
 }
 
-/* 반응형 대응 */
+/* 반응형 (모바일) */
 @media (max-width: 767px) {
   .promo-card {
-    width: 85%;        /* 90% → 85% */
+    width: 85%;
     height: auto;
   }
-
   .promo-slide-group {
     flex-direction: column;
+  }
+  .event-banner-wrapper {
+    flex-direction: column;
+    padding: 0 8px;
+  }
+  .event-arrow {
+    display: none;
   }
 }
