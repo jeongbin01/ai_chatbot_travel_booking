@@ -1,0 +1,147 @@
+/* 타임딜 전체 섹션 */
+.time-deal {
+  background-color: #fdfdfd;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 24px;
+  margin: 40px auto;
+  max-width: 960px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* 헤더: 뱃지 + 타이머 */
+.time-deal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.time-deal__badge {
+  background-color: #ff4d4f;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.time-deal__badge.expired {
+  background-color: #6c757d;
+}
+
+.time-deal__timer {
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+/* 메인 딜 카드 영역 */
+.time-deal__main {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+/* 네비게이션 버튼 */
+.nav {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav:hover {
+  background-color: #f0f0f0;
+}
+
+.nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.deal-card__wrapper {
+  display: flex;            /* Flex 컨테이너로 변경 */
+  justify-content: center;  /* 가로 중앙 정렬 */
+  align-items: center;      /* 세로 중앙 정렬 */
+  
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  margin: 0 12px;
+}
+
+.deal-card {
+  margin: 0 auto;           /* 좌우 자동 여백으로 가운데 정렬 */
+  /* 기존 속성 유지 */
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
+}
+
+.deal-card.active {
+  min-width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.deal-card img {
+  width: 280px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-right: 24px;
+}
+
+/* 딜 정보 */
+.deal-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deal-card__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #222;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.deal-card__price {
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  color: #111;
+}
+
+.deal-card__price em {
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #ff4d4f;
+}
+
+.deal-card__price small {
+  font-size: 0.875rem;
+  color: #999;
+}
+
+.deal-card__price del {
+  text-decoration: line-through;
+}
