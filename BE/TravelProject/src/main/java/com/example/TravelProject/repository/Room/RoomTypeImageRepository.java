@@ -16,5 +16,5 @@ public interface RoomTypeImageRepository extends JpaRepository<RoomTypeImage, In
     RoomTypeImage findFirstByRoomType_RoomTypeIdAndOrderNum(Integer roomTypeId, Integer orderNum);
 
     // 객실 타입 ID로 이미지 전체 삭제 (객실 타입 삭제 시 함께 제거)
-    void deleteByRoomType_RoomTypeId(Integer roomTypeId);
+    List<RoomTypeImage> deleteByRoomType_RoomTypeId(Integer roomTypeId);
 }

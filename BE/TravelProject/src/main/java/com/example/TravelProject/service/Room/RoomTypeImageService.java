@@ -37,9 +37,12 @@ public class RoomTypeImageService {
     }
 
     // 특정 객실 타입의 모든 이미지 삭제
-    public void deleteAllByRoomTypeId(Integer roomTypeId) {
-        roomTypeImageRepository.deleteByRoomType_RoomTypeId(roomTypeId);
+    public List<RoomTypeImage> deleteAllByRoomTypeId(Integer roomTypeId) {
+        List<RoomTypeImage> images = roomTypeImageRepository.deleteByRoomType_RoomTypeId(roomTypeId);
+        roomTypeImageRepository.deleteAll(images);
+        return images;
     }
+
 
     // 이미지 ID로 단건 조회
     public Optional<RoomTypeImage> findById(Integer imageId) {

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,4 +40,10 @@ public class AccommodationImageService {
     public AccommodationImage findThumbnail(Integer accommodationId) {
         return accommodationImageRepository.findFirstByAccommodation_AccommodationIdAndOrderNum(accommodationId, 0);
     }
+
+    // 이미지 ID 단건 숙소 이미지 조회
+    public Optional<AccommodationImage> findById1(Integer imageId) {
+        return accommodationImageRepository.findById(imageId);
+    }
+
 }

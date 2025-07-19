@@ -55,4 +55,18 @@ public class RoomService {
     public List<Room> findAvailableByRoomType(Integer roomTypeId) {
         return roomRepository.findByRoomType_RoomTypeIdAndIsAvailable(roomTypeId, true);
     }
+
+    public Room update(Integer roomId, Room updatedRoom) {
+        return roomRepository.findById(roomId)
+                .map(existingRoom -> {
+                    // 기존 Room 데이터에 변경할 값을 덮어쓰기
+                    existingRoom.setRoomType(updatedRoom.getRoomType());
+                    existingRoom.setRoomNumber(updatedRoom.getRoomNumber());
+                    existingRoom.setIsAvailable(updatedRoom.getIsAvailable());
+
+                    // 변경된 Room 저장 후 반환
+                    return roomRepository.save(existingRoom);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 객실이 존재하지 않습니다: " + roomId));
+    }
 }

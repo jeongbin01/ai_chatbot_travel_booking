@@ -15,6 +15,22 @@ public class RoomAmenityService {
 
     private final RoomAmenityRepository roomAmenityRepository;
 
+    // 전체 RoomAmenity 조회
+    public List<RoomAmenity> findAll() {
+        return roomAmenityRepository.findAll();
+    }
+
+    // ID로 단건 조회 (필요 시)
+    public RoomAmenity findById(Integer id) {
+        return roomAmenityRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("RoomAmenity not found with id: " + id));
+    }
+
+    // ID로 삭제
+    public void deleteById(Integer id) {
+        roomAmenityRepository.deleteById(id);
+    }
+
     // 특정 객실 타입 ID로 편의시설 리스트 조회
     public List<RoomAmenity> findByRoomTypeId(Integer roomTypeId) {
         return roomAmenityRepository.findByRoomType_RoomTypeId(roomTypeId);

@@ -50,4 +50,19 @@ public class RoomTypeService {
     public List<RoomType> searchByName(Integer accommodationId, String keyword) {
         return roomTypeRepository.findByAccommodation_AccommodationIdAndNameContaining(accommodationId, keyword);
     }
+
+    public RoomType update(Integer roomTypeId, RoomType updatedRoomType) {
+        return roomTypeRepository.findById(roomTypeId)
+                .map(existing -> {
+                    existing.setName(updatedRoomType.getName());
+                    existing.setDescription(updatedRoomType.getDescription());
+                    existing.setMaxOccupancy(updatedRoomType.getMaxOccupancy());
+                    existing.setStandardOccupancy(updatedRoomType.getStandardOccupancy());
+                    existing.setBedType(updatedRoomType.getBedType());
+                    existing.setAreaSqm(updatedRoomType.getAreaSqm());
+                    return roomTypeRepository.save(existing);
+                })
+                .orElseThrow(() -> new IllegalArgumentException("객실 타입을 찾을 수 없습니다. ID: " + roomTypeId));
+    }
+
 }
