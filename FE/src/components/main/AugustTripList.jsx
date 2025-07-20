@@ -35,7 +35,6 @@ const sampleTrips = [
   }
 ];
 
-
 function AugustTripList() {
   return (
     <section className="august-section">
@@ -44,7 +43,7 @@ function AugustTripList() {
 
       <div className="trip-grid">
         {sampleTrips.map(trip => (
-          <div className="trip-card" key={trip.id}>
+          <a href={trip.link} key={trip.id} className="trip-card">
             <img src={trip.image} alt={trip.title} className="trip-img" />
             <div className="trip-info">
               <h3 className="trip-title">{trip.title}</h3>
@@ -58,7 +57,7 @@ function AugustTripList() {
               </div>
               <div className="trip-badge">{trip.badge}</div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </section>

@@ -1,104 +1,106 @@
 /* 전체 섹션 영역 */
 .august-section {
-  padding: 32px 5%;             /* 위아래 패딩 40→32px */
+  padding: 32px 5%;             /* 위아래 패딩 32px */
   background: #fff;
-
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;          /* 섹션 내부 콘텐츠 전체 중앙 정렬 */
 }
 
 /* 제목/부제목 */
 .august-title,
 .august-subtitle {
   width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;      /* 블록 단위로 가운데 고정 */
-  text-align: left;    /* 텍스트는 왼쪽 정렬 */
+  max-width: 1000px;            /* 컨테이너 최대 너비 */
+  margin: 0 auto;               /* 블록 단위 중앙 고정 */
+  text-align: left;             /* 텍스트는 왼쪽 정렬 */
 }
 
 .august-title {
-  font-size: 1.1rem;            /* 1.8→1.6rem */
+  font-size: 1.1rem;            /* 폰트 크기 */
   font-weight: 700;
-  margin-bottom: 6px;           /* 8→6px */
+  margin-bottom: 6px;           /* 제목과 부제목 사이 간격 */
   color: #111;
 }
 
 .august-subtitle {
-  font-size: 0.95rem;           /* 1→0.95rem */
+  font-size: 0.95rem;
   color: #666;
-  margin-bottom: 24px;          /* 32→24px */
+  margin-bottom: 24px;          /* 부제목과 카드 그리드 사이 간격 */
 }
 
 /* 카드 그리드 */
 .trip-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* 280→240px */
-  gap: 16px;                     /* 24→16px */
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); /* 카드 최소 너비 240px */
+  gap: 16px;                     /* 카드 간격 */
   width: 100%;
-  max-width: 1000px;
+  max-width: 1000px;             /* 그리드 컨테이너 최대 너비 */
 }
 
 /* 카드 개별 */
 .trip-card {
+  display: block;                /* <a> 태그의 기본 디스플레이 */
   border: 1px solid #eee;
-  border-radius: 10px;           /* 12→10px */
+  border-radius: 10px;
   overflow: hidden;
   background: #fafafa;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.04); /* 그림자 살짝 가볍게 */
+  box-shadow: 0 3px 8px rgba(0,0,0,0.04);
   transition: transform 0.2s ease;
+  text-decoration: none;         /* 링크 밑줄 제거 */
 }
 
 .trip-card:hover {
-  transform: translateY(-3px);   /* 이동량도 작게 */
+  transform: translateY(-3px);
 }
 
 /* 이미지 */
 .trip-img {
   width: 100%;
-  height: 150px;                 /* 180→150px */
+  height: 150px;
   object-fit: cover;
 }
 
 /* 카드 내부 정보 */
 .trip-info {
-  padding: 12px;                 /* 16→12px */
+  padding: 12px;
   text-align: left;
 }
 
 .trip-title {
-  font-size: 1rem;               /* 1.1→1.0rem */
-  font-weight: 600;              /* 약간 가볍게 */
-  margin-bottom: 6px;            /* 8→6px */
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111;
 }
 
 .trip-tags {
-  margin-bottom: 8px;            /* 12→8px */
+  margin-bottom: 8px;
 }
 
 .trip-tag {
   display: inline-block;
   background: #f0f0f0;
-  font-size: 0.75rem;            /* 0.8→0.75rem */
-  padding: 3px 6px;              /* 4/8→3/6px */
-  margin-right: 4px;             /* 6→4px */
-  border-radius: 5px;            /* 6→5px */
+  font-size: 0.75rem;
+  padding: 3px 6px;
+  margin-right: 4px;
+  border-radius: 5px;
   color: #555;
 }
 
 .trip-price {
-  font-size: 0.95rem;            /* 1→0.95rem */
-  margin-bottom: 8px;            /* 10→8px */
+  font-size: 0.95rem;
+  margin-bottom: 8px;
   color: #d32f2f;
 }
 
 .trip-badge {
   display: inline-block;
-  font-size: 0.7rem;             /* 0.75→0.7rem */
+  font-size: 0.7rem;
   background: #00aaff;
   color: #fff;
-  padding: 3px 8px;              /* 4/10→3/8px */
-  border-radius: 14px;           /* 16→14px */
+  padding: 3px 8px;
+  border-radius: 14px;
   font-weight: 600;
 }
 
