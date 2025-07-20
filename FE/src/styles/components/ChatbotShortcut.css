@@ -1,0 +1,24 @@
+.chatbot-button {
+  position: fixed;
+  bottom: 40px;
+  right: 20px;
+  width: 52px;
+  height: 52px;
+  background-color: #00bcd4; /* 시원한 민트 색상 */
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.chatbot-button:hover {
+  background-color: #0097a7;
+  transform: scale(1.05);
+}

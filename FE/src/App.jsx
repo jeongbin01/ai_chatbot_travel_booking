@@ -13,6 +13,7 @@ import AugustTripList from './components/main/AugustTripList';
 import ReviewSlider from './components/review/ReviewSlider';
 import TopTravelProducts from './components/product/TopTravelProducts';
 import ScrollToTopButton from './components/common/ScrollToTopButton';
+import ChatbotShortcut from './components/common/ChatbotShortcut';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
       <TopTravelProducts />
       <TimeSaleSection />
       <AugustTripList />
+      <ChatbotShortcut />
       <ScrollToTopButton />
       <ReviewSlider />
       <Footer />
