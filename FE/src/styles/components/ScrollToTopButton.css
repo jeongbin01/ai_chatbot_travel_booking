@@ -1,6 +1,6 @@
 .scroll-to-top {
   position: fixed;
-  bottom: 100px; /* 챗봇 버튼과 간격 확보 */
+  bottom: 40px; /* 👈 더 아래쪽에 위치 */
   right: 20px;
   width: 44px;
   height: 44px;
