@@ -11,6 +11,7 @@ import TimeSaleSection from './components/main/TimeSaleSection';
 import Footer from './components/common/Footer';
 import AugustTripList from './components/main/AugustTripList';
 import ReviewSlider from './components/review/ReviewSlider';
+import ScrollToTopButton from './components/common/ScrollToTopButton';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <TimeSaleSection />
       <AugustTripList />
       <ReviewSlider />
+      <ScrollToTopButton />
       <Footer />
     </>
   );
