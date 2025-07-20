@@ -11,6 +11,7 @@ import TimeSaleSection from './components/main/TimeSaleSection';
 import Footer from './components/common/Footer';
 import AugustTripList from './components/main/AugustTripList';
 import ReviewSlider from './components/review/ReviewSlider';
+import TopTravelProducts from './components/product/TopTravelProducts';
 import ScrollToTopButton from './components/common/ScrollToTopButton';
 
 function App() {
@@ -21,10 +22,11 @@ function App() {
       <PromotionBanner />
       <DomesticAccommodations />
       <OverseasAccommodations />
+      <TopTravelProducts />
       <TimeSaleSection />
       <AugustTripList />
-      <ReviewSlider />
       <ScrollToTopButton />
+      <ReviewSlider />
       <Footer />
     </>
   );
