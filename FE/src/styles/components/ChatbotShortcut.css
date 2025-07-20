@@ -1,24 +1,39 @@
+
 .chatbot-button {
+  /* 화면 우측 하단에 고정 */
   position: fixed;
-  bottom: 100px;
-  right: 20px;
-  width: 52px;
-  height: 52px;
-  background-color: #00bcd4;
-  color: #fff;
-  border: none;
+bottom: 100px;
+
+  right: 24px;
+  /* 원형 모양 및 크기 */
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
-  font-size: 24px;
+  border: none;
+  /* 배경에 GIF 적용 (경로는 CSS 파일 기준) */
+  background: url('../../assets/images/Main/오리너구리.gif') center center / cover no-repeat;
+  /* 그림자와 레이어 순서 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
   cursor: pointer;
-  z-index: 9998;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  /* 부드러운 트랜지션 */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+/* 호버 시 살짝 떠오르는 효과 */
 .chatbot-button:hover {
-  background-color: #0097a7;
-  transform: scale(1.05);
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* 클릭(액티브) 시 눌리는 느낌 */
+.chatbot-button:active {
+  transform: translateY(-2px) scale(1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* 원래 JSX에 있는 아이콘(<i>) 숨기기 */
+.chatbot-button i {
+  display: none;
 }

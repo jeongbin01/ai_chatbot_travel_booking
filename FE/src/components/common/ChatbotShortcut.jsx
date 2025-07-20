@@ -1,5 +1,6 @@
 import React from 'react';
 import '../../styles/components/ChatbotShortcut.css';
+import '../../assets/images/Main/오리너구리.gif'
 
 const ChatbotShortcut = () => {
   const handleClick = () => {
