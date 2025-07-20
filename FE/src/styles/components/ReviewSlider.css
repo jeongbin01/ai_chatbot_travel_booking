@@ -12,10 +12,11 @@
 }
 
 .review-title {
-  font-size: 24px;
+  font-size: 1.1rem;
   font-weight: bold;
-  color: #333;
-  margin: 0;
+  margin-bottom: 32px;
+  text-align: left;         
+  padding-left: 8px; 
 }
 
 .slider-container {
