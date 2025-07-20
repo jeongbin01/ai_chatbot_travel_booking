@@ -9,6 +9,7 @@ import DomesticAccommodations from './components/product/DomesticAccommodations'
 import OverseasAccommodations from './components/product/OverseasAccommodations';
 import TimeSaleSection from './components/main/TimeSaleSection';
 import Footer from './components/common/Footer';
+import AugustTripList from './components/main/AugustTripList';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <DomesticAccommodations />
       <OverseasAccommodations />
       <TimeSaleSection />
+      <AugustTripList />
       <Footer />
     </>
   );
