@@ -1,0 +1,180 @@
+/* ===== 전역 변수 ===== */
+:root {
+  --primary-color: #4e6ef2;
+  --text-color: #2c2c2c;
+  --bg-white: #ffffff;
+  --border-color: #e9ecef;
+  --z-header: 1000;
+  --header-height: 64px;
+}
+
+/* ===== 헤더 래퍼 ===== */
+.headerWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+  font-family: 'Pretendard', sans-serif;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+/* ===== 내부 컨테이너 ===== */
+.headerInner {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===== 로고 ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s ease;
+}
+.logo:hover {
+  opacity: 0.8;
+}
+.logo img {
+  /* 헤더 높이에서 위아래 여백 16px(8px씩)을 뺀 최대 높이 */
+  height: calc(var(--header-height) - 16px);
+  width: auto;
+}
+
+/* ===== 우측 영역 ===== */
+.headerRight {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* ===== 햄버거 메뉴 버튼 ===== */
+.headerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+.headerButton i {
+  font-size: 22px;
+  color: var(--text-color);
+}
+.headerButton:hover {
+  background-color: #f8f9fa;
+}
+.headerButton:focus,
+.headerButton:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+.headerButton[aria-expanded="true"] {
+  background-color: #f1f3f5;
+  border-color: #ced4da;
+}
+
+/* ===== 팝오버 메뉴 컨테이너 ===== */
+.popoverMenu {
+  position: absolute;
+  top: calc(var(--header-height) + 8px);
+  right: 0;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  width: 280px;
+  z-index: var(--z-header);
+}
+
+/* ===== 팝오버 섹션 ===== */
+.popoverSection {
+  margin-top: 12px;
+}
+.menuGroupTitle {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: var(--text-color);
+}
+.popoverMenuList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.popoverMenuList li {
+  margin: 4px 0;
+}
+.popoverMenuList li a {
+  display: block;
+  padding: 6px 8px;
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+.popoverMenuList li a:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ===== 로그인/회원가입 버튼 ===== */
+.sideLoginBtn {
+  display: block;
+  text-align: center;
+  margin-bottom: 12px;
+  padding: 8px 0;
+  background-color: var(--primary-color);
+  color: var(--bg-white);
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: opacity 0.2s;
+}
+.sideLoginBtn:hover {
+  opacity: 0.9;
+}
+
+/* ===== 쿠폰 뱃지 ===== */
+.couponBadge {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: var(--bg-white);
+  border-radius: 12px;
+  padding: 2px 6px;
+  font-size: 0.75rem;
+  margin-left: 4px;
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 768px) {
+  .headerWrapper {
+    padding: 0 16px;
+  }
+  .headerRight {
+    gap: 12px;
+  }
+  /* 모바일에서는 로고 여백을 조금 더 확보 */
+  .logo img {
+    height: calc(var(--header-height) - 24px);
+  }
+}
