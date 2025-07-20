@@ -1,7 +1,7 @@
 .scroll-to-top {
   position: fixed;
   bottom: 40px; /* 👈 더 아래쪽에 위치 */
-  right: 20px;
+  right: 30px;
   width: 44px;
   height: 44px;
   background-color: #333;
