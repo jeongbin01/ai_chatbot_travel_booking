@@ -1,50 +1,60 @@
 // src/components/common/Header.jsx
-import React, { useState, useRef } from "react";
-import styles from "../../styles/layout/Header.module.css";
-import LoginStatus from "../user/LoginStatus";
-import PopoverMenu from "./PopoverMenu";
-import useOnClickOutside from "../../hooks/useOnClickOutside";
-import logo from "../../assets/images/Main/On_Comma.png";
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styles from '../../styles/layout/Header.module.css';
+import LoginStatus from '../user/LoginStatus';
+import PopoverMenu from './PopoverMenu';
+import useOnClickOutside from '../../hooks/useOnClickOutside';
+import logo from '../../assets/images/Main/On_Comma.png';
+import { fetchCurrentUser, logout } from '../../api/auth';
 
 const Header = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
   const btnRef = useRef(null);
   const popRef = useRef(null);
+  const navigate = useNavigate();
 
-  // 예시 유저 데이터 (실제로는 Context/API 연동)
-  const isLoggedIn = true;
-  const user = {
-    nickname: "정빈",
-    profile_image_url: logo,
-    user_role: "관리자",
-    unused_coupon_count: 2,
+  useEffect(() => {
+    fetchCurrentUser()
+      .then(res => {
+        setIsLoggedIn(true);
+        setUser(res.data);
+      })
+      .catch(() => {
+        setIsLoggedIn(false);
+        setUser(null);
+      });
+  }, []);
+
+  const handleLogout = () => {
+    logout()
+      .then(() => {
+        setIsLoggedIn(false);
+        setUser(null);
+        localStorage.removeItem('accessToken');
+        navigate('/');
+      })
+      .catch(err => console.error(err));
   };
 
-  // 외부 클릭 시 닫기
   useOnClickOutside([btnRef, popRef], () => setIsPopoverOpen(false));
 
   return (
     <header className={styles.headerWrapper}>
       <div className={styles.headerInner}>
-        {/* 로고 */}
-        <a href="/" className={styles.logo}>
+        <Link to="/" className={styles.logo}>
           <img src={logo} alt="OnComma 로고" />
-        </a>
+        </Link>
 
-        {/* GNB 메뉴바 */}
-        <nav className={styles.gnbNav} aria-label="주요 메뉴">
-          <ul className={styles.gnbMenu}>
-          </ul>
-        </nav>
-
-        {/* 우측 로그인 + 햄버거 */}
         <div className={styles.headerRight}>
-          <LoginStatus isLoggedIn={isLoggedIn} user={user} />
+          <LoginStatus isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
 
           <button
             ref={btnRef}
             className={styles.headerButton}
-            onClick={() => setIsPopoverOpen((o) => !o)}
+            onClick={() => setIsPopoverOpen(o => !o)}
             aria-label="메뉴 열기"
             aria-expanded={isPopoverOpen}
           >
@@ -53,7 +63,7 @@ const Header = () => {
 
           {isPopoverOpen && (
             <div ref={popRef} className={styles.popoverContainer}>
-              <PopoverMenu isLoggedIn={isLoggedIn} user={user} />
+              <PopoverMenu isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
             </div>
           )}
         </div>
