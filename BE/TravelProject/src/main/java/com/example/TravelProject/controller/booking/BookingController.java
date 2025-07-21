@@ -1,6 +1,10 @@
-package com.example.TravelProject.controller.Booking;
+package com.example.TravelProject.controller.booking;
 
+<<<<<<< HEAD
 import com.example.TravelProject.entity.ooking.Booking;
+=======
+import com.example.TravelProject.entity.booking.Booking;
+>>>>>>> b1da2d703a08e64457b9a5badd9eb7fd240b4443
 import com.example.TravelProject.service.booking.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
