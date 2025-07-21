@@ -1,4 +1,3 @@
-// src/main/java/com/example/TravelProject/controller/booking/BookingController.java
 package com.example.TravelProject.controller.booking;
 
 import com.example.TravelProject.entity.booking.Booking;
