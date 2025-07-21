@@ -1,7 +1,7 @@
-package com.example.TravelProject.service.Room;
+package com.example.TravelProject.service.room;
 
-import com.example.TravelProject.entity.Room.AccommodationImage;
-import com.example.TravelProject.repository.Room.AccommodationImageRepository;
+import com.example.TravelProject.entity.room.AccommodationImage;
+import com.example.TravelProject.repository.room.AccommodationImageRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

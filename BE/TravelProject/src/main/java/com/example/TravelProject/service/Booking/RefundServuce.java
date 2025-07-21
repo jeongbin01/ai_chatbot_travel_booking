@@ -1,7 +1,7 @@
-package com.example.TravelProject.service.Booking;
+package com.example.TravelProject.service.booking;
 
-import com.example.TravelProject.entity.Booking.Refund;
-import com.example.TravelProject.repository.Booking.RefundRepository;
+import com.example.TravelProject.entity.booking.Refund;
+import com.example.TravelProject.repository.booking.RefundRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,9 @@
-package com.example.TravelProject.repository.Room;
+package com.example.TravelProject.repository.room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.example.TravelProject.entity.Room.Room;
+
+import com.example.TravelProject.entity.room.Room;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package com.example.TravelProject.dto.Coupon;
 
 import com.example.TravelProject.dto.Booking.BookingDTO;
 import com.example.TravelProject.dto.Coupon.CouponDTO;
-import com.example.TravelProject.entity.UserAccount.User;
+import com.example.TravelProject.entity.useraccount.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

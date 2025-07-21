@@ -1,6 +1,6 @@
-package com.example.TravelProject.Repository.Administer;
+package com.example.TravelProject.repository.administer;
 
-import com.example.TravelProject.entity.Administer.AdminUser;
+import com.example.TravelProject.entity.administer.AdminUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
