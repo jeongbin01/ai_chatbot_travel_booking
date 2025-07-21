@@ -1,7 +1,7 @@
 package com.example.TravelProject.controller.booking;
 
 import com.example.TravelProject.entity.booking.Booking;
-import com.example.TravelProject.service.Booking.BookingService;
+import com.example.TravelProject.service.booking.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
