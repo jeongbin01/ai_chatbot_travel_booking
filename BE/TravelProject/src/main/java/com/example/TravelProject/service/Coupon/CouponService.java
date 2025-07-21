@@ -1,7 +1,7 @@
-package com.example.TravelProject.service.Coupon;
+package com.example.TravelProject.service.coupon;
 
-import com.example.TravelProject.entity.Coupon.Coupon;
-import com.example.TravelProject.repository.Coupon.CouponRepository;
+import com.example.TravelProject.entity.coupon.Coupon;
+import com.example.TravelProject.repository.coupon.CouponRepository;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

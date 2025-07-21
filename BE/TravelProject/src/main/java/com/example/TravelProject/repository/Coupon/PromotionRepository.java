@@ -1,8 +1,9 @@
-package com.example.TravelProject.repository.Coupon;
+package com.example.TravelProject.repository.coupon;
 
-import com.example.TravelProject.entity.Coupon.Promotion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.example.TravelProject.entity.coupon.Promotion;
 
 import java.time.LocalDate;
 import java.util.List;

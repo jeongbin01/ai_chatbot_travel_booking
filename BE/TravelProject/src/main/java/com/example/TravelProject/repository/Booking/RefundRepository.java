@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.Booking;
+package com.example.TravelProject.repository.booking;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.TravelProject.entity.Booking.Refund;
+import com.example.TravelProject.entity.booking.Refund;
 
 @Repository
 public interface RefundRepository extends JpaRepository<Refund, Long> {

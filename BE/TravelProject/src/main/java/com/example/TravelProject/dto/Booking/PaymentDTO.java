@@ -2,8 +2,8 @@ package com.example.TravelProject.dto.Booking;
 
 import java.math.BigDecimal;
 
-import com.example.TravelProject.entity.Booking.Booking;
-import com.example.TravelProject.entity.UserAccount.User;
+import com.example.TravelProject.entity.booking.Booking;
+import com.example.TravelProject.entity.useraccount.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
-package com.example.TravelProject.service.Coupon;
+package com.example.TravelProject.service.coupon;
 
-import com.example.TravelProject.entity.Coupon.Promotion;
-import com.example.TravelProject.repository.Coupon.PromotionRepository;
+import com.example.TravelProject.entity.coupon.Promotion;
+import com.example.TravelProject.repository.coupon.PromotionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
