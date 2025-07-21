@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.Booking;
+package com.example.TravelProject.repository.booking;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.TravelProject.entity.Booking.BookingGuest;
+import com.example.TravelProject.entity.booking.BookingGuest;
 
 @Repository
 public interface BookingGuestRepository extends JpaRepository<BookingGuest, Integer> {

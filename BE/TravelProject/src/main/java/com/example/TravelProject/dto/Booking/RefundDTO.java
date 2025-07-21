@@ -2,7 +2,7 @@ package com.example.TravelProject.dto.Booking;
 
 import java.math.BigDecimal;
 
-import com.example.TravelProject.entity.Booking.Payment;
+import com.example.TravelProject.entity.booking.Payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

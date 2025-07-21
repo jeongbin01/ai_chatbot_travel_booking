@@ -1,10 +1,10 @@
-package com.example.TravelProject.Controller;
+package com.example.TravelProject.controller;
 
-import com.example.TravelProject.DTO.JwtLoginRequest;
-import com.example.TravelProject.DTO.JwtResponse;
-import com.example.TravelProject.Jwt.JwtProvider;
-import com.example.TravelProject.Repository.UserAccount.UserRepository;
-import com.example.TravelProject.entity.UserAccount.User;
+import com.example.TravelProject.dto.JwtLoginRequest;
+import com.example.TravelProject.dto.JwtResponse;
+import com.example.TravelProject.entity.useraccount.User;
+import com.example.TravelProject.jwt.JwtProvider;
+import com.example.TravelProject.repository.useraccount.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

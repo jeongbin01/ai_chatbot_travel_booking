@@ -1,7 +1,7 @@
-package com.example.TravelProject.Repository.TravelProduct;
+package com.example.TravelProject.repository.travelproduct;
 
-import com.example.TravelProject.entity.TravelProduct.ProductSchedule;
-import com.example.TravelProject.entity.TravelProduct.TravelProduct;
+import com.example.TravelProject.entity.travelproduct.ProductSchedule;
+import com.example.TravelProject.entity.travelproduct.TravelProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

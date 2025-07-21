@@ -1,10 +1,11 @@
-package com.example.TravelProject.Controller;
+package com.example.TravelProject.controller;
 
-import com.example.TravelProject.Jwt.JwtProvider;
-import com.example.TravelProject.Repository.UserAccount.SocialAccountRepository;
-import com.example.TravelProject.Repository.UserAccount.UserRepository;
-import com.example.TravelProject.entity.UserAccount.SocialAccount;
-import com.example.TravelProject.entity.UserAccount.User;
+import com.example.TravelProject.entity.useraccount.SocialAccount;
+import com.example.TravelProject.entity.useraccount.User;
+import com.example.TravelProject.jwt.JwtProvider;
+import com.example.TravelProject.repository.useraccount.SocialAccountRepository;
+import com.example.TravelProject.repository.useraccount.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

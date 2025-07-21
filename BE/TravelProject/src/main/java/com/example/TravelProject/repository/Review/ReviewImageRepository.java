@@ -1,8 +1,9 @@
-package com.example.TravelProject.repository.Review;
+package com.example.TravelProject.repository.review;
 
-import com.example.TravelProject.entity.Review.ReviewImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.example.TravelProject.entity.review.ReviewImage;
 
 import java.util.List;
 
