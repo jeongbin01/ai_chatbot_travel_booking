@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.administer;
+package com.example.TravelProject.repository.Administer;
 
 import com.example.TravelProject.entity.administer.AdminUser;
 import org.springframework.data.jpa.repository.JpaRepository;

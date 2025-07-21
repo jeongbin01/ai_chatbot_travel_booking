@@ -1,11 +1,12 @@
 package com.example.TravelProject.service;
 
-import com.example.TravelProject.repository.useraccount.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import com.example.TravelProject.repository.UserAccount.UserRepository;
 
 @Service
 @RequiredArgsConstructor

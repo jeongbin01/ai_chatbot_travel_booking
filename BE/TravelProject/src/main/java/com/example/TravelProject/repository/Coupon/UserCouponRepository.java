@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.coupon;
+package com.example.TravelProject.repository.Coupon;
 
 import com.example.TravelProject.entity.coupon.UserCoupon;
 

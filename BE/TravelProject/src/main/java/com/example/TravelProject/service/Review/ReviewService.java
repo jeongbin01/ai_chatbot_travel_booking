@@ -1,7 +1,7 @@
-package com.example.TravelProject.service.review;
+package com.example.TravelProject.service.Review;
 
 import com.example.TravelProject.entity.review.Review;
-import com.example.TravelProject.repository.review.ReviewRepository;
+import com.example.TravelProject.repository.Review.ReviewRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

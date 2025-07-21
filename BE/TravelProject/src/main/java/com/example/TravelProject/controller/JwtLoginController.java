@@ -4,7 +4,7 @@ import com.example.TravelProject.dto.JwtLoginRequest;
 import com.example.TravelProject.dto.JwtResponse;
 import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.jwt.JwtProvider;
-import com.example.TravelProject.repository.useraccount.UserRepository;
+import com.example.TravelProject.repository.UserAccount.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

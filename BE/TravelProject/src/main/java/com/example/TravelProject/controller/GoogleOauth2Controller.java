@@ -3,8 +3,8 @@ package com.example.TravelProject.controller;
 import com.example.TravelProject.entity.useraccount.SocialAccount;
 import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.jwt.JwtProvider;
-import com.example.TravelProject.repository.useraccount.SocialAccountRepository;
-import com.example.TravelProject.repository.useraccount.UserRepository;
+import com.example.TravelProject.repository.UserAccount.SocialAccountRepository;
+import com.example.TravelProject.repository.UserAccount.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

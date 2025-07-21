@@ -1,7 +1,7 @@
 package com.example.TravelProject.controller.review;
 
 import com.example.TravelProject.entity.review.ReviewImage;
-import com.example.TravelProject.service.review.ReviewImageService;
+import com.example.TravelProject.service.Review.ReviewImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

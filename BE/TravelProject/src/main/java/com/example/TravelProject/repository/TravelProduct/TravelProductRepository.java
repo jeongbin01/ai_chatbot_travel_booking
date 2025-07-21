@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.travelproduct;
+package com.example.TravelProject.repository.TravelProduct;
 
 import com.example.TravelProject.entity.travelproduct.TravelProduct;
 import com.example.TravelProject.entity.useraccount.User;

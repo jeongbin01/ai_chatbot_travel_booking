@@ -1,7 +1,7 @@
 package com.example.TravelProject.controller.room;
 
 import com.example.TravelProject.entity.room.RoomTypeImage;
-import com.example.TravelProject.service.room.RoomTypeImageService;
+import com.example.TravelProject.service.Room.RoomTypeImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

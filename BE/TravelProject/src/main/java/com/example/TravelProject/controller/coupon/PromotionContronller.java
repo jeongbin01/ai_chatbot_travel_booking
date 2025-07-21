@@ -1,7 +1,7 @@
 package com.example.TravelProject.controller.coupon;
 
 import com.example.TravelProject.entity.coupon.Promotion;
-import com.example.TravelProject.service.coupon.PromotionService;
+import com.example.TravelProject.service.Coupon.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

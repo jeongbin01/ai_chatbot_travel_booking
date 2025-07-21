@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.booking;
+package com.example.TravelProject.repository.Booking;
 
 import java.time.LocalDate;
 import java.util.List;

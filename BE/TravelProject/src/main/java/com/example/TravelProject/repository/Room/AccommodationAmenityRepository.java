@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.room;
+package com.example.TravelProject.repository.Room;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

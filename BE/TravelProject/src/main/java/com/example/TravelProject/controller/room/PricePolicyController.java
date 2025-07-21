@@ -1,7 +1,7 @@
 package com.example.TravelProject.controller.room;
 
 import com.example.TravelProject.entity.room.PricePolicy;
-import com.example.TravelProject.service.room.PricePolicyService;
+import com.example.TravelProject.service.Room.PricePolicyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

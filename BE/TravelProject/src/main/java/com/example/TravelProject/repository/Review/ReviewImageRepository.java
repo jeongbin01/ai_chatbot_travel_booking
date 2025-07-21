@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.review;
+package com.example.TravelProject.repository.Review;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
 package com.example.TravelProject.securityadmin;
 
-import com.example.TravelProject.repository.administer.AdminUserRepository;
+import com.example.TravelProject.repository.Administer.AdminUserRepository;
 import com.example.TravelProject.entity.administer.AdminUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

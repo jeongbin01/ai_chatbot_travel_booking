@@ -4,8 +4,8 @@ package com.example.TravelProject.service;
 import com.example.TravelProject.dto.GoogleOAuth2User;
 import com.example.TravelProject.entity.useraccount.SocialAccount;
 import com.example.TravelProject.entity.useraccount.User;
-import com.example.TravelProject.repository.useraccount.SocialAccountRepository;
-import com.example.TravelProject.repository.useraccount.UserRepository;
+import com.example.TravelProject.repository.UserAccount.SocialAccountRepository;
+import com.example.TravelProject.repository.UserAccount.UserRepository;
 
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

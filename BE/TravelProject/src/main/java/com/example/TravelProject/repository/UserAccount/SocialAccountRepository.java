@@ -1,4 +1,4 @@
-package com.example.TravelProject.repository.useraccount;
+package com.example.TravelProject.repository.UserAccount;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
