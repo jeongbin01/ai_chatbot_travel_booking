@@ -18,3 +18,4 @@ public class Service {
     @Column(columnDefinition = "TEXT")
     private String description;
 }
+

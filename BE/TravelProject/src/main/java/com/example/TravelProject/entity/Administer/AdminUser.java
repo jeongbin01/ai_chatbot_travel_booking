@@ -23,3 +23,4 @@ public class AdminUser {
 
     private String role;  // 슈퍼관리자, 상품관리자, CS관리자
 }
+

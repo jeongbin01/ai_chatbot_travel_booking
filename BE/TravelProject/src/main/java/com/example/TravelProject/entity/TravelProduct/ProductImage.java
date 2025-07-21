@@ -23,3 +23,4 @@ public class ProductImage {
     @Builder.Default
     private Integer orderNum = 0;
 }
+
