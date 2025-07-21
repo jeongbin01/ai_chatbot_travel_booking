@@ -55,3 +55,4 @@ public class TravelProduct {
     private LocalDateTime lastUpdatedDate = LocalDateTime.now();
 }
 
+

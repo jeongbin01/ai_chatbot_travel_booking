@@ -1,4 +1,5 @@
 package com.example.TravelProject.entity.UserAccount;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,3 +30,4 @@ public class SocialAccount {
 
     private LocalDateTime last_synced_date;
 }
+

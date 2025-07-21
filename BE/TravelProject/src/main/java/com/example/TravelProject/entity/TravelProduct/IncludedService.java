@@ -5,8 +5,8 @@ import lombok.*;
 
 @Entity
 @Table(
-    name = "included_service",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "service_id"})
+        name = "included_service",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "service_id"})
 )
 @Getter
 @Setter
