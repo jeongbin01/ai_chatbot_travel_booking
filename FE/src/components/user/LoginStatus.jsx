@@ -1,4 +1,6 @@
+// src/components/user/LoginStatus.jsx
 import React from "react";
+import { Link } from "react-router-dom";
 
 const LoginStatus = ({ isLoggedIn, user }) => {
   return (
@@ -7,12 +9,13 @@ const LoginStatus = ({ isLoggedIn, user }) => {
         <span style={{ fontWeight: "bold" }}>
           {user.nickname}님 환영합니다!
         </span>
-      ) : (<a
-          href="/login"
+      ) : (
+        <Link
+          to="/login"
           style={{ textDecoration: "none", color: "#333", fontWeight: 500 }}
         >
-          로그인 / 회원가입
-        </a>
+          <span>로그인/회원가입</span>
+        </Link>
       )}
     </div>
   );
