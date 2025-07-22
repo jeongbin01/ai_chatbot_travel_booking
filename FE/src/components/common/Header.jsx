@@ -1,5 +1,6 @@
 // src/components/common/Header.jsx
 import React, { useState, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/layout/Header.module.css";
 import LoginStatus from "../user/LoginStatus";
 import PopoverMenu from "./PopoverMenu";
@@ -12,7 +13,9 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const btnRef = useRef(null);
   const popRef = useRef(null);
+  const navigate = useNavigate();
 
+  // 로그인 상태 로딩
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     const token = localStorage.getItem("accessToken");
@@ -26,33 +29,36 @@ const Header = () => {
     }
   }, []);
 
+  // 로그아웃 처리
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUser(null);
     setIsPopoverOpen(false);
+    navigate("/"); // 로그아웃 시 메인 페이지로 이동
   };
 
+  // 외부 클릭 시 Popover 닫기
   useOnClickOutside([btnRef, popRef], () => setIsPopoverOpen(false));
 
   return (
     <header className={styles.headerWrapper}>
       <div className={styles.headerInner}>
-
-        <div className={styles.logo}>
+        {/* 로고 클릭 시 홈 이동 */}
+        <Link to="/" className={styles.logo}>
           <img src={logo} alt="OnComma 로고" />
-        </div>
+        </Link>
 
         <div className={styles.headerRight}>
-          {/* 로그인 */}
+          {/* 로그인 상태 */}
           <LoginStatus
             isLoggedIn={isLoggedIn}
-            user={user}
+            user={user || {}}
             onLogout={handleLogout}
           />
 
-          {/* 햄버거 */}
+          {/* 햄버거 버튼 */}
           <button
             ref={btnRef}
             className={styles.headerButton}
@@ -68,7 +74,7 @@ const Header = () => {
             <div ref={popRef} className={styles.popoverContainer}>
               <PopoverMenu
                 isLoggedIn={isLoggedIn}
-                user={user}
+                user={user || {}}
                 onLogout={handleLogout}
               />
             </div>

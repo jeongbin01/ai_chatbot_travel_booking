@@ -1,0 +1,98 @@
+:root {
+  --color-primary: #5A7BFC;
+  --color-primary-hover: #4661f0;
+  --color-border: #ddd;
+  --color-muted: #999;
+  --color-text: #222;
+  --color-bg: #ffffff;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 60px 20px;
+  min-height: 80vh;
+  background-color: var(--color-bg);
+
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.logo {
+  width: 160px;
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 36px;
+}
+
+.form {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+input[type="email"],
+input[type="password"] {
+  height: 52px;
+  padding: 0 16px;
+  font-size: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background-color: #fff;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.signupBtn {
+  width: 100%;
+  height: 56px;
+  background-color: var(--color-primary);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.signupBtn:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.message {
+  text-align: center;
+  font-size: 15px;
+  color: #e53935;
+  margin-top: 10px;
+}
