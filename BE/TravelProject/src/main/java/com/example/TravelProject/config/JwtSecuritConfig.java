@@ -7,10 +7,15 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
-public class JwtSecuritConfig {
+public class JwtSecuritConfig implements WebMvcConfigurer {
 
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
@@ -25,10 +30,12 @@ public class JwtSecuritConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
+
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/app/login", "/app/login/oauth2/**").permitAll()
+                        .requestMatchers("/app/signup","/app/login", "/app/login/oauth2/**", "/app/**","/error").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
@@ -42,8 +49,26 @@ public class JwtSecuritConfig {
                                 .userService(principalOauth2UserService)
                         )
                         .successHandler(oAuth2SuccessHandler)
-                );
+                )
+
+
+
+;
+
+
 
         return http.build();
+    }
+
+    //  CORS 설정
+    CorsConfigurationSource corsConfigurationSource() {
+        return request -> {
+            CorsConfiguration config = new CorsConfiguration();
+            config.setAllowedHeaders(Collections.singletonList("*"));
+            config.setAllowedMethods(Collections.singletonList("*"));
+            config.setAllowedOriginPatterns(Collections.singletonList("http://localhost:3000")); // ⭐️ 허용할 origin
+            config.setAllowCredentials(true);
+            return config;
+        };
     }
 }

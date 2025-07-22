@@ -1,8 +1,8 @@
 package com.example.TravelProject.service;
 
+import com.example.TravelProject.repository.TravelProduct.TravelProductRepository;
 import com.example.TravelProject.entity.travelproduct.TravelProduct;
 import com.example.TravelProject.entity.useraccount.User;
-import com.example.TravelProject.repository.TravelProduct.TravelProductRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

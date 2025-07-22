@@ -1,0 +1,71 @@
+package com.example.TravelProject.controller.login;
+
+import com.example.TravelProject.dto.JwtLoginRequest;
+import com.example.TravelProject.dto.JwtResponse;
+import com.example.TravelProject.dto.SignupRequest;
+import com.example.TravelProject.entity.useraccount.User;
+import com.example.TravelProject.jwt.JwtProvider;
+import com.example.TravelProject.repository.UserAccount.UserRepository;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+
+
+//@CrossOrigin(origins = "*")
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/app")
+public class JwtLoginController {
+    private final JwtProvider jwtUProvider;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody JwtLoginRequest loginRequest) {
+
+        User user = userRepository.findByUsername(loginRequest.getUsername())
+                .orElse(null);
+
+        if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPasswordHash())) {
+            return ResponseEntity.status(401).body("아이디 또는 비밀번호가 올바르지 않습니다.");
+        }
+
+        // 유저 역할 추출 및 JWT 발급
+        String role = user.getUserRole();
+        String token = jwtUProvider.createJwt(user.getUsername(), role, 1000 * 60 * 60L); // 1시간 유효
+
+        return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerUser(@RequestBody SignupRequest request) {
+
+        System.out.println("request : " + request.getEmail());
+        System.out.println("request : " + request.getPhoneNumber());
+        System.out.println("request : " + request.getNickname());
+
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("이미 존재하는 아이디입니다.");
+        }
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body("이미 존재하는 이메일입니다.");
+        }
+
+        User user = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .phoneNumber(request.getPhoneNumber())
+                .nickname(request.getNickname())
+                .registrationDate(LocalDateTime.now())
+                .userRole("USER") // 기본 역할 설정
+                .build();
+
+        userRepository.save(user);
+        return ResponseEntity.ok("회원가입 완료");
+    }
+
+}

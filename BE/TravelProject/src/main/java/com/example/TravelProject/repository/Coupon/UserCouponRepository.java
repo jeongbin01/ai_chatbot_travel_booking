@@ -1,6 +1,8 @@
 package com.example.TravelProject.repository.Coupon;
 
+import com.example.TravelProject.entity.coupon.Coupon;
 import com.example.TravelProject.entity.coupon.UserCoupon;
+import com.example.TravelProject.entity.useraccount.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
