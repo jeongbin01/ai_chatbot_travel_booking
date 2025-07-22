@@ -1,12 +1,10 @@
 // src/components/common/Header.jsx
-import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styles from '../../styles/layout/Header.module.css';
-import LoginStatus from '../user/LoginStatus';
-import PopoverMenu from './PopoverMenu';
-import useOnClickOutside from '../../hooks/useOnClickOutside';
-import logo from '../../assets/images/Main/On_Comma.png';
-import { fetchCurrentUser, logout } from '../../api/auth';
+import React, { useState, useRef, useEffect } from "react";
+import styles from "../../styles/layout/Header.module.css";
+import LoginStatus from "../user/LoginStatus";
+import PopoverMenu from "./PopoverMenu";
+import useOnClickOutside from "../../hooks/useOnClickOutside";
+import logo from "../../assets/images/Main/On_Comma.png";
 
 const Header = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -14,29 +12,26 @@ const Header = () => {
   const [user, setUser] = useState(null);
   const btnRef = useRef(null);
   const popRef = useRef(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCurrentUser()
-      .then(res => {
-        setIsLoggedIn(true);
-        setUser(res.data);
-      })
-      .catch(() => {
-        setIsLoggedIn(false);
-        setUser(null);
-      });
+    const storedUser = localStorage.getItem("user");
+    const token = localStorage.getItem("accessToken");
+
+    if (token && storedUser) {
+      setIsLoggedIn(true);
+      setUser(JSON.parse(storedUser));
+    } else {
+      setIsLoggedIn(false);
+      setUser(null);
+    }
   }, []);
 
   const handleLogout = () => {
-    logout()
-      .then(() => {
-        setIsLoggedIn(false);
-        setUser(null);
-        localStorage.removeItem('accessToken');
-        navigate('/');
-      })
-      .catch(err => console.error(err));
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user");
+    setIsLoggedIn(false);
+    setUser(null);
+    setIsPopoverOpen(false);
   };
 
   useOnClickOutside([btnRef, popRef], () => setIsPopoverOpen(false));
@@ -44,26 +39,38 @@ const Header = () => {
   return (
     <header className={styles.headerWrapper}>
       <div className={styles.headerInner}>
-        <Link to="/" className={styles.logo}>
+
+        <div className={styles.logo}>
           <img src={logo} alt="OnComma 로고" />
-        </Link>
+        </div>
 
         <div className={styles.headerRight}>
-          <LoginStatus isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+          {/* 로그인 */}
+          <LoginStatus
+            isLoggedIn={isLoggedIn}
+            user={user}
+            onLogout={handleLogout}
+          />
 
+          {/* 햄버거 */}
           <button
             ref={btnRef}
             className={styles.headerButton}
-            onClick={() => setIsPopoverOpen(o => !o)}
+            onClick={() => setIsPopoverOpen((prev) => !prev)}
             aria-label="메뉴 열기"
             aria-expanded={isPopoverOpen}
           >
             <i className="bi bi-list" />
           </button>
 
+          {/* Popover 메뉴 */}
           {isPopoverOpen && (
             <div ref={popRef} className={styles.popoverContainer}>
-              <PopoverMenu isLoggedIn={isLoggedIn} user={user} onLogout={handleLogout} />
+              <PopoverMenu
+                isLoggedIn={isLoggedIn}
+                user={user}
+                onLogout={handleLogout}
+              />
             </div>
           )}
         </div>

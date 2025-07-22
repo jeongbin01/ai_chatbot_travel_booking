@@ -1,5 +1,3 @@
-// src/App.js
-
 import React from 'react';
 
 import Header from './components/common/Header';
@@ -14,7 +12,6 @@ import ReviewSlider from './components/review/ReviewSlider';
 import TopTravelProducts from './components/product/TopTravelProducts';
 import ScrollToTopButton from './components/common/ScrollToTopButton';
 import ChatbotShortcut from './components/common/ChatbotShortcut';
-
 function App() {
   return (
     <>

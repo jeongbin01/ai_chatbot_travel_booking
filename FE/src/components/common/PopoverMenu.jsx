@@ -21,14 +21,6 @@ const PopoverMenu = forwardRef(({ isLoggedIn, user, onLogout }, ref) => {
           <Link to="/login" className="side-login-btn">
             로그인/회원가입
           </Link>
-
-          <div className="popover-section">
-            <span className="menu-group-title">계정</span>
-            <ul className="popover-menu-list">
-              <li><Link to="/login">로그인</Link></li>
-              <li><Link to="/signup">회원가입</Link></li>
-            </ul>
-          </div>
         </>
       )}
 
