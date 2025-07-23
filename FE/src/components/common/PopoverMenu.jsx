@@ -7,9 +7,7 @@ import '../../styles/layout/Header.css';  // 기존 CSS
 const navLinks = [
   { to: '/?activeSearch=domestic', text: '국내숙소' },
   { to: '/?activeSearch=overseas', text: '해외숙소' },
-  { to: '/?activeSearch=overseas_package', text: '액티비티', hasBadge: true },
-  { to: '/flight', text: '항공' },
-  { to: '/car-rental', text: '렌터카' },
+  { to: '/?activeSearch=overseas_package', text: '액티비티' },
 ];
 
 const PopoverMenu = forwardRef(({ isLoggedIn, user, onLogout }, ref) => {
