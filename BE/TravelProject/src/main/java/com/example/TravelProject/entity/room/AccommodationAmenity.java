@@ -19,9 +19,9 @@ public class AccommodationAmenity {
     @ManyToOne
     @JoinColumn(name = "accommodation_id", nullable = false)
     private Accommodation accommodation;
-
-    @ManyToOne
-    @JoinColumn(name = "amenity_id", nullable = false)
-    private Amenity amenity;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "amenity_id", nullable = false)
+//    private Amenity amenity;
 }
 
