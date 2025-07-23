@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import styles from "../../styles/components/JwtLoginTest.module.css";
 
 export default function JwtLoginTest() {
-  const [username, setUsername] = useState(""); // 이메일 대신 username
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [token, setToken] = useState(null);
+  const [username, setUsername] = useState(""); // 사용자 ID
+  const [password, setPassword] = useState(""); // 비밀번호
+  const [message, setMessage] = useState("");   // 메시지 출력
+  const [token, setToken] = useState(null);     // JWT 토큰 저장
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,36 +40,41 @@ export default function JwtLoginTest() {
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
         <h2 className={styles.title}>로그인해 주세요</h2>
-        
-        <label htmlFor="email" className={styles.label}>
-          아이디
-        </label>
-        <input
-          type="text"
-          placeholder="아이디를 입력해주세요"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-          className={styles.input}
-        />
-        
-        <label htmlFor="password" className={styles.label}>
-          비밀번호
-        </label>
-        <input
-          type="password"
-          placeholder="비밀번호를 입력해주세요"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className={styles.input}
-        />
+
+        <div className={styles.field}>
+          <label htmlFor="username" className={styles.label}>
+            아이디
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="아이디를 입력하세요"
+            required
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="password" className={styles.label}>
+            비밀번호
+          </label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="비밀번호를 입력하세요"
+            required
+          />
+        </div>
 
         <button type="submit" className={styles.submitButton}>
           로그인
         </button>
 
-        {/*  로그인 링크 */}
         <p className={styles.footerText}>
           계정이 없으신가요?{" "}
           <a href="/signup/email" className={styles.link}>
@@ -77,10 +82,8 @@ export default function JwtLoginTest() {
           </a>
         </p>
 
-        {/*  메시지 출력 */}
         {message && <p className={styles.message}>{message}</p>}
 
-        {/* 토큰 출력 */}
         {token && (
           <div className={styles.tokenBox}>
             <strong>받은 JWT 토큰:</strong>

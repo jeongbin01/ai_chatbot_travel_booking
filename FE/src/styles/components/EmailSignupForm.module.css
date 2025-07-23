@@ -16,9 +16,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  font-family: 'Noto Sans KR', sans-serif;
+  min-height: 100vh; /* 전체 화면 세로 중앙 */
+  background-color: #fff;
   padding: 24px;
+  box-sizing: border-box;
 }
 
 /* 회원가입 박스 */
