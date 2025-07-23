@@ -1,37 +1,14 @@
-/* 색상 및 공통 변수 */
-:root {
-  --color-primary: #5a7bfc;
-  --color-primary-hover: #4661f0;
-  --color-error: #d32f2f;
-  --color-border: #ccc;
-  --color-input-bg: #fff;
-  --color-token-bg: #f8f8f8;
-  --color-text: #222;
-  --color-subtext: #444;
-  --color-bg: #f9fafb;
-}
-
-/* 전체 중앙 정렬 */
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 65vh; /* 전체 화면 세로 중앙 */
-  background-color: #fff;
-  padding: 24px;
-  box-sizing: border-box;
-}
-
-/* 로그인 박스 (회원가입과 동일하게 맞춤) */
+/* 전체 화면 중앙 정렬 */
 .form {
   width: 100%;
-  max-width: 480px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  max-width: 420px;
+  margin: 120px auto 0;
+  padding: 20px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* 타이틀 */
+
+/* 제목 */
 .title {
   font-size: 22px;
   font-weight: 700;
@@ -39,86 +16,81 @@
   color: var(--color-text);
 }
 
-/* 입력 필드 그룹 */
+/* 필드 박스 */
 .field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+  width: 100%;
+  margin-bottom: 16px;
 }
 
-/* 라벨 */
 .label {
-  font-size: 13px;
-  color: #555;
+  display: block;
+  margin-bottom: 6px;
+  font-size: 15px;
   font-weight: 500;
 }
 
-/* 인풋 */
-input {
-  padding: 14px;
-  font-size: 15px;
-  border: 1px solid var(--color-border);
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  background-color: #fafafa;
 }
 
-input:focus {
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 2px rgba(90, 123, 252, 0.15);
-}
-
-/* 제출 버튼 */
+/* 로그인 버튼 */
 .submitButton {
-  padding: 14px;
+  width: 100%;
+  padding: 12px;
   font-size: 16px;
   font-weight: 600;
-  background-color: var(--color-primary);
   color: white;
+  background-color: #5a7bfc;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  margin-top: 8px;
   transition: background-color 0.2s ease;
 }
 
 .submitButton:hover {
-  background-color: var(--color-primary-hover);
-}
-
-/* 하단 링크 */
-.footerText {
-  text-align: center;
-  font-size: 14px;
-  color: var(--color-subtext);
-  margin-top: 8px;
-}
-
-.link {
-  color: var(--color-primary);
-  font-weight: 500;
-  text-decoration: none;
-  margin-left: 4px;
-}
-
-.link:hover {
-  text-decoration: underline;
+  background-color: #4661f0;
 }
 
 /* 메시지 출력 */
 .message {
-  text-align: center;
-  color: var(--color-error);
+  margin-top: 12px;
+  color: #d32f2f;
   font-size: 14px;
-  margin-top: 4px;
 }
 
 /* 토큰 출력 박스 */
 .tokenBox {
   margin-top: 16px;
   padding: 12px;
-  background-color: var(--color-token-bg);
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 13px;
+  color: #333;
+  word-break: break-all;
+}
+
+/* 하단 텍스트 */
+.footerText {
+  margin-top: 20px;
+  font-size: 14px;
   color: #444;
-  word-break: break-word;
+  text-align: center;
+}
+
+.link {
+  color: #5a7bfc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
 }

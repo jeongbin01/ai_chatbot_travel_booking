@@ -146,7 +146,7 @@ export default function EmailSignupForm() {
 
         <p className={styles.footerText}>
           이미 계정이 있으신가요?{" "}
-          <a href="/login/email" className={styles.link}>
+          <a href="/login" className={styles.link}>
             이메일로 로그인
           </a>
         </p>
