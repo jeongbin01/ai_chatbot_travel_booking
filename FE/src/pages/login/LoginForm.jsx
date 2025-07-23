@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import styles from "../../styles/components/JwtLoginTest.module.css";
-
+import { useNavigate } from "react-router-dom";
 export default function JwtLoginTest() {
   const [username, setUsername] = useState(""); // 이메일 대신 username
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [token, setToken] = useState(null);
-
+  const [, setToken] = useState("");
+  const navigate = useNavigate();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("로그인 시도중...");
@@ -25,14 +26,15 @@ export default function JwtLoginTest() {
       const data = await response.json();
 
       if (data.token) {
+        alert("로그인 성공! 토큰 저장됨.");
         setToken(data.token);
         localStorage.setItem("jwtToken", data.token);
-        setMessage("로그인 성공! 토큰 저장됨.");
+        navigate("/");
       } else {
-        setMessage("토큰을 받지 못했습니다.");
+        alert("토큰을 받지 못했습니다.");
       }
-    } catch (error) {
-      setMessage(error.message || "로그인 중 오류 발생");
+    } catch {
+      alert("로그인 중 오류 발생");
     }
   };
 
@@ -63,25 +65,16 @@ export default function JwtLoginTest() {
           로그인
         </button>
 
-        {/* 👉 로그인 링크 */}
+        {/* 메시지 출력 영역 */}
+        {message && <p className={styles.message}>{message}</p>}
+
         <p className={styles.footerText}>
           이미 계정이 있으신가요?{" "}
           <a href="/signup/email" className={styles.link}>
             회원가입로 이동
           </a>
         </p>
-
-        {/* 👉 메시지 출력 */}
-        {message && <p className={styles.message}>{message}</p>}
-
-        {/* 👉 토큰 출력 */}
-        {token && (
-          <div className={styles.tokenBox}>
-            <strong>받은 JWT 토큰:</strong>
-            <pre>{token}</pre>
-          </div>
-        )}
-      </form>
+</form>
     </div>
   );
 }
