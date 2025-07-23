@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "../../styles/components/JwtLoginTest.module.css"; // 경로는 프로젝트 구조에 맞게 수정
+import styles from "../../styles/components/JwtLoginTest.module.css";
 
 export default function JwtLoginTest() {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(""); // 이메일 대신 username
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [token, setToken] = useState(null);
@@ -15,7 +14,9 @@ export default function JwtLoginTest() {
     try {
       const response = await fetch("http://localhost:8888/app/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({ username, password }),
       });
 
@@ -38,60 +39,42 @@ export default function JwtLoginTest() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <h2 className={styles.title}>로그인을 해주세요</h2>
+        <h2 className={styles.title}>JWT 로그인 테스트</h2>
 
-        {/* 이메일 필드 */}
-        <div className={styles.field}>
-          <label htmlFor="email">
-            이메일<span className={styles.required}>*</span>
-          </label>
-          <input
-            type="email"
-            id="email"
-            placeholder="abc@gccompany.co.kr"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="text"
+          placeholder="아이디"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          className={styles.input}
+        />
 
-        {/* 비밀번호 필드 */}
-        <div className={styles.field}>
-          <label htmlFor="password">
-            비밀번호<span className={styles.required}>*</span>
-          </label>
-          <input
-            type="password"
-            id="password"
-            placeholder="비밀번호를 입력하세요."
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+        <input
+          type="password"
+          placeholder="비밀번호"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className={styles.input}
+        />
 
-        {/* 로그인 버튼 */}
-        <button type="submit" className={styles.loginBtn}>
+        <button type="submit" className={styles.submitButton}>
           로그인
         </button>
 
-        {/* 회원가입 링크 */}
-        <div className={styles.footer}>
-          계정이 없으신가요?
-          <Link to="/signup/email">이메일로 회원가입</Link>
-        </div>
+        {/* 👉 로그인 링크 */}
+        <p className={styles.footerText}>
+          이미 계정이 있으신가요?{" "}
+          <a href="/signup/email" className={styles.link}>
+            회원가입로 이동
+          </a>
+        </p>
 
-        {/* 메시지 표시 */}
-        {message && (
-          <p
-            className={styles.message}
-            style={{ color: message.includes("성공") ? "green" : "red" }}
-          >
-            {message}
-          </p>
-        )}
+        {/* 👉 메시지 출력 */}
+        {message && <p className={styles.message}>{message}</p>}
 
-        {/* JWT 토큰 디버깅 박스 */}
+        {/* 👉 토큰 출력 */}
         {token && (
           <div className={styles.tokenBox}>
             <strong>받은 JWT 토큰:</strong>
