@@ -6,9 +6,9 @@ import HeroBanner from "./components/main/HeroBanner";
 import PromotionBanner from "./components/main/PromotionBanner";
 import DomesticAccommodations from "./components/product/DomesticAccommodations";
 import OverseasAccommodations from "./components/product/OverseasAccommodations";
-import TimeSaleSection from "./components/main/TimeSaleSection";
+// import TimeSaleSection from "./components/main/TimeSaleSection";
 import Footer from "./components/common/Footer";
-import AugustTripList from "./components/main/AugustTripList";
+// import AugustTripList from "./components/main/AugustTripList";
 import ReviewSlider from "./components/review/ReviewSlider";
 import TopTravelProducts from "./components/product/TopTravelProducts";
 import ScrollToTopButton from "./components/common/ScrollToTopButton";
@@ -41,8 +41,8 @@ function App() {
               <DomesticAccommodations />
               <OverseasAccommodations />
               <TopTravelProducts />
-              <TimeSaleSection />
-              <AugustTripList />
+              {/* <TimeSaleSection />
+              <AugustTripList /> */}
               <ChatbotShortcut />
               <ScrollToTopButton />
               <ReviewSlider />
