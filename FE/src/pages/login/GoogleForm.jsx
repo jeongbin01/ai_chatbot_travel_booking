@@ -1,76 +1,84 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import styles from "../../styles/components/GoogleLoginButton.module.css";
-import logo from "../../assets/images/Main/On_Comma.png";
+  import React, { useEffect, useState } from 'react';
 
-export default function GoogleLoginButton() {
-  const [accessToken, setAccessToken] = useState(null);
+  function GoogleLoginButton() {
+    const [accessToken, setAccessToken] = useState(null);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("access_token");
-    if (token) {
-      localStorage.setItem("accessToken", token);
-      setAccessToken(token);
-      window.history.replaceState({}, document.title, "/");
-    } else {
-      const storedToken = localStorage.getItem("accessToken");
-      if (storedToken) setAccessToken(storedToken);
-    }
-  }, []);
+    // 컴포넌트 마운트 시, URL에서 access_token 가져와서 저장
+    useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('access_token');
+      if (token) {
+        localStorage.setItem('accessToken', token);
+        setAccessToken(token);
 
-  const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8888/oauth2/authorization/google";
-  };
+        // URL에서 토큰 제거 (주소창 깔끔하게)
+        window.history.replaceState({}, document.title, '/');
+      } else {
+        // 로컬스토리지에 토큰 있으면 상태에 세팅
+        const storedToken = localStorage.getItem('accessToken');
+        if (storedToken) setAccessToken(storedToken);
+      }
+    }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    setAccessToken(null);
-  };
+    // 구글 OAuth 로그인 시작
+    const handleGoogleLogin = () => {
+      window.location.href = 'http://localhost:8888/oauth2/authorization/google';
+    };
 
-  return (
-    <div className={styles.container}>
-      {/* 로고 */}
-      <img src={logo} alt="OnComma 로고" className={styles.logo} />
+    // 로그아웃 시 토큰 삭제 및 상태 초기화
+    const handleLogout = () => {
+      localStorage.removeItem('accessToken');
+      setAccessToken(null);
+    };
 
-      {/* 가로선 타이틀 */}
-      <div className={styles.titleWrapper}>
-        <span className={styles.line}></span>
-        <span className={styles.titleText}>로그인 / 회원가입</span>
-        <span className={styles.line}></span>
+    return (
+      <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+        {accessToken ? (
+          <div>
+            <p><strong>JWT 토큰:</strong></p>
+            <pre style={{
+              wordBreak: 'break-all',
+              backgroundColor: '#f0f0f0',
+              padding: '1rem',
+              borderRadius: '8px',
+              maxWidth: '90%',
+              margin: '1rem auto',
+            }}>
+              {accessToken}
+            </pre>
+            <button
+              onClick={handleLogout}
+              style={{
+                padding: '10px 20px',
+                fontSize: '16px',
+                backgroundColor: '#e53935',
+                color: 'white',
+                border: 'none',
+                borderRadius: '4px',
+                cursor: 'pointer'
+              }}
+            >
+              로그아웃
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={handleGoogleLogin}
+            style={{
+              padding: '10px 20px',
+              fontSize: '16px',
+              backgroundColor: '#4285f4',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer'
+            }}
+          >
+            Google 계정으로 로그인
+          </button>
+        )}
       </div>
+    );
+  }
 
-      {/* 로그인 상태 확인 */}
-      {accessToken ? (
-        <>
-          <p className={styles.label}>JWT 토큰:</p>
-          <pre className={styles.tokenBox}>{accessToken}</pre>
-          <button onClick={handleLogout} className={styles.logoutBtn}>
-            로그아웃
-          </button>
-        </>
-      ) : (
-        <>
-          <button onClick={handleGoogleLogin} className={styles.googleBtn}>
-            <img
-              src="https://developers.google.com/identity/images/g-logo.png"
-              alt="Google logo"
-              width="20"
-              height="20"
-              style={{ marginRight: "10px" }}
-            />
-            구글로 시작하기
-          </button>
-
-          <Link to="/login/email" className={styles.emailBtn}>
-            <i
-              className="bi bi-envelope-fill"
-              style={{ marginRight: "8px" }}
-            ></i>
-            이메일로 시작하기
-          </Link>
-        </>
-      )}
-    </div>
-  );
-}
+  export default GoogleLoginButton;

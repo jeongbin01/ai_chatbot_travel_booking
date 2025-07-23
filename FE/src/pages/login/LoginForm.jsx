@@ -39,20 +39,26 @@ export default function JwtLoginTest() {
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
-        <h2 className={styles.title}>JWT 로그인 테스트</h2>
-
+        <h2 className={styles.title}>로그인해 주세요</h2>
+        
+        <label htmlFor="email" className={styles.label}>
+          아이디
+        </label>
         <input
           type="text"
-          placeholder="아이디"
+          placeholder="아이디를 입력해주세요"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
           className={styles.input}
         />
-
+        
+        <label htmlFor="password" className={styles.label}>
+          비밀번호
+        </label>
         <input
           type="password"
-          placeholder="비밀번호"
+          placeholder="비밀번호를 입력해주세요"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -63,18 +69,18 @@ export default function JwtLoginTest() {
           로그인
         </button>
 
-        {/* 👉 로그인 링크 */}
+        {/*  로그인 링크 */}
         <p className={styles.footerText}>
-          이미 계정이 있으신가요?{" "}
+          계정이 없으신가요?{" "}
           <a href="/signup/email" className={styles.link}>
-            회원가입로 이동
+            이메일로 회원가입
           </a>
         </p>
 
-        {/* 👉 메시지 출력 */}
+        {/*  메시지 출력 */}
         {message && <p className={styles.message}>{message}</p>}
 
-        {/* 👉 토큰 출력 */}
+        {/* 토큰 출력 */}
         {token && (
           <div className={styles.tokenBox}>
             <strong>받은 JWT 토큰:</strong>
