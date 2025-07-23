@@ -121,7 +121,6 @@ const HeroBanner = () => {
               {["domestic", "overseas", "activity"].map((tab) => (
                 <button
                   key={tab}
-                  className={activeTab === tab ? "active" : ""}
                   onClick={() => handleTabChange(tab)}
                   role="tab"
                   aria-selected={activeTab === tab}

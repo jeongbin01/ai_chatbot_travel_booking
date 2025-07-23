@@ -17,6 +17,8 @@ import ChatbotShortcut from "./components/common/ChatbotShortcut";
 import LoginForm from "./pages/login/LoginForm";
 import GoogleForm from "./pages/login/GoogleForm";
 import EmailSignupForm from "./pages/login/EmailSignupForm";
+import DomesticHome from "./pages/accommodations/국내 숙소/DomesticHome";
+import AccommodationCard from "./pages/accommodations/국내 숙소/AccommodationCardPage";
 
 function App() {
   const location = useLocation();
@@ -48,7 +50,7 @@ function App() {
           }
         />
 
-        {/* 로그인 페이지 */}
+        {/* 로그인 */}
         <Route
           path="/login"
           element={
@@ -59,8 +61,32 @@ function App() {
           }
         />
 
-        {/* 회원가입 페이지 */}
+        {/* 회원가입 */}
         <Route path="/signup/email" element={<EmailSignupForm />} />
+
+        {/* 국내숙소 */}
+        <Route
+          path="/domesticpages"
+          element={
+            <>
+              <DomesticHome />
+            </>
+          }
+        />
+        <Route
+          path="/accommodation/:id"
+          element={
+            <>
+              <AccommodationCard/>
+            </>
+          }
+        />
+
+        {/* 해외숙소 */}
+        {/* <Route path="/overseas" element={<OverseasHome />} /> */}
+
+        {/* 액티비티 */}
+        {/* <Route path="/overseas_package" element={<OverseasPackage />} /> */}
       </Routes>
 
       {/* 조건부 Footer 렌더링 */}
