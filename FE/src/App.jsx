@@ -13,6 +13,7 @@ import ReviewSlider from "./components/review/ReviewSlider";
 import TopTravelProducts from "./components/product/TopTravelProducts";
 import ScrollToTopButton from "./components/common/ScrollToTopButton";
 import ChatbotShortcut from "./components/common/ChatbotShortcut";
+
 import LoginForm from "./pages/login/LoginForm";
 import GoogleForm from "./pages/login/GoogleForm";
 import EmailSignupForm from "./pages/login/EmailSignupForm";
@@ -20,7 +21,7 @@ import EmailSignupForm from "./pages/login/EmailSignupForm";
 function App() {
   const location = useLocation();
 
-  // 이 경로들에서는 Footer를 숨깁니다.
+  // Footer를 숨기고 싶은 경로들 정의
   const hideFooterRoutes = ["/login", "/login/email", "/signup/email"];
 
   return (
@@ -58,22 +59,11 @@ function App() {
           }
         />
 
-        {/* 이메일 로그인 페이지 */}
-        <Route
-          path="/login/email"
-          element={
-            <>
-              <LoginForm />
-              <GoogleForm />
-            </>
-          }
-        />
-
-        {/* 이메일 회원가입 페이지 */}
+        {/* 회원가입 페이지 */}
         <Route path="/signup/email" element={<EmailSignupForm />} />
       </Routes>
 
-      {/* Footer 숨기기 */}
+      {/* 조건부 Footer 렌더링 */}
       {!hideFooterRoutes.includes(location.pathname) && <Footer />}
     </>
   );
