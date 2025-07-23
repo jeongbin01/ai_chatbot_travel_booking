@@ -1,71 +1,124 @@
+/* 색상 및 공통 변수 */
+:root {
+  --color-primary: #5a7bfc;
+  --color-primary-hover: #4661f0;
+  --color-error: #d32f2f;
+  --color-border: #ccc;
+  --color-input-bg: #fff;
+  --color-token-bg: #f8f8f8;
+  --color-text: #222;
+  --color-subtext: #444;
+  --color-bg: #f9fafb;
+}
+
+/* 전체 중앙 정렬 */
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background-color: #ffffff;
+  min-height: 65vh; /* 전체 화면 세로 중앙 */
+  background-color: #fff;
+  padding: 24px;
+  box-sizing: border-box;
 }
 
+/* 로그인 박스 (회원가입과 동일하게 맞춤) */
 .form {
   width: 100%;
-  max-width: 400px;
-  padding: 40px 32px;
-  background-color: #fefefe;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  max-width: 480px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 
+/* 타이틀 */
 .title {
-  text-align: center;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
-  margin-bottom: 12px;
-  color: #222;
+  text-align: center;
+  color: var(--color-text);
 }
 
-.input {
-  padding: 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+/* 입력 필드 그룹 */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 라벨 */
+.label {
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* 인풋 */
+input {
+  padding: 14px;
+  font-size: 15px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
   outline: none;
-  transition: border 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.input:focus {
-  border-color: #5a7bfc;
-  box-shadow: 0 0 0 2px rgba(90, 123, 252, 0.1);
+input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(90, 123, 252, 0.15);
 }
 
+/* 제출 버튼 */
 .submitButton {
-  padding: 12px;
-  background-color: #5a7bfc;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--color-primary);
   color: white;
   border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 15px;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .submitButton:hover {
-  background-color: #4661f0;
+  background-color: var(--color-primary-hover);
 }
 
-.message {
-  margin-top: 10px;
+/* 하단 링크 */
+.footerText {
+  text-align: center;
   font-size: 14px;
+  color: var(--color-subtext);
+  margin-top: 8px;
 }
 
+.link {
+  color: var(--color-primary);
+  font-weight: 500;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* 메시지 출력 */
+.message {
+  text-align: center;
+  color: var(--color-error);
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+/* 토큰 출력 박스 */
 .tokenBox {
   margin-top: 16px;
-  word-break: break-all;
-  font-size: 12px;
-  background: #f8f8f8;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
+  padding: 12px;
+  background-color: var(--color-token-bg);
+  border-radius: 8px;
+  font-size: 13px;
+  color: #444;
+  word-break: break-word;
 }

@@ -67,8 +67,8 @@ export default function EmailSignupForm() {
         <h2 className={styles.title}>회원가입을 해주세요</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.field}>
-            <label htmlFor="username">
-              아이디 <span className={styles.required}>*</span>
+            <label htmlFor="username" className={styles.label}>
+              아이디
             </label>
             <input
               id="username"
@@ -82,8 +82,8 @@ export default function EmailSignupForm() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="email">
-              이메일 <span className={styles.required}>*</span>
+            <label htmlFor="email" className={styles.label}>
+              이메일
             </label>
             <input
               id="email"
@@ -97,8 +97,8 @@ export default function EmailSignupForm() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="password">
-              비밀번호 <span className={styles.required}>*</span>
+            <label htmlFor="password" className={styles.label}>
+              비밀번호
             </label>
             <input
               id="password"
@@ -112,7 +112,9 @@ export default function EmailSignupForm() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="phoneNumber">전화번호</label>
+            <label htmlFor="phoneNumber" className={styles.label}>
+              전화번호
+            </label>
             <input
               id="phoneNumber"
               name="phoneNumber"
@@ -124,7 +126,9 @@ export default function EmailSignupForm() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="nickname">닉네임</label>
+            <label htmlFor="nickname" className={styles.label}>
+              닉네임
+            </label>
             <input
               id="nickname"
               name="nickname"

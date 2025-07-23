@@ -47,24 +47,32 @@ function App() {
           }
         />
 
-        {/* 소셜 로그인 페이지 */}
-        <Route 
-        path="/login" 
-        element={<GoogleForm />} 
+        {/* 로그인 페이지 */}
+        <Route
+          path="/login"
+          element={
+            <>
+              <LoginForm />
+              <GoogleForm />
+            </>
+          }
         />
+
         {/* 이메일 로그인 페이지 */}
-        <Route 
-        path="/login/email" 
-        element={<LoginForm />} 
+        <Route
+          path="/login/email"
+          element={
+            <>
+              <LoginForm />
+              <GoogleForm />
+            </>
+          }
         />
+
         {/* 이메일 회원가입 페이지 */}
-        <Route 
-        path="/signup/email" 
-        element={<EmailSignupForm />} 
-        />
-        
+        <Route path="/signup/email" element={<EmailSignupForm />} />
       </Routes>
-      
+
       {/* Footer 숨기기 */}
       {!hideFooterRoutes.includes(location.pathname) && <Footer />}
     </>
