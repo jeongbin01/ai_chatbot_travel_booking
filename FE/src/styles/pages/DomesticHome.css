@@ -1,267 +1,212 @@
-/* General Styling & Variables */
-:root {
-  --primary-color: #007bff;
-  --secondary-color: #6c757d;
-  --light-gray: #f8f9fa;
-  --dark-gray: #343a40;
-  --white: #fff;
-  --border-radius: 8px;
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --transition-speed: 0.3s ease;
-}
-
-body {
-  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif;
-  background-color: var(--light-gray);
-  color: var(--dark-gray);
-  margin: 0;
-}
-
-/* Main Container */
-.domestic-home-container {
+/* 전체 컨테이너 */
+.domestic-container {
+  padding: 2rem;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  margin: 3rem auto 5rem;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* --- Hero Section --- */
-.domestic-hero-section {
-  text-align: center;
-  padding: 80px 20px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-    url("https://images.unsplash.com/photo-1507525428034-b723a9ce6890?q=80&w=2070&auto=format&fit=crop");
-  background-size: cover;
-  background-position: center;
-  border-radius: var(--border-radius);
-  color: var(--white);
-  margin-top: 20px;
-}
-
-.domestic-hero-content h1 {
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-}
-
-.domestic-hero-content p {
-  font-size: 1.2rem;
+/* 🔍 필터 바 */
+.filter-bar {
   margin-bottom: 2rem;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 10;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
 }
 
-/* Search Bar & Favorites Toggle */
-.search-bar {
-  display: flex;
-  justify-content: center;
+/* 검색창 */
+.search-wrapper.full-width {
+  position: relative;
   margin-bottom: 1rem;
 }
 
-.search-bar input[type="text"] {
+.search-wrapper input {
   width: 100%;
-  max-width: 500px;
-  padding: 15px 20px;
-  border: 1px solid #ddd;
-  border-radius: 50px;
+  padding: 0.5rem 2.2rem 0.5rem 2.2rem;
   font-size: 1rem;
-  outline: none;
-  transition: box-shadow var(--transition-speed);
+  border: 1px solid #ccc;
+  border-radius: 6px;
 }
 
-.search-bar input[type="text"]:focus {
-  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+.search-wrapper i.bi-search {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 1.1rem;
 }
 
-.favorites-toggle {
+/* 정렬 + 찜 */
+.filter-bottom {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filter-bottom select {
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+}
+
+.favorite-toggle {
+  display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
-  cursor: pointer;
+  font-size: 0.95rem;
 }
 
-.favorites-toggle input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-}
-
-/* --- Filter Section --- */
-.filters {
-  padding: 20px 0;
-  border-bottom: 1px solid #e0e0e0;
-  margin-bottom: 30px;
-}
-
-.filter-bar {
-  display: flex;
-  gap: 15px;
-}
-
-.filter-bar select {
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: var(--border-radius);
-  background-color: var(--white);
-  font-size: 1rem;
-  cursor: pointer;
-}
-
-/* --- Accommodation List --- */
-.accommodation-list {
+/* 숙소 카드 그리드 */
+.accommodation-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-  padding-bottom: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1.5rem;
 }
 
-/* Loading and No Results Message */
-.loading,
-.no-results {
-  grid-column: 1 / -1; /* Span all columns */
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--secondary-color);
-  padding: 50px 0;
-}
-
-.loading .bi {
-  margin-right: 10px;
-  animation: spin 1.5s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Accommodation Card */
-.card {
+/* 숙소 카드 */
+.accommodation-card {
   position: relative;
-  background-color: var(--white);
-  border-radius: var(--border-radius);
-  box-shadow: var(--box-shadow);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  transition: transform var(--transition-speed),
-    box-shadow var(--transition-speed);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+.accommodation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
-.card-link {
-  text-decoration: none;
-  color: inherit;
+/* 하트가 눌린 카드 그림자 제거 */
+.accommodation-card.favorited {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* 썸네일 */
+.acc-thumbnail {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
   display: block;
 }
 
-.card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
+/* 카드 내부 정보 */
+.acc-info {
+  padding: 1rem;
 }
 
-.card-body {
-  padding: 20px;
-}
-
-.card-body h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.4rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.card-body .location,
-.card-body .rating,
-.card-body .price,
-.card-body .description {
+.acc-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  margin: 8px 0;
-  color: #555;
 }
 
-.card-body .bi {
-  color: var(--secondary-color);
-}
-
-.card-body .price {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: var(--dark-gray);
-}
-
-.card-body .description {
-  font-size: 0.9rem;
-  color: #777;
-  height: 40px; /* Limit description lines */
-  overflow: hidden;
-}
-
-/* Badge & Favorite Button */
 .badge {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  background-color: var(--primary-color);
-  color: var(--white);
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  z-index: 2;
+  padding: 0.2rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  color: #fff;
 }
 
-.favorite-btn {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(255, 255, 255, 0.8);
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+.badge-hot {
+  background-color: #f74c4c;
+}
+
+.badge-sale {
+  background-color: #008c6b;
+}
+
+/* 위치 & 평점 */
+.acc-meta {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  z-index: 2;
-  transition: transform var(--transition-speed);
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.4rem;
 }
 
-.favorite-btn:hover {
+.acc-meta i {
+  margin-right: 4px;
+}
+
+/* 가격 */
+.acc-price {
+  font-weight: 600;
+  color: #111;
+  font-size: 1rem;
+}
+
+.price-unit {
+  font-size: 0.85rem;
+  color: #777;
+  margin-left: 4px;
+}
+
+/* 하트 버튼 */
+.heart-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  z-index: 2;
+}
+
+.heart-btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.heart-btn:active {
+  background: transparent;
+  box-shadow: none;
   transform: scale(1.1);
 }
 
-.favorite-btn .bi {
-  font-size: 1.5rem;
-  color: #ff4d4d; /* Heart color */
+/* 하트 hover 시 애니메이션 */
+.heart-btn i {
+  transition: transform 0.2s;
 }
 
-/* --- Responsive Design --- */
+.heart-btn:hover i {
+  transform: scale(1.15);
+}
+
+/* 로딩 / 빈 상태 */
+.loading,
+.empty-state {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  padding: 3rem 1rem;
+}
+
+/* 반응형 */
 @media (max-width: 768px) {
-  .domestic-hero-content h1 {
-    font-size: 2.2rem;
-  }
-
-  .domestic-hero-content p {
-    font-size: 1.1rem;
-  }
-
-  .filter-bar {
+  .filter-bottom {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+    gap: 0.75rem;
   }
 
-  .accommodation-list {
-    grid-template-columns: 1fr; /* Single column on smaller screens */
+  .acc-meta {
+    flex-direction: column;
+    gap: 0.2rem;
   }
 }

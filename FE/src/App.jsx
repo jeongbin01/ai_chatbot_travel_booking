@@ -18,7 +18,7 @@ import LoginForm from "./pages/login/LoginForm";
 import GoogleForm from "./pages/login/GoogleForm";
 import EmailSignupForm from "./pages/login/EmailSignupForm";
 import DomesticHome from "./pages/accommodations/국내 숙소/DomesticHome";
-import AccommodationCard from "./pages/accommodations/국내 숙소/AccommodationCardPage";
+// import AccommodationDetail from "./pages/accommodations/국내 숙소/AccommodationDetail";
 
 function App() {
   const location = useLocation();
@@ -73,14 +73,14 @@ function App() {
             </>
           }
         />
-        <Route
+        {/* <Route
           path="/accommodation/:id"
           element={
             <>
-              <AccommodationCard/>
+              <AccommodationDetail/>
             </>
           }
-        />
+        /> */}
 
         {/* 해외숙소 */}
         {/* <Route path="/overseas" element={<OverseasHome />} /> */}

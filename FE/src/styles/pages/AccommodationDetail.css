@@ -1,0 +1,109 @@
+숙소 상세 페이지 전체 컨테이너
+.accommodation-detail {
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 2rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* 숙소 이름 */
+.accommodation-name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+/* 이미지 갤러리 */
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+/* 숙소 이미지 */
+.accommodation-image {
+  width: 100%;
+  max-width: 300px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  transition: transform 0.3s ease;
+}
+
+.accommodation-image:hover {
+  transform: scale(1.03);
+}
+
+/* 이미지 없음 박스 */
+.no-image-box {
+  text-align: center;
+  width: 100%;
+}
+
+.no-image-placeholder {
+  width: 250px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  opacity: 0.7;
+  border: 1px dashed #aaa;
+}
+
+.no-image-text {
+  color: #777;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* 숙소 상세 정보 영역 */
+.accommodation-info {
+  margin-top: 1.5rem;
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.6;
+  max-width: 600px;
+  text-align: center;
+}
+
+.accommodation-info p {
+  margin-bottom: 0.7rem;
+}
+
+/* 객실 보기 버튼 */
+.room-button {
+  margin-top: 2rem;
+  background-color: #ff5a5f;
+  color: #fff;
+  padding: 0.8rem 1.6rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.room-button:hover {
+  background-color: #e04848;
+}
+
+/* 로딩 및 에러 메시지 */
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 3rem;
+  color: #888;
+}
