@@ -1,0 +1,74 @@
+/* 페이지 전체 여백 및 배경 */
+.accommodation-card-page {
+  background-color: #f9f9f9;
+  min-height: 100vh;
+}
+
+/* 카드 기본 스타일 */
+.accommodation-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.accommodation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* 이미지 스타일 */
+.accommodation-card .card-img-top {
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+/* 찜 아이콘 (하트) */
+.accommodation-card .bi-heart-fill {
+  font-size: 1.2rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  border-radius: 50%;
+}
+
+/* 검색바 영역 */
+.search-bar input.form-control {
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.search-bar button.btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* 카드 내 텍스트 */
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card-text i {
+  vertical-align: middle;
+  font-size: 1rem;
+}
+
+/* 가격 강조 */
+.card-body .text-danger {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* 별점 */
+.card-body .text-warning {
+  font-size: 0.9rem;
+}
+
+.card-body .text-warning i {
+  color: #ffc107;
+}

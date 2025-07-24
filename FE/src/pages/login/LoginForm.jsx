@@ -19,20 +19,15 @@ export default function JwtLoginTest() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ username, password }),
       });
 
       if (!response.ok) throw new Error("로그인 실패");
 
       const data = await response.json();
-      if (data.token) {
-        alert("로그인 성공! 토큰 저장됨.");
-        setToken(data.token);
-        localStorage.setItem("jwtToken", data.token);
-        navigate("/");
-      } else {
-        alert("토큰을 받지 못했습니다.");
-      }
+      alert("로그인 성공! 토큰 저장됨.");
+      navigate("/");
     } catch {
       alert("로그인 중 오류 발생");
     }
