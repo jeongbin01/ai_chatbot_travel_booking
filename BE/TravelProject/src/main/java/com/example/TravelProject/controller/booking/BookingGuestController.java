@@ -10,38 +10,38 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/booking-guest")
+@RequestMapping("/app/booking-guest")
 @RequiredArgsConstructor
 public class BookingGuestController {
 
     private final BookingGuestServuce bookingGuestServuce;
 
     // 게스트 ID로 조회
-    @GetMapping("/{guestId}")
+    @GetMapping("/app")
     public Optional<BookingGuest> getGuestById(@PathVariable Integer guestId) {
         return bookingGuestServuce.getGuestById(guestId);
     }
 
     // 예약 ID로 모든 게스트 조회
-    @GetMapping("/booking/{bookingId}")
+    @GetMapping("/app")
     public List<BookingGuest> getGuestsByBookingId(@PathVariable Integer bookingId) {
         return bookingGuestServuce.getGuestsByBookingId(bookingId);
     }
 
     // 대표 연락자 조회
-    @GetMapping("/booking/{bookingId}/primary-contact")
+    @GetMapping("/app")
     public Optional<BookingGuest> getPrimaryContactByBookingId(@PathVariable Integer bookingId) {
         return bookingGuestServuce.getPrimaryContactByBookingId(bookingId);
     }
 
     // 이름 또는 성으로 검색
-    @GetMapping("/search")
+    @GetMapping("/app")
     public List<BookingGuest> searchGuestsByName(@RequestParam String name) {
         return bookingGuestServuce.searchGuestsByName(name);
     }
 
     // 이메일로 조회
-    @GetMapping("/email")
+    @GetMapping("/app")
     public Optional<BookingGuest> getGuestByEmail(@RequestParam String email) {
         return bookingGuestServuce.getGuestByEmail(email);
     }

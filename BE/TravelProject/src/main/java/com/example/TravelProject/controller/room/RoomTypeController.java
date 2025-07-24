@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/room-types")  
+@RequestMapping("/app/room-types")  
 @RequiredArgsConstructor
 public class RoomTypeController {
 
@@ -22,7 +22,7 @@ public class RoomTypeController {
     }
 
     // RoomType 단건 조회
-    @GetMapping("/{roomTypeId}")
+    @GetMapping("/app")
     public Optional<RoomType> findById(@PathVariable Integer roomTypeId) {
         return roomTypeService.findById(roomTypeId);
     }
@@ -34,13 +34,13 @@ public class RoomTypeController {
     }
 
     // RoomType 수정
-    @PutMapping("/{roomTypeId}")
+    @PutMapping("/app")
     public RoomType update(@PathVariable Integer roomTypeId, @RequestBody RoomType updatedRoomType) {
         return roomTypeService.update(roomTypeId, updatedRoomType);
     }
 
     // RoomType 삭제
-    @DeleteMapping("/{roomTypeId}")
+    @DeleteMapping("/app")
     public void delete(@PathVariable Integer roomTypeId) {
         roomTypeService.deleteById(roomTypeId);
     }

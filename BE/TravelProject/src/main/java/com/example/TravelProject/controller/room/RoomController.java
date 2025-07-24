@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/rooms")  // URL Prefix 설정
+@RequestMapping("/app/rooms")  // URL Prefix 설정
 @RequiredArgsConstructor
 public class RoomController {
 
@@ -34,13 +34,13 @@ public class RoomController {
     }
 
     // 객실 정보 수정
-    @PutMapping("/{roomId}")
+    @PutMapping("/app")
     public Room updateRoom(@PathVariable Integer roomId, @RequestBody Room updatedRoom) {
         return roomService.update(roomId, updatedRoom);
     }
 
     // 객실 삭제
-    @DeleteMapping("/{roomId}")
+    @DeleteMapping("/app")
     public void deleteRoom(@PathVariable Integer roomId) {
         roomService.deleteById(roomId);
     }

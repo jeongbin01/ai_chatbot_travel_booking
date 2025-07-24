@@ -12,32 +12,32 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/refund")
+@RequestMapping("/app/refund")
 @RequiredArgsConstructor
 public class RefundController {
 
     private final RefundServuce refundServuce;
 
     // 환불 ID로 조회
-    @GetMapping("/{refundId}")
+    @GetMapping("/app")
     public Optional<Refund> getRefundById(@PathVariable Integer refundId) {
         return refundServuce.getRefundById(refundId);
     }
 
     // 결제 ID로 환불 목록 조회
-    @GetMapping("/payment/{paymentId}")
+    @GetMapping("/app")
     public List<Refund> getRefundsByPaymentId(@PathVariable Integer paymentId) {
         return refundServuce.getRefundsByPaymentId(paymentId);
     }
 
     // 환불 상태로 필터링
-    @GetMapping("/status")
+    @GetMapping("/app")
     public List<Refund> getRefundsByStatus(@RequestParam String status) {
         return refundServuce.getRefundsByStatus(status);
     }
 
     // 환불일 범위로 조회
-    @GetMapping("/date-range")
+    @GetMapping("/app")
     public List<Refund> getRefundsByDateRange(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
@@ -45,7 +45,7 @@ public class RefundController {
     }
 
     // 결제 ID + 상태로 조회
-    @GetMapping("/payment/{paymentId}/status")
+    @GetMapping("/app")
     public List<Refund> getRefundsByPaymentIdAndStatus(@PathVariable Integer paymentId,
                                                        @RequestParam String status) {
         return refundServuce.getRefundsByPaymentIdAndStatus(paymentId, status);

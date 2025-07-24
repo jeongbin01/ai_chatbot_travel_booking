@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/price-policies") // URL prefix
+@RequestMapping("/app/price-policies") // URL prefix
 @RequiredArgsConstructor
 public class PricePolicyController {
 
@@ -22,7 +22,7 @@ public class PricePolicyController {
     }
 
     // 특정 가격 정책 조회
-    @GetMapping("/{id}")
+    @GetMapping("/app")
     public Optional<PricePolicy> getPricePolicyById(@PathVariable Integer id) {
         return pricePolicyService.findById(id);
     }
@@ -34,7 +34,7 @@ public class PricePolicyController {
     }
 
     // 가격 정책 삭제
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/app")
     public void deletePricePolicy(@PathVariable Integer id) {
         pricePolicyService.deleteById(id);
     }
