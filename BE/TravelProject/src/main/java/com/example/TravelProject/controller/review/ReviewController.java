@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/app/reviews")
+@RequestMapping("/api/reviews")
 @RequiredArgsConstructor
 public class ReviewController {
 
@@ -23,7 +23,7 @@ public class ReviewController {
     }
 
     // 리뷰 ID로 조회
-    @GetMapping("/app")
+    @GetMapping("/{id}")
     public ResponseEntity<Review> getReviewById(@PathVariable Integer id) {
         return reviewService.getReviewById(id)
                 .map(ResponseEntity::ok)
@@ -37,21 +37,21 @@ public class ReviewController {
     }
 
     // 리뷰 삭제
-    @DeleteMapping("/app")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReview(@PathVariable Integer id) {
         reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();
     }
 
     // 리뷰 승인
-    @PatchMapping("/app")
+    @PatchMapping("/{id}/approve")
     public ResponseEntity<Review> approveReview(@PathVariable Integer id) {
         Review approved = reviewService.approveReview(id);
         return ResponseEntity.ok(approved);
     }
 
     // 도움돼요 카운트 증가
-    @PatchMapping("/app")
+    @PatchMapping("/{id}/helpful")
     public ResponseEntity<Review> increaseHelpful(@PathVariable Integer id) {
         Review updated = reviewService.increaseHelpfulCount(id);
         return ResponseEntity.ok(updated);

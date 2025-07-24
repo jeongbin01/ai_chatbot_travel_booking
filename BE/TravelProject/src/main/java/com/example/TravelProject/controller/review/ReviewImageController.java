@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/app/review-images")
+@RequestMapping("/api/review-images")
 @RequiredArgsConstructor
 public class ReviewImageController {
 
@@ -23,7 +23,7 @@ public class ReviewImageController {
     }
 
     // 이미지 ID로 조회
-    @GetMapping("/app")
+    @GetMapping("/{id}")
     public ResponseEntity<ReviewImage> getImageById(@PathVariable Integer id) {
         return reviewImageService.getReviewImageById(id)
                 .map(ResponseEntity::ok)
@@ -31,13 +31,13 @@ public class ReviewImageController {
     }
 
     // 리뷰 ID로 이미지 목록 조회
-    @GetMapping("/app")
+    @GetMapping("/review/{reviewId}")
     public ResponseEntity<List<ReviewImage>> getImagesByReviewId(@PathVariable Integer reviewId) {
         return ResponseEntity.ok(reviewImageService.getImagesByReviewId(reviewId));
     }
 
     // 이미지 삭제
-    @DeleteMapping("/app")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteImage(@PathVariable Integer id) {
         reviewImageService.deleteReviewImage(id);
         return ResponseEntity.noContent().build();

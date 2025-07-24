@@ -46,16 +46,21 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 //                "&email=" + URLEncoder.encode(email, StandardCharsets.UTF_8);`
 //
 //        response.sendRedirect(redirectUrl);
+        String accessTokenCookie = String.format("jwtToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict",
+                accessToken, 60 * 62);
+        response.addHeader("Set-Cookie", accessTokenCookie);
 
-        Cookie accessTokenCookie = new Cookie("jwtToken", accessToken);
-        accessTokenCookie.setPath("/");
-        accessTokenCookie.setMaxAge(3600); // 1시간
-        response.addCookie(accessTokenCookie);
+        String refreshTokenCookie = String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict",
+                refreshToken, 60 * 20);
+        response.addHeader("Set-Cookie", refreshTokenCookie);
 
-        Cookie refreshTokenCookie = new Cookie("refreshToken", refreshToken);
-        refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(86400); // 24시간
-        response.addCookie(refreshTokenCookie);
+        String usernameCookie = String.format("username=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                username, 60 * 20);
+        response.addHeader("Set-Cookie", usernameCookie);
+
+        String emailCookie = String.format("email=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                email, 60 * 20);
+        response.addHeader("Set-Cookie", emailCookie);
 
         // 직접 홈페이지로 리다이렉트
         response.sendRedirect("http://localhost:3000/");

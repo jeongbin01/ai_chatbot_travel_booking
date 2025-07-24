@@ -7,12 +7,17 @@ import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.jwt.JwtProvider;
 import com.example.TravelProject.repository.UserAccount.UserRepository;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 
 //@CrossOrigin(origins = "*")
@@ -24,20 +29,31 @@ public class JwtLoginController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody JwtLoginRequest loginRequest) {
-
+    public ResponseEntity<?> login(@RequestBody JwtLoginRequest loginRequest, HttpServletResponse response) throws IOException {
         User user = userRepository.findByUsername(loginRequest.getUsername())
                 .orElse(null);
 
         if (user == null || !passwordEncoder.matches(loginRequest.getPassword(), user.getPasswordHash())) {
             return ResponseEntity.status(401).body("아이디 또는 비밀번호가 올바르지 않습니다.");
         }
-
-        // 유저 역할 추출 및 JWT 발급
         String role = user.getUserRole();
-        String token = jwtUProvider.createJwt(user.getUsername(), role, 1000 * 60 * 60L); // 1시간 유효
+        String accessToken = jwtUProvider.createJwt(user.getUsername(), role, 1000 * 60 * 60L); // 1시간 유효
+        String refreshToken = jwtUProvider.createJwt(user.getUsername(), role, 1000 * 60 * 60L); // 1시간 유효
 
-        return ResponseEntity.ok(new JwtResponse(token));
+        String username = user.getUsername();
+        String email = user.getEmail(); // email 필드가 없으면 제외하거나 수정
+
+        // Set-Cookie 헤더 설정
+        response.addHeader("Set-Cookie", String.format("jwtToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", accessToken, 60 * 60));
+        response.addHeader("Set-Cookie", String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", refreshToken, 60 * 60));
+        response.addHeader("Set-Cookie", String.format("username=%s; Path=/; Max-Age=%d; SameSite=Strict", username, 60 * 60));
+        response.addHeader("Set-Cookie", String.format("email=%s; Path=/; Max-Age=%d; SameSite=Strict", email, 60 * 60));
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", "로그인 성공");
+        body.put("username", username);
+        body.put("email", email);
+        return ResponseEntity.ok(body);
     }
 
     @PostMapping("/signup")

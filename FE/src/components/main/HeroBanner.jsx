@@ -1,11 +1,18 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import "../../styles/layout/HeroBanner.css";
 
+import bg1 from "../../assets/images/Main/나이아가라강.jpg";
 import bg2 from "../../assets/images/Main/몽블랑.jpg";
 import bg3 from "../../assets/images/Main/제주도.jpg";
 import bg4 from "../../assets/images/Main/두바이.jpg";
 
 const BANNER_DATA = [
+  {
+    id: 1,
+    image: bg1,
+    text: "나이아가라의 물안개 속으로",
+    alt: "나이아가라 폭포",
+  },
   { id: 2, image: bg2, text: "몽블랑의 설경 속에서", alt: "몽블랑 설경" },
   { id: 3, image: bg3, text: "제주의 푸른 바다", alt: "제주 해안" },
   { id: 4, image: bg4, text: "두바이의 사막 위에", alt: "두바이 도시" },
