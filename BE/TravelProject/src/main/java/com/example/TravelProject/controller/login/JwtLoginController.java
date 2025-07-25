@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,19 +40,39 @@ public class JwtLoginController {
         }
         String role = user.getUserRole();
         String accessToken = jwtUProvider.createJwt(user.getUsername(), role, 1000 * 60 * 60L); // 1시간 유효
-        String refreshToken = jwtUProvider.createJwt(user.getUsername(), role, 1000 * 60 * 60L); // 1시간 유효
-
+        String refreshToken = jwtUProvider.createJwt(user.getUsername(), role, 1000 * 60 * 60L  ); // 1시간 유효
+        String nickname = user.getNickname();
         String username = user.getUsername();
         String email = user.getEmail(); // email 필드가 없으면 제외하거나 수정
 
         // Set-Cookie 헤더 설정
 //        response.addHeader("Set-Cookie", String.format("jwtToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", accessToken, 60 * 60));
 //        response.addHeader("Set-Cookie", String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", refreshToken, 60 * 60));
-        response.addHeader("Set-Cookie", String.format("jwtToken=%s; Path=/; Max-Age=%d; SameSite=Strict", accessToken, 60 * 60));
-        response.addHeader("Set-Cookie", String.format("refreshToken=%s; Path=/; Max-Age=%d; SameSite=Strict", refreshToken, 60 * 60));
-        response.addHeader("Set-Cookie", String.format("username=%s; Path=/; Max-Age=%d; SameSite=Strict", username, 60 * 60));
-        response.addHeader("Set-Cookie", String.format("email=%s; Path=/; Max-Age=%d; SameSite=Strict", email, 60 * 60));
+        String encodedAccessToken = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
+        String encodedNickname = URLEncoder.encode(nickname, StandardCharsets.UTF_8);
+        String encodedRefreshToken = URLEncoder.encode(refreshToken, StandardCharsets.UTF_8);
+        String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8);
+        String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8);
 
+        String accessTokenCookie = String.format("jwtToken=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedAccessToken, 60 * 22);
+
+        String refreshTokenCookie = String.format("refreshToken=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedRefreshToken, 60 * 20);
+
+        String emailCookie = String.format("email=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedEmail, 60 * 20);
+
+        String usernameCookie = String.format("username=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedUsername, 60 * 20);
+        String nicknameCookie = String.format("nickname=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedNickname, 60 * 20);
+
+        response.addHeader("Set-Cookie", nicknameCookie);
+        response.addHeader("Set-Cookie", refreshTokenCookie);
+        response.addHeader("Set-Cookie", usernameCookie);
+        response.addHeader("Set-Cookie", emailCookie);
+        response.addHeader("Set-Cookie", accessTokenCookie);
         Map<String, Object> body = new HashMap<>();
         body.put("message", "로그인 성공");
         body.put("username", username);

@@ -49,20 +49,29 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
 
 //        String accessTokenCookie = String.format("jwtToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", accessToken, 60 * 62);
-        String accessTokenCookie = String.format("jwtToken=%s; Path=/; Max-Age=%d; SameSite=Strict", accessToken, 60 * 62);
-        response.addHeader("Set-Cookie", accessTokenCookie);
-
 //        String refreshTokenCookie = String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", refreshToken, 60 * 20);
-        String refreshTokenCookie = String.format("refreshToken=%s; Path=/; Max-Age=%d; SameSite=Strict", refreshToken, 60 * 20);
-        response.addHeader("Set-Cookie", refreshTokenCookie);
 
-        String usernameCookie = String.format("username=%s; Path=/; Max-Age=%d; SameSite=Strict",
-                username, 60 * 20);
-        response.addHeader("Set-Cookie", usernameCookie);
+        String encodedAccessToken = URLEncoder.encode(accessToken, StandardCharsets.UTF_8);
+        String encodedRefreshToken = URLEncoder.encode(refreshToken, StandardCharsets.UTF_8);
+        String encodedEmail = URLEncoder.encode(email, StandardCharsets.UTF_8);
+        String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8);
+
+        String accessTokenCookie = String.format("jwtToken=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedAccessToken, 60 * 22);
+
+        String refreshTokenCookie = String.format("refreshToken=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedRefreshToken, 60 * 20);
 
         String emailCookie = String.format("email=%s; Path=/; Max-Age=%d; SameSite=Strict",
-                email, 60 * 20);
+                encodedEmail, 60 * 20);
+
+        String usernameCookie = String.format("username=%s; Path=/; Max-Age=%d; SameSite=Strict",
+                encodedUsername, 60 * 20);
+
+        response.addHeader("Set-Cookie", refreshTokenCookie);
+        response.addHeader("Set-Cookie", usernameCookie);
         response.addHeader("Set-Cookie", emailCookie);
+        response.addHeader("Set-Cookie", accessTokenCookie);
 
         // 직접 홈페이지로 리다이렉트
         response.sendRedirect("http://localhost:3000/");

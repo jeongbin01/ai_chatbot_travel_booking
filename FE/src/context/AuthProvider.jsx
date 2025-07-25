@@ -3,15 +3,25 @@ import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { AuthContext } from "./AuthContext";
 
+function getCookie(name) {
+  const raw = Cookies.get(name);
+  if (!raw) return null;
+  return decodeURIComponent(raw.replace(/\+/g, " "));
+}
+
+
 function AuthProvider({ children }) {
   const getInitialAuth = () => {
-    const usernameCookie = Cookies.get("username");
-    const jwtToken = Cookies.get("jwtToken");
-    if (usernameCookie && jwtToken) {
-      return {
-        username: decodeURIComponent(usernameCookie.replace(/\+/g, " ")),
-        token: jwtToken,
-      };
+    const username = getCookie("username");
+    const token = getCookie("jwtToken");
+    const nickname = getCookie("nickname");
+
+    if (username && token) {
+      if (nickname) {
+        return { username, nickname, token };
+      } else {
+        return { username, token };
+      }
     }
     return null;
   };
@@ -20,18 +30,28 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const usernameCookie = Cookies.get("username");
+      const usernameCookie = getCookie("username");
+      const jwtToken = getCookie("jwtToken");
+      const nicknameCookie = getCookie("nickname");
 
-      const jwtToken = Cookies.get("jwtToken");
       if (usernameCookie && jwtToken) {
-        const decodedUsername = decodeURIComponent(usernameCookie.replace(/\+/g, " "));
-        if (!auth || auth.username !== decodedUsername) {
-          setAuth({ username: decodedUsername, token: jwtToken });
+        const updatedAuth = nicknameCookie
+          ? { username: usernameCookie, nickname: nicknameCookie, token: jwtToken }
+          : { username: usernameCookie, token: jwtToken };
+
+        if (
+          !auth ||
+          auth.username !== updatedAuth.username ||
+          auth.token !== updatedAuth.token ||
+          auth.nickname !== updatedAuth.nickname
+        ) {
+          setAuth(updatedAuth);
         }
       } else if (auth !== null) {
         setAuth(null);
       }
     }, 1000);
+
     return () => clearInterval(interval);
   }, [auth]);
 
