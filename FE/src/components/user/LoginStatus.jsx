@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 import { AuthContext } from "../../context/AuthContext";
 
 
@@ -11,7 +10,7 @@ const LoginStatus = () => {
     <div style={{ textAlign: 'right', marginRight: '12px' }}>
       {auth ? (
         <>
-          <span style={{ fontWeight: 'bold' }}>{auth.username}님 환영합니다!</span>
+          <span style={{ fontWeight: 'bold' }}>{(auth.nickname)? auth.nickname : auth.username}님 환영합니다!</span>
 
         </>
       ) : (
