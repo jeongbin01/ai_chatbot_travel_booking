@@ -44,8 +44,10 @@ public class JwtLoginController {
         String email = user.getEmail(); // email 필드가 없으면 제외하거나 수정
 
         // Set-Cookie 헤더 설정
-        response.addHeader("Set-Cookie", String.format("jwtToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", accessToken, 60 * 60));
-        response.addHeader("Set-Cookie", String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", refreshToken, 60 * 60));
+//        response.addHeader("Set-Cookie", String.format("jwtToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", accessToken, 60 * 60));
+//        response.addHeader("Set-Cookie", String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", refreshToken, 60 * 60));
+        response.addHeader("Set-Cookie", String.format("jwtToken=%s; Path=/; Max-Age=%d; SameSite=Strict", accessToken, 60 * 60));
+        response.addHeader("Set-Cookie", String.format("refreshToken=%s; Path=/; Max-Age=%d; SameSite=Strict", refreshToken, 60 * 60));
         response.addHeader("Set-Cookie", String.format("username=%s; Path=/; Max-Age=%d; SameSite=Strict", username, 60 * 60));
         response.addHeader("Set-Cookie", String.format("email=%s; Path=/; Max-Age=%d; SameSite=Strict", email, 60 * 60));
 

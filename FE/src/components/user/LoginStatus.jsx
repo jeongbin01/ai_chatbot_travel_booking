@@ -1,26 +1,10 @@
-// src/components/user/LoginStatus.jsx
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import Cookies from "js-cookie";
+import { AuthContext } from "../../context/AuthContext";
 
 const LoginStatus = ({ onLogout }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [nickname, setNickname] = useState("");
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const username = Cookies.get("username");
-
-      if (username) {
-        setIsLoggedIn(true);
-        setNickname(username);
-      } else {
-        setIsLoggedIn(false);
-      }
-    }, 1000); // 1초마다 확인
-
-    return () => clearInterval(interval);
-  }, []);
+  const { auth, setAuth } = useContext(AuthContext); 
 
   const handleLogout = () => {
     Cookies.remove("jwtToken", { path: "/" });
@@ -28,15 +12,15 @@ const LoginStatus = ({ onLogout }) => {
     Cookies.remove("username", { path: "/" });
     Cookies.remove("email", { path: "/" });
 
-    setIsLoggedIn(false);
+    setAuth(null); // 로그인 상태 초기화
     if (onLogout) onLogout();
   };
 
   return (
     <div style={{ textAlign: 'right', marginRight: '12px' }}>
-      {isLoggedIn ? (
+      {auth ? (
         <>
-          <span style={{ fontWeight: 'bold' }}>{nickname}님 환영합니다!</span>
+          <span style={{ fontWeight: 'bold' }}>{auth.username}님 환영합니다!</span>
           <button onClick={handleLogout} style={{ marginLeft: '8px' }}>
             로그아웃
           </button>

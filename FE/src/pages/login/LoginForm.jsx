@@ -6,7 +6,7 @@ export default function JwtLoginTest() {
   const [username, setUsername] = useState(""); // 사용자 ID
   const [password, setPassword] = useState(""); // 비밀번호
   const [message, setMessage] = useState(""); // 메시지 출력
-  const [token, setToken] = useState(null); // JWT 토큰 저장
+  const [token, ] = useState(null); // JWT 토큰 저장
 
   const navigate = useNavigate();
 
@@ -25,7 +25,6 @@ export default function JwtLoginTest() {
 
       if (!response.ok) throw new Error("로그인 실패");
 
-      const data = await response.json();
       alert("로그인 성공! 토큰 저장됨.");
       navigate("/");
     } catch {
