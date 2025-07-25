@@ -1,6 +1,6 @@
 package com.example.TravelProject.repository.TravelProduct;
 
-import com.example.TravelProject.entity.travelproduct.TravelProduct;
+import com.example.TravelProject.entity.Travelproduct.TravelProduct;
 import com.example.TravelProject.entity.useraccount.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;

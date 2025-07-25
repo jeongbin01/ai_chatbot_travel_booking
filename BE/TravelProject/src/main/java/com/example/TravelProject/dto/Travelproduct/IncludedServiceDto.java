@@ -1,4 +1,4 @@
-package com.example.TravelProject.dto.travelproduct;
+package com.example.TravelProject.dto.Travelproduct;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor 
 @AllArgsConstructor 
 @Builder
-public class ProductImageDto {
-    private Integer imageId;
+public class IncludedServiceDto {
     private Integer productId;
-    private String imageUrl;
-    private String caption;
-    private Integer orderNum;
+    private Integer serviceId;
 }

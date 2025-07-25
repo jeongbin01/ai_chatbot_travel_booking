@@ -1,7 +1,8 @@
 package com.example.TravelProject.controller;
 
+import com.example.TravelProject.entity.Travelproduct.TravelProduct;
 import com.example.TravelProject.service.TravelProductService;
-import com.example.TravelProject.entity.travelproduct.TravelProduct;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

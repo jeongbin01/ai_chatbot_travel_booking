@@ -1,4 +1,4 @@
-package com.example.TravelProject.dto.travelproduct;
+package com.example.TravelProject.dto.Travelproduct;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

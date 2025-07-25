@@ -1,4 +1,4 @@
-package com.example.TravelProject.entity.travelproduct;
+package com.example.TravelProject.entity.Travelproduct;
 
 import java.io.Serializable;
 import java.util.Objects;
