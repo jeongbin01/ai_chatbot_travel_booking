@@ -16,9 +16,11 @@ import ChatbotShortcut from "./components/common/ChatbotShortcut";
 
 import LoginForm from "./pages/login/LoginForm";
 import GoogleForm from "./pages/login/GoogleForm";
-import EmailSignupForm from "./pages/login/EmailSignupForm";
+import SignupForm from "./pages/login/SignupForm";
 import DomesticHome from "./pages/accommodations/국내 숙소/DomesticHome";
 import AccommodationCard from "./pages/accommodations/국내 숙소/AccommodationCardPage";
+import HttpHeadersProvider from "./context/HttpHeader";
+import AuthProvider from "./context/AuthProvider";
 
 function App() {
   const location = useLocation();
@@ -28,69 +30,73 @@ function App() {
 
   return (
     <>
-      <Header />
+      <AuthProvider>
+        <HttpHeadersProvider>
+          <Header />
 
-      <Routes>
-        {/* 메인 페이지 */}
-        <Route
-          path="/"
-          element={
-            <>
-              <HeroBanner />
-              <PromotionBanner />
-              <DomesticAccommodations />
-              <OverseasAccommodations />
-              <TopTravelProducts />
-              {/* <TimeSaleSection />
+          <Routes>
+            {/* 메인 페이지 */}
+            <Route
+              path="/"
+              element={
+                <>
+                  <HeroBanner />
+                  <PromotionBanner />
+                  <DomesticAccommodations />
+                  <OverseasAccommodations />
+                  <TopTravelProducts />
+                  {/* <TimeSaleSection />
               <AugustTripList /> */}
-              <ChatbotShortcut />
-              <ScrollToTopButton />
-              <ReviewSlider />
-            </>
-          }
-        />
+                  <ChatbotShortcut />
+                  <ScrollToTopButton />
+                  <ReviewSlider />
+                </>
+              }
+            />
 
-        {/* 로그인 */}
-        <Route
-          path="/login"
-          element={
-            <>
-              <LoginForm />
-              <GoogleForm />
-            </>
-          }
-        />
+            {/* 로그인 */}
+            <Route
+              path="/login"
+              element={
+                <>
+                  <LoginForm />
+                  <GoogleForm />
+                </>
+              }
+            />
 
-        {/* 회원가입 */}
-        <Route path="/signup/email" element={<EmailSignupForm />} />
+            {/* 회원가입 */}
+            <Route path="/signup/email" element={<SignupForm />} />
 
-        {/* 국내숙소 */}
-        <Route
-          path="/domesticpages"
-          element={
-            <>
-              <DomesticHome />
-            </>
-          }
-        />
-        <Route
-          path="/accommodation/:id"
-          element={
-            <>
-              <AccommodationCard/>
-            </>
-          }
-        />
+            {/* 국내숙소 */}
+            <Route
+              path="/domesticpages"
+              element={
+                <>
+                  <DomesticHome />
+                </>
+              }
+            />
+            <Route
+              path="/accommodation/:id"
+              element={
+                <>
+                  <AccommodationCard />
+                </>
+              }
+            />
 
-        {/* 해외숙소 */}
-        {/* <Route path="/overseas" element={<OverseasHome />} /> */}
+            {/* 해외숙소 */}
+            {/* <Route path="/overseas" element={<OverseasHome />} /> */}
 
-        {/* 액티비티 */}
-        {/* <Route path="/overseas_package" element={<OverseasPackage />} /> */}
-      </Routes>
+            {/* 액티비티 */}
+            {/* <Route path="/overseas_package" element={<OverseasPackage />} /> */}
+          </Routes>
 
-      {/* 조건부 Footer 렌더링 */}
-      {!hideFooterRoutes.includes(location.pathname) && <Footer />}
+          {/* 조건부 Footer 렌더링 */}
+          {!hideFooterRoutes.includes(location.pathname) && <Footer />}
+        </HttpHeadersProvider>
+      </AuthProvider>
     </>
   );
 }

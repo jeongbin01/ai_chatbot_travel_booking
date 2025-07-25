@@ -102,18 +102,6 @@ const PopoverMenu = forwardRef(({ isLoggedIn, user, onLogout }, ref) => {
           </ul>
         </div>
       )}
-
-      {/* 관리자 메뉴 */}
-      {isLoggedIn && user.user_role === "관리자" && (
-        <div className="popover-section">
-          <span className="menu-group-title">관리자</span>
-          <ul className="popover-menu-list">
-            <li>
-              <Link to="/admin">회원 정보 페이지</Link>
-            </li>
-          </ul>
-        </div>
-      )}
     </div>
   );
 });
