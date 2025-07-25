@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import styles from "../../styles/components/EmailSignupForm.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function EmailSignupForm() {
+  const navigate = useNavigate();
+  
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -52,6 +55,7 @@ export default function EmailSignupForm() {
           phoneNumber: "",
           nickname: "",
         });
+        navigate("/");
       } else {
         const errorData = await response.text();
         alert("회원가입 실패: " + errorData);

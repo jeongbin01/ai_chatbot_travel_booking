@@ -35,7 +35,7 @@ public class JwtSecuritConfig implements WebMvcConfigurer {
                 .csrf(csrf -> csrf.disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/app/signup","/app/login", "/app/login/oauth2/**", "/app/**","/error").permitAll()
+                        .requestMatchers("/app/signup","/app/login", "/app/login/oauth2/**", "/app/**","/error", "/swagger-ui/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
