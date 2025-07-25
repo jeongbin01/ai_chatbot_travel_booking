@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/room-types")  
+@RequestMapping("/app/room-types")
 @RequiredArgsConstructor
 public class RoomTypeController {
 

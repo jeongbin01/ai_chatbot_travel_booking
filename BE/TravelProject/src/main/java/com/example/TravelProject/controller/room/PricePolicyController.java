@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/price-policies") // URL prefix
+@RequestMapping("/app/price-policies") // URL prefix
 @RequiredArgsConstructor
 public class PricePolicyController {
 

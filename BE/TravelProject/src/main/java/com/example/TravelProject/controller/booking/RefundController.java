@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/refund")
+@RequestMapping("/app/refund")
 @RequiredArgsConstructor
 public class RefundController {
 

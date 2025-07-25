@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/included-services")
+@RequestMapping("/app/included-services")
 @RequiredArgsConstructor
 public class IncludedServiceController {
 

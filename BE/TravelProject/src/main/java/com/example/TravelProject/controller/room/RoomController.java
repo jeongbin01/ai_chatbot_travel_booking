@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/rooms")  // URL Prefix 설정
+@RequestMapping("/app/rooms")  // URL Prefix 설정
 @RequiredArgsConstructor
 public class RoomController {
 

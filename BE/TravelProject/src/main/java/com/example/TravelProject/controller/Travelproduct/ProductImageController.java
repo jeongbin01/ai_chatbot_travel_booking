@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product-images")
+@RequestMapping("/app/product-images")
 @RequiredArgsConstructor
 public class ProductImageController {
 

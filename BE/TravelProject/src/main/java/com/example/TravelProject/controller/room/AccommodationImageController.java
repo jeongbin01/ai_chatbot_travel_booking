@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/accommodation-images")
+@RequestMapping("/app/accommodation-images")
 @RequiredArgsConstructor
 public class AccommodationImageController {
 

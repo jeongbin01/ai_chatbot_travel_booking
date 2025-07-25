@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/accommodations")
+@RequestMapping("/app/accommodations")
 @RequiredArgsConstructor
 public class AccommodationController {
 
