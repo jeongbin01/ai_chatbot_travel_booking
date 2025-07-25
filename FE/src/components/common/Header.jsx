@@ -1,11 +1,13 @@
 // src/components/common/Header.jsx
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "../../styles/layout/Header.module.css";
 import LoginStatus from "../user/LoginStatus";
 import PopoverMenu from "./PopoverMenu";
 import useOnClickOutside from "../../hooks/useOnClickOutside";
 import logo from "../../assets/images/Main/On_Comma.png";
+import Cookies from "js-cookie";
+import { AuthContext } from "../../context/AuthContext";
 
 const Header = () => {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -14,26 +16,25 @@ const Header = () => {
   const btnRef = useRef(null);
   const popRef = useRef(null);
   const navigate = useNavigate();
-
+  const { auth, setAuth } = useContext(AuthContext);
   // 로그인 상태 로딩
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    const token = localStorage.getItem("accessToken");
-
-    if (token && storedUser) {
+    if (auth) {
       setIsLoggedIn(true);
-      setUser(JSON.parse(storedUser));
     } else {
       setIsLoggedIn(false);
       setUser(null);
     }
-  }, []);
+  }, [auth]);
 
   // 로그아웃 처리
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("user");
+    Cookies.remove("jwtToken", { path: "/" });
+    Cookies.remove("refreshToken", { path: "/" });
+    Cookies.remove("username", { path: "/" });
+    Cookies.remove("email", { path: "/" });
     setIsLoggedIn(false);
+    setAuth(null);
     setUser(null);
     setIsPopoverOpen(false);
     navigate("/"); // 로그아웃 시 메인 페이지로 이동
@@ -52,11 +53,7 @@ const Header = () => {
 
         <div className={styles.headerRight}>
           {/* 로그인 상태 */}
-          <LoginStatus
-            isLoggedIn={isLoggedIn}
-            user={user || {}}
-            onLogout={handleLogout}
-          />
+          <LoginStatus/>
 
           {/* 햄버거 버튼 */}
           <button

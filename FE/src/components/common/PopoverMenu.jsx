@@ -1,7 +1,9 @@
 // src/components/common/PopoverMenu.jsx
-import React, { forwardRef } from "react";
+import React, { forwardRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import "../../styles/layout/Header.css"; // 기존 CSS
+import { AuthContext } from "../../context/AuthContext";
+import Cookies from "js-cookie";
 
 // 네비게이션 링크 데이터
 const navLinks = [
@@ -10,11 +12,12 @@ const navLinks = [
   { to: "/overseas_packagepages", text: "액티비티" },
 ];
 
-const PopoverMenu = forwardRef(({ isLoggedIn, user, onLogout }, ref) => {
+const PopoverMenu = forwardRef(({ user, onLogout }, ref) => {
+  const { auth } = useContext(AuthContext);
   return (
     <div className="popover-menu" ref={ref}>
       {/* 로그인 전 */}
-      {!isLoggedIn && (
+      {!auth && (
         <>
           <Link to="/login" className="side-login-btn">
             로그인/회원가입
@@ -23,12 +26,14 @@ const PopoverMenu = forwardRef(({ isLoggedIn, user, onLogout }, ref) => {
       )}
 
       {/* My 요약 카드 */}
-      {isLoggedIn && (
+      {auth && (
         <div className="popover-section">
           <span className="menu-group-title">My</span>
           <div className="my-summary-card">
             <Link to="/mypage/profile" className="my-nickname">
-              {user.nickname}
+              <span style={{ fontWeight: "bold" }}>
+                {auth.username}
+              </span>
               <i className="bi bi-chevron-right arrow-icon" />
             </Link>
 
@@ -70,7 +75,7 @@ const PopoverMenu = forwardRef(({ isLoggedIn, user, onLogout }, ref) => {
       </div>
 
       {/* 로그인 후 내 정보 */}
-      {isLoggedIn && (
+      {auth && (
         <div className="popover-section">
           <span className="menu-group-title">내 정보</span>
           <ul className="popover-menu-list">

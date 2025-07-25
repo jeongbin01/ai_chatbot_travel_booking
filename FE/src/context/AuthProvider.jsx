@@ -21,6 +21,7 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const interval = setInterval(() => {
       const usernameCookie = Cookies.get("username");
+
       const jwtToken = Cookies.get("jwtToken");
       if (usernameCookie && jwtToken) {
         const decodedUsername = decodeURIComponent(usernameCookie.replace(/\+/g, " "));
