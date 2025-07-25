@@ -1,8 +1,8 @@
 package com.example.TravelProject.entity.review;
 
+import com.example.TravelProject.entity.Travelproduct.TravelProduct;
 import com.example.TravelProject.entity.booking.Booking;
 import com.example.TravelProject.entity.room.Accommodation;
-import com.example.TravelProject.entity.travelproduct.TravelProduct;
 import com.example.TravelProject.entity.useraccount.User;
 
 import jakarta.persistence.*;

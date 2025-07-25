@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function EmailSignupForm() {
   const navigate = useNavigate();
+  
   const [form, setForm] = useState({
     username: "",
     email: "",

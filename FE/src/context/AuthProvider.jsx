@@ -21,13 +21,12 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const interval = setInterval(() => {
       const usernameCookie = Cookies.get("username");
-      const emailCookie = Cookies.get("email")
+
       const jwtToken = Cookies.get("jwtToken");
       if (usernameCookie && jwtToken) {
         const decodedUsername = decodeURIComponent(usernameCookie.replace(/\+/g, " "));
-        const decodedemail = decodeURIComponent(emailCookie.replace(/\+/g, " "));
         if (!auth || auth.username !== decodedUsername) {
-          setAuth({ username: decodedUsername, token: jwtToken, email: decodedemail });
+          setAuth({ username: decodedUsername, token: jwtToken });
         }
       } else if (auth !== null) {
         setAuth(null);

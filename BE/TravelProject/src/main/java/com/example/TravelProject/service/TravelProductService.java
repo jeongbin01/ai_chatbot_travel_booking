@@ -1,7 +1,7 @@
 package com.example.TravelProject.service;
 
 import com.example.TravelProject.repository.TravelProduct.TravelProductRepository;
-import com.example.TravelProject.entity.travelproduct.TravelProduct;
+import com.example.TravelProject.entity.Travelproduct.TravelProduct;
 import com.example.TravelProject.entity.useraccount.User;
 
 import lombok.RequiredArgsConstructor;

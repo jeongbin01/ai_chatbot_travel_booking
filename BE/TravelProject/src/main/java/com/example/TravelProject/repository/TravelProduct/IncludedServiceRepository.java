@@ -1,10 +1,11 @@
 package com.example.TravelProject.repository.TravelProduct;
 
-import com.example.TravelProject.entity.travelproduct.IncludedService;
-import com.example.TravelProject.entity.travelproduct.Service;
-import com.example.TravelProject.entity.travelproduct.TravelProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import com.example.TravelProject.entity.Travelproduct.IncludedService;
+import com.example.TravelProject.entity.Travelproduct.Service;
+import com.example.TravelProject.entity.Travelproduct.TravelProduct;
 
 import java.util.List;
 import java.util.Optional;
