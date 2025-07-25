@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/review-images")
+@RequestMapping("/app/review-images")
 @RequiredArgsConstructor
 public class ReviewImageController {
 

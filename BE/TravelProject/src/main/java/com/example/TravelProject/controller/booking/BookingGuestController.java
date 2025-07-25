@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/booking-guest")
+@RequestMapping("/app/booking-guest")
 @RequiredArgsConstructor
 public class BookingGuestController {
 

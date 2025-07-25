@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/room-type-images") // 엔드포인트: /api/room-type-images
+@RequestMapping("/app/room-type-images") // 엔드포인트: /api/room-type-images
 @RequiredArgsConstructor
 public class RoomTypeImageController {
 
