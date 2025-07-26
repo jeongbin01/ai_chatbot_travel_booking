@@ -1,109 +1,284 @@
-숙소 상세 페이지 전체 컨테이너
-.accommodation-detail {
-  max-width: 1000px;
-  margin: 3rem auto;
-  padding: 2rem;
-  font-family: 'Noto Sans KR', sans-serif;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
+/* 📁 src/styles/pages/AccommodationDetail.css */
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+.detail-wrapper {
+  padding: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #333;
 }
 
-/* 숙소 이름 */
-.accommodation-name {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  color: #222;
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #007bff;
+  cursor: pointer;
+}
+.back-button i {
+  margin-right: 0.5rem;
+}
+
+.like-button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #888;
+}
+.like-button.liked {
+  color: #f44336;
+}
+.like-button i {
+  margin-right: 0.3rem;
+}
+
+.detail-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 /* 이미지 갤러리 */
 .image-gallery {
+  position: relative;
+}
+.main-image-container {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 12px;
+}
+.main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.image-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.7);
+  border: none;
+  padding: 0.5rem;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 2;
+  border-radius: 50%;
+}
+.image-nav.prev {
+  left: 1rem;
+}
+.image-nav.next {
+  right: 1rem;
+}
+
+.image-indicators {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+}
+.indicator {
+  width: 10px;
+  height: 10px;
+  background: #ccc;
+  border: none;
+  border-radius: 50%;
+  margin: 0 4px;
+  display: inline-block;
+  cursor: pointer;
+}
+.indicator.active {
+  background: #007bff;
+}
+
+/* 기본 정보 */
+.detail-info h1.accommodation-name {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+.detail-info h2 {
+  font-size: 1.2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.location-rating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.location {
+  color: #555;
+}
+.rating {
+  display: flex;
+  align-items: center;
+}
+.star-rating i {
+  font-size: 1rem;
+}
+.rating-text {
+  font-size: 0.85rem;
+  margin-left: 0.3rem;
+  color: #666;
+}
+.price-capacity {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+.price {
+  font-size: 1.1rem;
+  color: #222;
+}
+.price-amount {
+  font-weight: bold;
+}
+.capacity {
+  font-size: 1rem;
+  color: #444;
+}
+
+/* 설명 */
+.description-section .description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* 편의시설 */
+.amenities-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-/* 숙소 이미지 */
-.accommodation-image {
-  width: 100%;
-  max-width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  transition: transform 0.3s ease;
-}
-
-.accommodation-image:hover {
-  transform: scale(1.03);
-}
-
-/* 이미지 없음 박스 */
-.no-image-box {
-  text-align: center;
-  width: 100%;
-}
-
-.no-image-placeholder {
-  width: 250px;
-  height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  opacity: 0.7;
-  border: 1px dashed #aaa;
-}
-
-.no-image-text {
-  color: #777;
+  gap: 0.75rem 1rem;
   margin-top: 0.5rem;
+}
+.amenity-item {
+  background: #f8f9fa;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+/* 체크인/체크아웃 */
+.check-info {
+  display: flex;
+  gap: 2rem;
+}
+.check-item {
+  font-size: 0.95rem;
+}
+.check-label {
+  font-weight: 600;
+  margin-right: 0.3rem;
+}
+
+/* 정책 */
+.policies-list {
+  padding-left: 1rem;
+  font-size: 0.95rem;
+}
+.policy-item {
+  margin-bottom: 0.3rem;
+}
+
+/* 연락처 */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.contact-item {
+  display: flex;
+  align-items: center;
   font-size: 0.95rem;
 }
 
-/* 숙소 상세 정보 영역 */
-.accommodation-info {
-  margin-top: 1.5rem;
-  font-size: 1rem;
-  color: #444;
-  line-height: 1.6;
-  max-width: 600px;
-  text-align: center;
+/* 예약 섹션 */
+.booking-section {
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid #eee;
+  padding: 1rem 0;
+  margin-top: 3rem;
 }
-
-.accommodation-info p {
-  margin-bottom: 0.7rem;
+.booking-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
-/* 객실 보기 버튼 */
-.room-button {
-  margin-top: 2rem;
-  background-color: #ff5a5f;
-  color: #fff;
-  padding: 0.8rem 1.6rem;
+.booking-info {
   font-size: 1rem;
+}
+.total-price {
   font-weight: bold;
+  font-size: 1.2rem;
+}
+.booking-button {
+  background: #007bff;
   border: none;
+  color: white;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+}
+.booking-button:hover {
+  background: #0056b3;
 }
 
-.room-button:hover {
-  background-color: #e04848;
-}
-
-/* 로딩 및 에러 메시지 */
+/* 로딩 및 에러 */
 .loading,
-.error {
+.error-message,
+.no-results {
   text-align: center;
-  font-size: 1.2rem;
   margin-top: 3rem;
-  color: #888;
+  font-size: 1rem;
+}
+.spinner {
+  width: 2rem;
+  height: 2rem;
+  border: 4px solid #ccc;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.btn-retry {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.btn-retry:hover {
+  background: #0056b3;
 }

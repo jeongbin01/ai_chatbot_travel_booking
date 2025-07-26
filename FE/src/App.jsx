@@ -17,10 +17,10 @@ import ChatbotShortcut from "./components/common/ChatbotShortcut";
 import LoginForm from "./pages/login/LoginForm";
 import GoogleForm from "./pages/login/GoogleForm";
 import SignupForm from "./pages/login/SignupForm";
-import DomesticHome from "./pages/accommodations/국내 숙소/DomesticHome";
-import AccommodationCard from "./pages/accommodations/국내 숙소/AccommodationCardPage";
 import HttpHeadersProvider from "./context/HttpHeader";
 import AuthProvider from "./context/AuthProvider";
+import AccommodationList from "./pages/accommodations/국내 숙소/AccommodationList";
+import AccommodationDetail from "./pages/accommodations/국내 숙소/AccommodationDetail";
 
 function App() {
   const location = useLocation();
@@ -73,15 +73,15 @@ function App() {
               path="/domesticpages"
               element={
                 <>
-                  <DomesticHome />
+                  <AccommodationList />
                 </>
               }
             />
             <Route
-              path="/accommodation/:id"
+              path="/domesticpages/:id"
               element={
                 <>
-                  <AccommodationCard />
+                  <AccommodationDetail />
                 </>
               }
             />
