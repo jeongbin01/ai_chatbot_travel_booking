@@ -1,60 +1,52 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import "../../../styles/pages/AccommodationList.css";
+import { AxiosClient } from "../../../api/AxiosController";
 
-const sampleAccommodations = [
-  {
-    id: 1,
-    name: "제주도 오션뷰 펜션",
-    location: "제주특별자치도 서귀포시",
-    price: 120000,
-    capacity: 4,
-    rating: 4.5,
-    liked: false,
-    image:
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=400&h=300&fit=crop&crop=center",
-  },
-  {
-    id: 2,
-    name: "강릉 바다 근처 게스트하우스",
-    location: "강원도 강릉시",
-    price: 85000,
-    capacity: 6,
-    rating: 4.2,
-    liked: false,
-    image:
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&h=300&fit=crop&crop=center",
-  },
-  {
-    id: 3,
-    name: "부산 해운대 모던 호텔",
-    location: "부산광역시 해운대구",
-    price: 180000,
-    capacity: 2,
-    rating: 4.8,
-    liked: false,
-    image:
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=400&h=300&fit=crop&crop=center",
-  },
-  {
-    id: 4,
-    name: "경주 한옥 스테이",
-    location: "경상북도 경주시",
-    price: 95000,
-    capacity: 4,
-    rating: 4.3,
-    liked: false,
-    image:
-      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&h=300&fit=crop&crop=center",
-  },
-];
+const fetchAccommodations = async () => {
+  try {
+    const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
+      AxiosClient("accommodations").getAll(),
+      AxiosClient("accommodation-images").getAll(),
+      AxiosClient("room-types").getAll(),
+      AxiosClient("price-policies").getAll(),
+    ]);
 
-const fetchAccommodations = () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({ data: sampleAccommodations });
-    }, 500);
-  });
+    const accommodations = accRes.data;
+    const images = imageRes.data;
+    const roomTypes = roomTypeRes.data;
+    const prices = priceRes.data;
+
+    const result = accommodations.map((acc) => {
+      // 이 숙소에 해당하는 roomTypes
+      const relatedRoomTypes = roomTypes.filter(rt => rt.accommodation_id === acc.accommodation_id);
+
+      // 가장 첫 번째 roomType 기준으로 가격 및 인원 추출
+      const primaryRoomType = relatedRoomTypes[0];
+
+      // pricePolicy에서 해당 roomType_id의 정책 찾기
+      const price = prices[0]?.basePrice ?? 0;
+      // 이미지 중 order_num이 가장 작은 하나만 사용
+      const mainImage = images.find(
+        img => img.accommodation.accommodationId === acc.accommodationId && img.orderNum === 1
+      );
+      console.log(prices)
+      return {
+        id: acc.accommodationId,
+        name: acc.name,
+        location: acc.address,
+        price: price,
+        capacity: primaryRoomType?.max_occupancy ?? 0,
+        rating: acc.ratingAvg ?? 0,
+        liked: false,
+        image: mainImage?.imageUrl ?? "", // 기본 이미지가 없으면 빈 문자열
+      };
+    });
+    return { data: result };
+  } catch (err) {
+    console.error("fetchAccommodations error:", err);
+    throw err;
+  }
 };
 
 export default function AccommodationList() {
@@ -195,7 +187,7 @@ export default function AccommodationList() {
               >
                 <i className={`bi ${acc.liked ? "bi-heart-fill" : "bi-heart"}`}></i>
               </button>
-
+              
               <div className="image-container">
                 <img
                   src={acc.image}

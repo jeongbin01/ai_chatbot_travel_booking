@@ -1,6 +1,10 @@
 // src/pages/RoomPage.jsx
 import React, { useEffect, useState } from "react";
+import { AxiosClient } from './api/AxiosController';
+const roomtype = AxiosClient('room-types');
 
+//함수 안
+employeeApi.getAll()
 export default function RoomPage() {
   const [rooms, setRooms] = useState([]);
 

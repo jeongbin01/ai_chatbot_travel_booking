@@ -1,4 +1,5 @@
 package com.example.TravelProject.entity.room;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "price_policy")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class PricePolicy {

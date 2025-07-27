@@ -1,11 +1,13 @@
 package com.example.TravelProject.entity.room;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "room_type")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class RoomType {

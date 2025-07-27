@@ -1,5 +1,6 @@
 package com.example.TravelProject.entity.room;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "Accommodation")
 @Getter
 @Setter
@@ -47,6 +49,9 @@ public class Accommodation {
 
     @Column(name = "type")
     private String type; // 호텔, 모텔, 펜션, 리조트, 게스트하우스, 한옥
+
+    @Column(name = "contact")
+    private String contact;
 
     @Column(name = "check_in_time")
     private LocalTime checkInTime;

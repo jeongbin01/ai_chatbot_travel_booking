@@ -2,105 +2,61 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../../styles/pages/AccommodationDetail.css";
 
-const sampleAccommodations = [
-  {
-    id: 1,
-    name: "제주도 오션뷰 펜션",
-    location: "제주특별자치도 서귀포시",
-    price: 120000,
-    capacity: 4,
-    rating: 4.5,
-    liked: false,
-    description: "제주도의 아름다운 바다를 한눈에 볼 수 있는 오션뷰 펜션입니다. 깨끗하고 현대적인 시설로 편안한 휴식을 제공합니다.",
-    amenities: ["Wi-Fi", "주차장", "에어컨", "바베큐장", "오션뷰", "취사가능"],
-    images: [
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop&crop=center"
-    ],
-    checkIn: "15:00",
-    checkOut: "11:00",
-    policies: ["금연", "반려동물 불가", "파티 불가"],
-    contact: "064-123-4567",
-    address: "제주특별자치도 서귀포시 중문관광로 123"
-  },
-  {
-    id: 2,
-    name: "강릉 바다 근처 게스트하우스",
-    location: "강원도 강릉시",
-    price: 85000,
-    capacity: 6,
-    rating: 4.2,
-    liked: false,
-    description: "강릉의 아름다운 해변과 가까운 곳에 위치한 아늑한 게스트하우스입니다. 가족 단위 여행객들에게 인기가 높습니다.",
-    amenities: ["Wi-Fi", "주차장", "에어컨", "냉장고", "세탁기", "취사가능"],
-    images: [
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop&crop=center"
-    ],
-    checkIn: "16:00",
-    checkOut: "10:00",
-    policies: ["금연", "반려동물 가능", "파티 불가"],
-    contact: "033-123-4567",
-    address: "강원도 강릉시 해안로 456"
-  },
-  {
-    id: 3,
-    name: "부산 해운대 모던 호텔",
-    location: "부산광역시 해운대구",
-    price: 180000,
-    capacity: 2,
-    rating: 4.8,
-    liked: false,
-    description: "해운대 해변에서 도보 5분 거리에 위치한 모던한 디자인의 호텔입니다. 최고급 시설과 서비스를 제공합니다.",
-    amenities: ["Wi-Fi", "발렛파킹", "에어컨", "미니바", "룸서비스", "피트니스"],
-    images: [
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&crop=center"
-    ],
-    checkIn: "15:00",
-    checkOut: "12:00",
-    policies: ["금연", "반려동물 불가", "파티 불가"],
-    contact: "051-123-4567",
-    address: "부산광역시 해운대구 해운대해변로 789"
-  },
-  {
-    id: 4,
-    name: "경주 한옥 스테이",
-    location: "경상북도 경주시",
-    price: 95000,
-    capacity: 4,
-    rating: 4.3,
-    liked: false,
-    description: "전통 한옥의 아름다움을 현대적 편의시설과 함께 경험할 수 있는 특별한 숙소입니다. 경주의 역사와 문화를 만끽하세요.",
-    amenities: ["Wi-Fi", "주차장", "한방욕조", "마당", "전통차", "취사가능"],
-    images: [
-      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=600&fit=crop&crop=center",
-      "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&h=600&fit=crop&crop=center"
-    ],
-    checkIn: "15:30",
-    checkOut: "11:00",
-    policies: ["금연", "반려동물 불가", "전통문화 체험 가능"],
-    contact: "054-123-4567",
-    address: "경상북도 경주시 황남대로 321"
-  }
-];
+import { AxiosClient } from "../../../api/AxiosController";
 
-const fetchAccommodationById = (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const accommodation = sampleAccommodations.find(acc => acc.id === parseInt(id));
-      if (accommodation) {
-        resolve({ data: accommodation });
-      } else {
-        reject(new Error("숙소를 찾을 수 없습니다."));
-      }
-    }, 500);
-  });
-};
+const fetchAccommodationById = async (id) => {
+  try {
+    const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
+      AxiosClient("accommodations").getById(id),
+      AxiosClient("accommodation-images").get("", {
+        params: { accommodation_id: id },
+      }),
+      AxiosClient("room-types").get("", {
+        params: { accommodation_id: id },
+      }),
+      AxiosClient("price-policies").getAll(), // 여긴 아직 전체 받아오는 방식
+    ]);
+
+    const accommodation = accRes.data;
+    const images = imageRes.data ?? [];
+    const roomTypes = roomTypeRes.data ?? [];
+
+    const primaryRoomType = roomTypes[0] ?? null;
+
+    const pricePolicies = priceRes.data.filter(p =>
+      primaryRoomType && p.room_type_id === primaryRoomType.room_type_id
+    );
+
+    const primaryPrice = pricePolicies[0] ?? null;
+
+    return {
+      data: {
+        id: accommodation.accommodationId,
+        name: accommodation.name,
+        location: accommodation.address,
+        price: primaryPrice?.basePrice ?? 0,
+        capacity: primaryRoomType?.maxOccupancy ?? 1,
+        rating: accommodation.ratingAvg ?? 0,
+        liked: false,
+        description: accommodation.description,
+        amenities: Array.isArray(accommodation.amenities)
+          ? accommodation.amenities
+          : [],
+        images: images
+          .sort((a, b) => a.orderNum - b.orderNum)
+          .map(img => img.imageUrl),
+        checkIn: accommodation.checkInTime,
+        checkOut: accommodation.checkOutTime,
+        policies: ["금연", "반려동물 불가", "파티 불가"], // 임시
+        contact: accommodation.contact ?? "000-0000-0000", // 임시
+        address: accommodation.address,
+      },
+    };
+  } catch (err) {
+    console.error("fetchAccommodations error:", err);
+    throw err;
+  }
+}
 
 export default function AccommodationDetail() {
   const { id } = useParams();

@@ -2,10 +2,13 @@ import React from 'react';
 import axios from 'axios';
 
 // Base path
-export const createApiClient = (controllerPath) => {
+export const AxiosClient = (controllerPath) => {
   const pathURL = `http://localhost:8888/app/${controllerPath}`;
 
   return {
+    // 일반 GET (쿼리스트링 포함 GET용)
+    get: (path = "", config = {}) => axios.get(`${pathURL}${path}`, config),
+
     // 전체 목록 조회
     getAll: () => axios.get(pathURL),
 
@@ -28,7 +31,7 @@ export const createApiClient = (controllerPath) => {
 
 
 // 다음과 같이 호출
-import { createApiClient } from './api/serviceAxios';
+import { AxiosClient } from './api/AxiosController';
 const employeeApi = createApiClient('employee');
 
 //함수 안

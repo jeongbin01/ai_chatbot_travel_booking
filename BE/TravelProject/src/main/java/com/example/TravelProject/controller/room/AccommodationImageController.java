@@ -15,6 +15,11 @@ public class AccommodationImageController {
 
     private final AccommodationImageService accommodationImageService;
 
+    @GetMapping
+    public List<AccommodationImage> getAllImages() {
+        return accommodationImageService.findAllImages();
+    }
+
     // 숙소 ID로 모든 이미지 조회 (orderNum 기준 정렬)
     @GetMapping("/{accommodationId}")
     public List<AccommodationImage> getImagesByAccommodation(@PathVariable Integer accommodationId) {
