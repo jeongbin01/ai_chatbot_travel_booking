@@ -1,3 +1,4 @@
+// src/App.jsx
 import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
@@ -21,6 +22,9 @@ import HttpHeadersProvider from "./context/HttpHeader";
 import AuthProvider from "./context/AuthProvider";
 import AccommodationList from "./pages/accommodations/국내 숙소/AccommodationList";
 import AccommodationDetail from "./pages/accommodations/국내 숙소/AccommodationDetail";
+import MyPage from "./pages/user/MyPage";
+import Favorites from "./pages/user/Favorites";
+import Reservations from "./pages/user/reservations";
 
 function App() {
   const location = useLocation();
@@ -46,7 +50,7 @@ function App() {
                   <OverseasAccommodations />
                   <TopTravelProducts />
                   {/* <TimeSaleSection />
-              <AugustTripList /> */}
+                      <AugustTripList /> */}
                   <ChatbotShortcut />
                   <ScrollToTopButton />
                   <ReviewSlider />
@@ -69,28 +73,14 @@ function App() {
             <Route path="/signup/email" element={<SignupForm />} />
 
             {/* 국내숙소 */}
-            <Route
-              path="/domesticpages"
-              element={
-                <>
-                  <AccommodationList />
-                </>
-              }
-            />
-            <Route
-              path="/domesticpages/:id"
-              element={
-                <>
-                  <AccommodationDetail />
-                </>
-              }
-            />
+            <Route path="/domesticpages" element={<AccommodationList />} />
+            <Route path="/domesticpages/:id" element={<AccommodationDetail />} />
 
-            {/* 해외숙소 */}
-            {/* <Route path="/overseas" element={<OverseasHome />} /> */}
-
-            {/* 액티비티 */}
-            {/* <Route path="/overseas_package" element={<OverseasPackage />} /> */}
+            {/* 마이페이지 */}
+            <Route path="/mypage/profile" element={<MyPage />} />
+            <Route path="/mypage/wishlist" element={<Favorites />} />
+            {/* 여기만 React → Route 로 수정 */}
+            <Route path="/mypage/bookings" element={<Reservations />} />
           </Routes>
 
           {/* 조건부 Footer 렌더링 */}

@@ -1,0 +1,116 @@
+/* /src/styles/components/Reservations.css */
+@import "../utils/MyPageLayout.css";
+
+/* 탭 메뉴 */
+.reservation-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.reservation-tabs button {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #e0e0e0;
+  background: #ffffff;
+  color: #666;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.reservation-tabs button:hover {
+  background: #f8f9fa;
+  border-color: #ccc;
+}
+
+.reservation-tabs button.active {
+  background: #4e6ef2;
+  color: #ffffff;
+  border-color: #4e6ef2;
+}
+
+/* 예약 목록 */
+.reservation-list {
+  margin-bottom: 2rem;
+}
+
+.reservation-card {
+  border: 1px solid #e0e0e0;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: #ffffff;
+  transition: box-shadow 0.2s ease;
+}
+
+.reservation-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reservation-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.reservation-card p {
+  margin: 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* 빈 상태 */
+.empty-box {
+  text-align: center;
+  padding: 3rem 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.empty-title {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.empty-sub {
+  margin: 0 0 1.5rem 0;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.find-button {
+  background: #4e6ef2;
+  color: #ffffff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.find-button:hover {
+  background: #3c5ce8;
+}
+
+/* 완료/취소 내역 섹션 */
+.history-section {
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.history-section h3 {
+  margin-bottom: 1rem;
+}
+
+.history-section .empty-sub {
+  text-align: left;
+  margin: 0;
+}
