@@ -2,10 +2,12 @@ package com.example.TravelProject.entity.room;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(
     name = "accommodation_amenity",
     uniqueConstraints = @UniqueConstraint(columnNames = {"accommodation_id", "amenity_id"})

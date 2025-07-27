@@ -20,7 +20,9 @@ public class AccommodationImageService {
     public List<AccommodationImage> findImagesByAccommodationId(Integer accommodationId) {
         return accommodationImageRepository.findByAccommodation_AccommodationIdOrderByOrderNumAsc(accommodationId);
     }
-
+    public List<AccommodationImage> findAllImages() {
+        return accommodationImageRepository.findAll();
+    }
     // 숙소 이미지 저장
     public AccommodationImage saveImage(AccommodationImage image) {
         return accommodationImageRepository.save(image);

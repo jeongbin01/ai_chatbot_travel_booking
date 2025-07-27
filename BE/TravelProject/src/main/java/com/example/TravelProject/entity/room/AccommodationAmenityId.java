@@ -1,8 +1,8 @@
-//package com.example.TravelProject.entity.room;
-//
-//import java.io.Serializable;
-//import java.util.Objects;
-//
+package com.example.TravelProject.entity.room;
+
+import java.io.Serializable;
+import java.util.Objects;
+
 //public class AccommodationAmenityId implements Serializable {
 //
 //    private Long accommodation;
