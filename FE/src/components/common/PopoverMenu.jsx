@@ -12,7 +12,7 @@ const navLinks = [
   { to: "/overseas_packagepages", text: "액티비티" },
 ];
 
-const PopoverMenu = forwardRef(({ user, onLogout }, ref) => {
+const PopoverMenu = forwardRef(({ onLogout }, ref) => {
   const { auth } = useContext(AuthContext);
   return (
     <div className="popover-menu" ref={ref}>
@@ -31,9 +31,7 @@ const PopoverMenu = forwardRef(({ user, onLogout }, ref) => {
           <span className="menu-group-title">My</span>
           <div className="my-summary-card">
             <Link to="/mypage/profile" className="my-nickname">
-              <span style={{ fontWeight: "bold" }}>
-                {auth.username}
-              </span>
+              <span style={{ fontWeight: "bold" }}>{auth.username}</span>
               <i className="bi bi-chevron-right arrow-icon" />
             </Link>
 
@@ -46,19 +44,21 @@ const PopoverMenu = forwardRef(({ user, onLogout }, ref) => {
                 3번 더 이용하면 다음 등급 혜택 시작!
               </p>
             </div>
-
-            <div className="point-coupon-box">
-              <div className="point-item">
-                <span className="label">포인트</span>
-                <span className="value">{user.point ?? 0}</span>
-              </div>
-              <div className="divider" />
-              <div className="point-item">
-                <span className="label">쿠폰</span>
-                <span className="value">{user.unused_coupon_count}장</span>
-              </div>
-            </div>
           </div>
+        </div>
+      )}
+      {/* 로그인 후 내 정보 */}
+      {auth && (
+        <div className="popover-section">
+          <span className="menu-group-title">내 정보</span>
+          <ul className="popover-menu-list">
+            <li>
+              <Link to="/mypage/bookings">예약 내역</Link>
+            </li>
+            <li>
+              <Link to="/mypage/wishlist">찜 목록</Link>
+            </li>
+          </ul>
         </div>
       )}
 
@@ -74,38 +74,11 @@ const PopoverMenu = forwardRef(({ user, onLogout }, ref) => {
         </ul>
       </div>
 
-      {/* 로그인 후 내 정보 */}
+      {/* 로그인 된 경우에만 로그아웃 버튼 */}
       {auth && (
-        <div className="popover-section">
-          <span className="menu-group-title">내 정보</span>
-          <ul className="popover-menu-list">
-            <li>
-              <Link to="/mypage/bookings">예약 내역</Link>
-            </li>
-            <li>
-              <Link to="/mypage/wishlist">찜 목록</Link>
-            </li>
-            <li>
-              <Link to="/mypage/coupons">
-                쿠폰함{" "}
-                {user.unused_coupon_count > 0 && (
-                  <span className="coupon-badge">
-                    {user.unused_coupon_count}
-                  </span>
-                )}
-              </Link>
-            </li>
-            <li>
-              <button
-                onClick={onLogout}
-                className="popover-logout-btn"
-                type="button"
-              >
-                로그아웃
-              </button>
-            </li>
-          </ul>
-        </div>
+        <li onClick={onLogout} className="popover-logout-btn" type="button">
+          로그아웃
+        </li>
       )}
     </div>
   );
