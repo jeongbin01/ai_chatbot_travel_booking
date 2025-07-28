@@ -14,14 +14,14 @@ import guam from "../../assets/images/프로모션(이벤트)/괌 가족 리조�
 const BADGE_SEQUENCE = ["HOT", "NEW", "SALE", "특가", "추천", "인기", "NOLDAY"];
 
 const rawPromotions = [
-  { id: 1, title: "제주도 여름 특가", desc: "에메랄드빛 해변과 함께하는 3박 4일", image: jeju, link: "/promotion/jeju" },
-  { id: 2, title: "부산 해운대 특가", desc: "숙소+카페 패키지 20% 할인", image: busan, link: "/promotion/busan" },
-  { id: 3, title: "속초 바다 캠핑", desc: "청정 자연 속 힐링 여행", image: sokcho, link: "/promotion/sokcho" },
-  { id: 4, title: "강릉 감성 기차여행", desc: "KTX 타고 떠나는 1박 2일", image: gangneung, link: "/promotion/gangneung" },
-  { id: 5, title: "하와이 썸머 세일", desc: "최대 30% 할인! 낙원에서의 여름", image: hawaii, link: "/promotion/hawaii" },
-  { id: 6, title: "오사카 벚꽃 여행", desc: "항공+숙소 포함 자유여행 패키지", image: osaka, link: "/promotion/osaka" },
-  { id: 7, title: "방콕 시티 호컁스", desc: "5성급 호텔 포함 3박 5일 일정", image: bangkok, link: "/promotion/bangkok" },
-  { id: 8, title: "괌 가족 여행 특가", desc: "아이와 함께하는 가족 맞춤 리조트", image: guam, link: "/promotion/guam" },
+  { id: 1, title: "제주도 여름 특가", desc: "에메랄드빛 해변과 함께하는 3박 4일", image: jeju },
+  { id: 2, title: "부산 해운대 특가", desc: "숙소+카페 패키지 20% 할인", image: busan},
+  { id: 3, title: "속초 바다 캠핑", desc: "청정 자연 속 힐링 여행", image: sokcho },
+  { id: 4, title: "강릉 감성 기차여행", desc: "KTX 타고 떠나는 1박 2일", image: gangneung },
+  { id: 5, title: "하와이 썸머 세일", desc: "최대 30% 할인! 낙원에서의 여름", image: hawaii },
+  { id: 6, title: "오사카 벚꽃 여행", desc: "항공+숙소 포함 자유여행 패키지", image: osaka },
+  { id: 7, title: "방콕 시티 호컁스", desc: "5성급 호텔 포함 3박 5일 일정", image: bangkok },
+  { id: 8, title: "괌 가족 여행 특가", desc: "아이와 함께하는 가족 맞춤 리조트", image: guam },
 ];
 
 
