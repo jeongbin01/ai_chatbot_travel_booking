@@ -1,290 +1,390 @@
-/* 전체 배너 영역 */
+/* HeroBanner.css */
 .hero-banner {
   position: relative;
-  width: 100%;
-  height: 500px;
-  font-family: 'Pretendard', sans-serif;
+  height: 60vh;
+  min-height: 600px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* 배경 이미지 */
-.hero-background {
-  width: 100%;
-  height: 100%;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  position: relative;
-  transition: background-image 0.8s ease-in-out;
-}
-
-/* 어두운 오버레이 */
-.hero-overlay {
+.hero-banner__background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.45);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0 20px;
-  box-sizing: border-box;
-}
-
-/* 텍스트 */
-.hero-text {
-  text-align: center;
-  color: #fff;
-  margin-bottom: 30px;
-}
-
-.hero-text h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 10px;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-  animation: fadeSlide 1s ease forwards;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   opacity: 0;
-  transform: translateY(10px);
+  transition: opacity 1s ease-in-out;
+  z-index: 1;
 }
 
-.hero-text p {
-  font-size: 1.2rem;
-  opacity: 0.85;
+.hero-banner__background--active {
+  opacity: 1;
 }
 
-/* 검색 박스 */
-.search-box {
+.hero-banner__background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 960px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 20px;
-  padding: 20px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  height: 100%;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  z-index: 2;
 }
 
-/* 탭 */
-.tab-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-bottom: 20px;
-}
-
-.tab-buttons button {
-  font-size: 16px;
-  font-weight: 600;
-  background: none;
+/* 네비게이션 버튼 */
+.hero-banner__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
   color: white;
-  border: none;
+  font-size: 20px;
   cursor: pointer;
-  padding-bottom: 6px;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s ease;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.tab-buttons button.active {
-  color: #007bff;
-  border-color: #007bff;
+.hero-banner__nav:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-50%) scale(1.1);
 }
 
-.tab-buttons button:hover {
+.hero-banner__nav--prev {
+  left: 30px;
+}
+
+.hero-banner__nav--next {
+  right: 30px;
+}
+
+/* 오버레이 컨테이너 */
+.hero-banner__overlay {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  color: white;
+  max-width: 1200px;
+  width: 90%;
+  padding: 0 20px;
+}
+
+/* 텍스트 영역 */
+.hero-banner__text {
+  margin-bottom: 60px;
+  animation: fadeInUp 1s ease-out;
+}
+
+.hero-banner__title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.hero-banner__subtitle {
+  font-size: 1.5rem;
+  font-weight: 300;
+  margin-bottom: 15px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
   opacity: 0.9;
 }
 
-/* 입력 필드 */
-.search-fields {
+.hero-banner__description {
+  font-size: 1.1rem;
+  font-weight: 400;
+  opacity: 0.8;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* 검색 필드 */
+.hero-banner__search {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 12px;
-  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+  animation: fadeInUp 1s ease-out 0.3s both;
 }
 
-.input-with-icon {
-  position: relative;
-  flex: 1 1 160px;
-  min-width: 160px;
+.hero-banner__search--glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 60px;
+  padding: 20px 30px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.hero-banner__search input[type="text"],
+.hero-banner__search input[type="date"] {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 25px;
+  padding: 12px 20px;
+  font-size: 14px;
+  width: 180px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.hero-banner__search input[type="text"]:focus,
+.hero-banner__search input[type="date"]:focus {
+  background: white;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+  transform: translateY(-2px);
+}
+
+.hero-banner__search input[type="text"]::placeholder {
+  color: #666;
+  font-weight: 400;
+}
+
+/* 게스트 카운터 */
+.guest-count {
   display: flex;
   align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 25px;
+  padding: 8px 15px;
+  gap: 10px;
 }
 
-.input-with-icon i {
-  position: absolute;
-  left: 12px;
+.guest-count button {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: #4e6ef2;
   color: white;
   font-size: 16px;
-  pointer-events: none;
-}
-
-.input-with-icon input {
-  width: 100%;
-  padding: 12px 12px 12px 36px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  font-size: 14px;
-  backdrop-filter: blur(6px);
-  box-sizing: border-box;
-  font-family: inherit;
-}
-
-.input-with-icon input:focus {
-  border-color: #007bff;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.input-with-icon input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* 인원 선택 */
-.guest-selector {
-  flex: 1 1 160px;
-  min-width: 160px;
-  display: flex;
-  align-items: center;
-  padding-left: 36px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  position: relative;
-}
-
-.guest-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto;
-}
-
-.guest-controls button {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.85);
-  color: black;
   font-weight: bold;
-  font-size: 18px;
   cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease-in-out;
 }
 
-.guest-controls button:hover {
-  background-color: white;
+.guest-count button:hover:not(:disabled) {
+  background: #4e6ef2;
   transform: scale(1.1);
 }
 
-.guest-controls input.guest-input {
-  width: 40px;
+.guest-count button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.guest-count span {
+  font-weight: 600;
+  color: #333;
+  min-width: 40px;
   text-align: center;
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 16px;
-  pointer-events: none;
 }
 
 /* 검색 버튼 */
-.search-btn {
-  padding: 12px 24px;
-  background-color: #007bff;
+.hero-banner__search > button {
+  background: linear-gradient(135deg, #4e6ef2 0%, #3957c9 100%);
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 15px;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(78, 110, 242, 0.4);
 }
 
-.search-btn:hover {
-  background-color: #0056b3;
-  transform: scale(1.03);
+.hero-banner__search > button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #3957c9 0%, #2f4bb0 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(78, 110, 242, 0.6);
 }
 
-.search-btn:active {
-  transform: scale(0.97);
+.hero-banner__search > button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-/* 인디케이터 */
-.slide-indicators {
+/* 슬라이드 인디케이터 */
+.hero-banner__indicators {
   display: flex;
-  gap: 8px;
-  margin-top: 20px;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
 }
 
-.indicator {
-  width: 10px;
-  height: 10px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
+.hero-banner__indicator {
+  position: relative;
+  width: 60px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
   border: none;
+  border-radius: 2px;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.indicator.active {
-  background: #fff;
-  transform: scale(1.2);
+.hero-banner__indicator:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scaleY(1.5);
+}
+
+.hero-banner__indicator--active {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.hero-banner__indicator-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #4a90e2, #74b9ff);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+/* 전체 진행바 */
+.hero-banner__progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 6;
+}
+
+.hero-banner__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4e6ef2 0%, #74b9ff 100%);
+  transition: width 0.1s linear;
 }
 
 /* 애니메이션 */
-@keyframes fadeSlide {
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* 반응형 */
-@media (max-width: 768px) {
-  .hero-banner {
-    height: 450px;
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .hero-banner__title {
+    font-size: 2.5rem;
   }
 
-  .hero-text h1 {
+  .hero-banner__subtitle {
+    font-size: 1.2rem;
+  }
+
+  .hero-banner__search {
+    gap: 10px;
+  }
+
+  .hero-banner__search input[type="text"],
+  .hero-banner__search input[type="date"] {
+    width: 150px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-banner {
+    min-height: 500px;
+  }
+
+  .hero-banner__title {
     font-size: 2rem;
   }
 
-  .search-fields {
+  .hero-banner__subtitle {
+    font-size: 1rem;
+  }
+
+  .hero-banner__description {
+    font-size: 0.9rem;
+  }
+
+  .hero-banner__search {
     flex-direction: column;
     gap: 15px;
   }
 
-  .search-btn {
+  .hero-banner__search--glass {
+    border-radius: 20px;
+    padding: 20px;
+  }
+
+  .hero-banner__search input[type="text"],
+  .hero-banner__search input[type="date"] {
     width: 100%;
+    max-width: 280px;
+  }
+
+  .hero-banner__nav {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+
+  .hero-banner__nav--prev {
+    left: 15px;
+  }
+
+  .hero-banner__nav--next {
+    right: 15px;
   }
 }
 
 @media (max-width: 480px) {
-  .hero-banner {
-    height: 400px;
-  }
-
-  .hero-text h1 {
+  .hero-banner__title {
     font-size: 1.5rem;
   }
 
-  .search-box {
-    padding: 15px;
-    border-radius: 15px;
+  .hero-banner__text {
+    margin-bottom: 40px;
   }
 
-  .tab-buttons button {
-    font-size: 14px;
+  .hero-banner__search--glass {
+    padding: 15px;
+  }
+
+  .hero-banner__indicator {
+    width: 40px;
   }
 }
