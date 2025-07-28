@@ -1,116 +1,221 @@
-/* /src/styles/components/Reservations.css */
-@import "../utils/MyPageLayout.css";
+/* Reservations.css - 예약 내역 스타일 */
 
-/* 탭 메뉴 */
+/* 탭 스타일 */
 .reservation-tabs {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 2rem;
+  gap: 4px;
+  margin-bottom: 32px;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 12px;
+  width: fit-content;
 }
 
 .reservation-tabs button {
-  padding: 0.75rem 1.5rem;
-  border: 1px solid #e0e0e0;
-  background: #ffffff;
-  color: #666;
+  background: transparent;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #64748b;
   cursor: pointer;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
   transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
 .reservation-tabs button:hover {
-  background: #f8f9fa;
-  border-color: #ccc;
+  color: #334155;
 }
 
 .reservation-tabs button.active {
-  background: #4e6ef2;
-  color: #ffffff;
-  border-color: #4e6ef2;
+  background: #ffffff;
+  color: #2563eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* 예약 목록 */
 .reservation-list {
-  margin-bottom: 2rem;
+  display: grid;
+  gap: 16px;
+  margin-bottom: 40px;
 }
 
 .reservation-card {
-  border: 1px solid #e0e0e0;
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
   background: #ffffff;
-  transition: box-shadow 0.2s ease;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .reservation-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
 }
 
 .reservation-card h4 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 1.1rem;
+  font-size: 18px;
   font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 8px 0;
 }
 
 .reservation-card p {
+  font-size: 14px;
+  color: #64748b;
   margin: 0;
-  color: #666;
-  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
-/* 빈 상태 */
-.empty-box {
-  text-align: center;
-  padding: 3rem 2rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-}
-
-.empty-title {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.empty-sub {
-  margin: 0 0 1.5rem 0;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.find-button {
-  background: #4e6ef2;
-  color: #ffffff;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.find-button:hover {
-  background: #3c5ce8;
-}
-
-/* 완료/취소 내역 섹션 */
+/* 히스토리 섹션 */
 .history-section {
-  padding-top: 2rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 2px solid #e2e8f0;
+  padding-top: 32px;
+  margin-top: 40px;
 }
 
 .history-section h3 {
-  margin-bottom: 1rem;
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0 0 16px 0;
 }
 
 .history-section .empty-sub {
-  text-align: left;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
   margin: 0;
+}
+
+/* 빈 상태 스타일 개선 */
+.empty-box {
+  text-align: center;
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border: 2px dashed #cbd5e1;
+  border-radius: 16px;
+  margin: 32px 0;
+}
+
+.empty-box .empty-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #334155;
+  margin: 0 0 12px 0;
+}
+
+.empty-box .empty-sub {
+  font-size: 16px;
+  color: #64748b;
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+.empty-box .find-button {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.empty-box .find-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .reservation-tabs {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .reservation-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .reservation-tabs button {
+    padding: 10px 20px;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  
+  .reservation-card {
+    padding: 20px;
+  }
+  
+  .reservation-card h4 {
+    font-size: 16px;
+  }
+  
+  .reservation-card p {
+    font-size: 13px;
+  }
+  
+  .empty-box {
+    padding: 40px 20px;
+    margin: 24px 0;
+  }
+  
+  .empty-box .empty-title {
+    font-size: 18px;
+  }
+  
+  .empty-box .empty-sub {
+    font-size: 14px;
+  }
+  
+  .empty-box .find-button {
+    padding: 12px 24px;
+    font-size: 15px;
+  }
+  
+  .history-section {
+    padding-top: 24px;
+    margin-top: 32px;
+  }
+  
+  .history-section h3 {
+    font-size: 18px;
+  }
+  
+  .history-section .empty-sub {
+    padding: 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .reservation-tabs {
+    padding: 3px;
+  }
+  
+  .reservation-tabs button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .reservation-card {
+    padding: 16px;
+  }
+  
+  .empty-box {
+    padding: 32px 16px;
+  }
 }

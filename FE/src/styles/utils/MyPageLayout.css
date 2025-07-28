@@ -1,20 +1,23 @@
-/* /src/styles/utils/MyPageLayout.css */
+/* MyPageLayout.css - 공통 레이아웃 스타일 */
 
-/* 페이지 전체 레이아웃 */
 .page-wrapper {
   display: flex;
-  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  gap: 40px;
   min-height: 100vh;
-  background-color: #f8f9fa;
 }
 
-/* 사이드바 */
+/* 사이드바 스타일 */
 .sidebar {
-  width: 240px;
+  flex: 0 0 250px;
   background: #ffffff;
-  border-right: 1px solid #e0e0e0;
-  padding: 2rem 1rem;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 30px 0;
+  height: fit-content;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .sidebar ul {
@@ -24,56 +27,124 @@
 }
 
 .sidebar li {
-  margin-bottom: 0.5rem;
+  margin: 0;
 }
 
-.sidebar li a {
+.sidebar a {
   display: block;
-  padding: 0.75rem 1rem;
+  padding: 16px 30px;
   text-decoration: none;
-  color: #666;
-  border-radius: 6px;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 16px;
   transition: all 0.2s ease;
+  border-left: 3px solid transparent;
 }
 
-.sidebar li a:hover {
-  background-color: #f1f3f5;
-  color: #333;
+.sidebar a:hover {
+  background-color: #f9fafb;
+  color: #374151;
 }
 
-.sidebar li.active > a {
+.sidebar li.active a {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border-left-color: #2563eb;
   font-weight: 600;
-  color: #4e6ef2;
-  background-color: #f0f3ff;
 }
 
 /* 콘텐츠 영역 */
 .page-content {
   flex: 1;
-  padding: 2rem;
-  background-color: #ffffff;
-  margin: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .page-content h2 {
-  margin: 0 0 1.5rem 0;
-  color: #333;
-  font-size: 1.5rem;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 30px 0;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* 빈 상태 박스 */
+.empty-box {
+  text-align: center;
+  padding: 80px 40px;
+  background: #f9fafb;
+  border-radius: 12px;
+  margin: 40px 0;
+}
+
+.empty-title {
+  font-size: 20px;
   font-weight: 600;
+  color: #374151;
+  margin: 0 0 10px 0;
 }
 
-.page-content h3 {
-  margin: 1.5rem 0 1rem 0;
-  color: #333;
-  font-size: 1.2rem;
-  font-weight: 500;
+.empty-sub {
+  font-size: 16px;
+  color: #6b7280;
+  margin: 0 0 30px 0;
 }
 
-.page-content h4 {
-  margin: 1rem 0 0.5rem 0;
-  color: #333;
-  font-size: 1rem;
-  font-weight: 500;
+/* 공통 버튼 스타일 */
+.find-button {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.find-button:hover {
+  background: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .page-wrapper {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 15px;
+  }
+  
+  .sidebar {
+    flex: none;
+  }
+  
+  .sidebar ul {
+    display: flex;
+    overflow-x: auto;
+  }
+  
+  .sidebar li {
+    flex-shrink: 0;
+  }
+  
+  .sidebar a {
+    padding: 12px 20px;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .sidebar li.active a {
+    border-left: none;
+    border-bottom-color: #2563eb;
+  }
+  
+  .page-content {
+    padding: 25px;
+  }
 }

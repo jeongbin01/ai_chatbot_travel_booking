@@ -1,37 +1,66 @@
-@import "../utils/MyPageLayout.css";
+/* Favorites.css - 찜 목록 스타일 */
+
+.favorites-container {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  gap: 40px;
+  min-height: 100vh;
+}
 
 /* 사이드바 */
 .favorites-sidebar {
-  width: 240px;
+  flex: 0 0 250px;
   background: #ffffff;
-  border-right: 1px solid #e0e0e0;
-  padding: 2rem 1rem;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 30px 0;
+  height: fit-content;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
+
 .favorites-sidebar ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .favorites-sidebar li {
-  margin-bottom: 0.5rem;
+  margin: 0;
 }
-.favorites-sidebar li a {
+
+.favorites-sidebar a {
   display: block;
-  padding: 0.75rem 1rem;
+  padding: 16px 30px;
   text-decoration: none;
-  color: #666;
-  border-radius: 6px;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 16px;
   transition: all 0.2s ease;
+  border-left: 3px solid transparent;
 }
-.favorites-sidebar li a:hover {
-  background-color: #f1f3f5;
-  color: #333;
+
+.favorites-sidebar a:hover {
+  background-color: #f9fafb;
+  color: #374151;
 }
-.favorites-sidebar li.active > a {
+
+.favorites-sidebar li.active a {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border-left-color: #2563eb;
   font-weight: 600;
-  color: #4e6ef2;
-  background-color: #f0f3ff;
+}
+
+/* 콘텐츠 영역 */
+.favorites-content {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* 헤더 */
@@ -39,167 +68,222 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e5e7eb;
 }
+
+.favorites-header h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
 .favorites-new-folder-btn {
-  background: #4e6ef2;
-  color: #ffffff;
+  background: #10b981;
+  color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 }
+
 .favorites-new-folder-btn:hover {
-  background: #3c5ce8;
+  background: #059669;
+  transform: translateY(-1px);
 }
 
-/* 빈 상태 */
-.empty-box {
-  text-align: center;
-  padding: 3rem 2rem;
-  background: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-}
-.empty-title {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-.empty-sub {
-  margin: 0;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-/* 폴더 */
+/* 폴더 스타일 */
 .favorites-folder {
-  border: 1px solid #e0e0e0;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  border-radius: 8px;
-  background: #ffffff;
-  transition: box-shadow 0.2s ease;
-}
-.favorites-folder:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-.favorites-folder-info {
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #f0f0f0;
-}
-.favorites-folder-info strong {
-  display: block;
-  margin-bottom: 0.25rem;
-  color: #333;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-.favorites-folder-info p {
-  margin: 0;
-  color: #666;
-  font-size: 0.9rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
 }
 
-/* 숙소 카드 리스트 */
+.favorites-folder-info {
+  margin-bottom: 20px;
+}
+
+.favorites-folder-info strong {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.favorites-folder-info p {
+  color: #6b7280;
+  font-size: 14px;
+  margin: 0;
+}
+
+/* 숙소 리스트 */
 .favorites-accommodation-list {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
 }
+
 .favorites-accommodation-card {
-  width: 120px;
-  text-align: center;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  padding: 0.5rem;
-  background: #ffffff;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s ease;
 }
+
 .favorites-accommodation-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
 .favorites-accommodation-card img {
   width: 100%;
-  height: 80px;
+  height: 120px;
   object-fit: cover;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
 }
+
 .favorites-accommodation-card p {
+  padding: 12px;
   margin: 0;
-  color: #333;
-  font-size: 0.8rem;
+  font-size: 14px;
   font-weight: 500;
-  line-height: 1.3;
+  color: #374151;
 }
 
 /* 모달 */
 .favorites-modal-overlay {
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background: rgba(0, 0, 0, 0.5);
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
+
 .favorites-modal {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 90%; max-width: 400px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
-.favorites-modal h3 {
-  margin: 0 0 1.5rem 0;
-  color: #333; font-size: 1.2rem; font-weight: 600;
-}
-.favorites-modal input {
-  width: 100%; padding: 0.75rem;
-  border: 1px solid #e0e0e0; border-radius: 6px;
-  font-size: 0.9rem; margin-bottom: 1.5rem;
-  box-sizing: border-box;
-}
-.favorites-modal input:focus {
-  outline: none; border-color: #4e6ef2;
-}
-.modal-buttons {
-  display: flex; gap: 0.75rem; justify-content: flex-end;
-}
-.modal-buttons button {
-  padding: 0.75rem 1.5rem; border: none;
-  border-radius: 6px; font-size: 0.9rem;
-  font-weight: 500; cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-.modal-buttons button:first-child {
-  background: #4e6ef2; color: #ffffff;
-}
-.modal-buttons button:first-child:hover {
-  background: #3c5ce8;
-}
-.modal-buttons button:last-child {
-  background: #6c757d; color: #ffffff;
-}
-.modal-buttons button:last-child:hover {
-  background: #5a6268;
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
-/* 반응형 */
+.favorites-modal h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 24px 0;
+  text-align: center;
+}
+
+.favorites-modal input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 24px;
+  box-sizing: border-box;
+}
+
+.favorites-modal input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.modal-buttons button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-buttons button:first-child {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.modal-buttons button:first-child:hover {
+  background: #1d4ed8;
+}
+
+.modal-buttons button:last-child {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.modal-buttons button:last-child:hover {
+  background: #e5e7eb;
+}
+
+/* 반응형 디자인 */
 @media (max-width: 768px) {
+  .favorites-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 15px;
+  }
+  
+  .favorites-sidebar {
+    flex: none;
+  }
+  
+  .favorites-sidebar ul {
+    display: flex;
+    overflow-x: auto;
+  }
+  
+  .favorites-sidebar li {
+    flex-shrink: 0;
+  }
+  
+  .favorites-sidebar a {
+    padding: 12px 20px;
+    border-left: none;
+    border-bottom: 3px solid transparent;
+  }
+  
+  .favorites-sidebar li.active a {
+    border-left: none;
+    border-bottom-color: #2563eb;
+  }
+  
+  .favorites-content {
+    padding: 25px;
+  }
+  
+  .favorites-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+  }
+  
   .favorites-accommodation-list {
-    justify-content: center;
-  }
-  .favorites-accommodation-card {
-    width: 100px;
-  }
-  .favorites-modal {
-    margin: 1rem;
-    width: calc(100% - 2rem);
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
   }
 }
