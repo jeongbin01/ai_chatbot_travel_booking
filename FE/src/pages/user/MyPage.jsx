@@ -15,7 +15,7 @@ const MyPage = () => {
   const [userInfo, setUserInfo] = useState({
     nickname: "",
     name: "",
-    phone: "",
+    phone: "  ",
     birthdate: "",
     email: "",
     gender: ""
@@ -29,19 +29,39 @@ const MyPage = () => {
         alert("로그인이 필요합니다.");
         return navigate("/login");
       }
-
-      // 1-1) 로컬 스토리지 우선
-      const saved = localStorage.getItem(STORAGE_KEY(auth.userId));
-      if (saved) {
-        setUserInfo(JSON.parse(saved));
-        setIsLoading(false);
-        return;
-      }
-
-      // 1-2) 로컬에 없으면 (나중에 API 연결시 사용)
       try {
-        const res = await AxiosClient.get(`/mypage/${auth.userId}`);
-        setUserInfo(res.data);
+        let response;
+        let data;
+        if (auth.oauthSelect == 1) {
+          response = await AxiosClient("mypage").getById(auth.userId);
+          data = response.data[0];
+          console.log(data)
+          setUserData({
+            email: data.email,
+            nickname: data.nickname,
+            provider: data.provider,
+            socialAccountId: data.socialAccountId,
+            userId: data.userId,
+            userRole: data.userRole,
+            username: data.username,
+          });
+          if (data.username) setName(data.username);
+        } else {
+          if (auth.oauthSelect == 0) {
+          // 일반 계정이면 /MyUser 요청
+            response = await AxiosClient("myuser").getById(auth.userId);
+            data = response?.data;
+            console.log(data)
+            setUserData({
+              email: data.email,
+              nickname: data.nickname,
+              userId: data.userId,
+              userRole: data.userRole,
+              username: data.username,
+            });
+            if (data.username) setName(data.username);
+          }
+        }
       } catch {
         console.warn("API 미연결 상태, 로컬 초기값 사용");
       } finally {
@@ -51,35 +71,9 @@ const MyPage = () => {
     load();
   }, [auth, navigate]);
 
-  // 2) 입력 변경
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserInfo((p) => ({ ...p, [name]: value }));
-  };
-
-  // 3) 수정 저장 → 로컬 스토리지에 저장
-  const handleUpdate = () => {
-    if (!window.confirm("수정된 정보를 저장하시겠습니까?")) return;
-    localStorage.setItem(STORAGE_KEY(auth.userId), JSON.stringify(userInfo));
-    alert("정보가 저장되었습니다. (로컬)");
-  };
-
-  // 4) 전체 로그아웃 → 로컬 토큰·유저정보 지우고 로그인 페이지로
-  const handleLogoutAll = () => {
-    if (!window.confirm("모든 기기에서 로그아웃하시겠습니까?")) return;
-    //  실제 API: await AxiosClient.post("/auth/logout-all");
-    localStorage.removeItem(STORAGE_KEY(auth.userId));
-    setAuth(null);
-    navigate("/login");
-  };
-
-  // 5) 회원 탈퇴 → 로컬 데이터 전부 삭제, 회원가입 페이지로
-  const handleWithdraw = () => {
-    if (!window.confirm("정말 탈퇴하시겠습니까?")) return;
-    // 실제 API: await AxiosClient.delete(`/users/${auth.userId}`);
-    localStorage.removeItem(STORAGE_KEY(auth.userId));
-    setAuth(null);
-    navigate("/register");
   };
 
   if (isLoading) return <div className="page-content">로딩 중...</div>;
@@ -99,7 +93,7 @@ const MyPage = () => {
             <label>닉네임</label>
             <input
               name="nickname"
-              value={userInfo.nickname}
+              value={userData.nickname}
               onChange={handleChange}
               placeholder="닉네임 입력"
             />
@@ -108,7 +102,7 @@ const MyPage = () => {
           {/* 예약자 이름 */}
           <div className="form-field">
             <label>예약자 이름</label>
-            <input name="name" value={userInfo.name} readOnly />
+            <input name="name" value={userData.username} readOnly />
           </div>
 
           {/* 휴대폰 번호 */}
@@ -116,7 +110,7 @@ const MyPage = () => {
             <label>휴대폰 번호</label>
             <input
               name="phone"
-              value={userInfo.phone}
+              value="01012345678"
               onChange={handleChange}
               placeholder="01012345678"
             />
@@ -128,7 +122,7 @@ const MyPage = () => {
             <input
               type="date"
               name="birthdate"
-              value={userInfo.birthdate}
+              value="2015.08.15"
               onChange={handleChange}
             />
           </div>
@@ -136,7 +130,15 @@ const MyPage = () => {
           {/* 이메일 */}
           <div className="form-field">
             <label>이메일</label>
-            <input name="email" value={userInfo.email} readOnly />
+            <input name="email" 
+            value={
+              userData?.email
+              ? userData.provider
+                ? `${userData.email} (${userData.provider})`
+                : userData.email
+              : ""
+            } 
+            readOnly />
           </div>
 
           {/* 성별 (라디오 버튼으로 변경) */}
