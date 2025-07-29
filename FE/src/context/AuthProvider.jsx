@@ -15,12 +15,13 @@ function AuthProvider({ children }) {
     const username = getCookie("username");
     const token = getCookie("jwtToken");
     const nickname = getCookie("nickname");
+    const userId = getCookie("userId")
 
     if (username && token) {
       if (nickname) {
-        return { username, nickname, token };
+        return { username, nickname, token, userId };
       } else {
-        return { username, token };
+        return { username, token, userId };
       }
     }
     return null;
@@ -33,17 +34,18 @@ function AuthProvider({ children }) {
       const usernameCookie = getCookie("username");
       const jwtToken = getCookie("jwtToken");
       const nicknameCookie = getCookie("nickname");
-
+      const userId = getCookie("userId");
       if (usernameCookie && jwtToken) {
         const updatedAuth = nicknameCookie
-          ? { username: usernameCookie, nickname: nicknameCookie, token: jwtToken }
-          : { username: usernameCookie, token: jwtToken };
+          ? { username: usernameCookie, nickname: nicknameCookie, token: jwtToken, userID: userId }
+          : { username: usernameCookie, token: jwtToken, userId: userId };
 
         if (
           !auth ||
           auth.username !== updatedAuth.username ||
           auth.token !== updatedAuth.token ||
-          auth.nickname !== updatedAuth.nickname
+          auth.nickname !== updatedAuth.nickname ||
+          auth.userId !== updatedAuth.userId
         ) {
           setAuth(updatedAuth);
         }

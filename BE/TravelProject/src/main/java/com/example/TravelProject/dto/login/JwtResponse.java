@@ -1,4 +1,4 @@
-package com.example.TravelProject.dto;
+package com.example.TravelProject.dto.login;
 
 public class JwtResponse {
     private String token;

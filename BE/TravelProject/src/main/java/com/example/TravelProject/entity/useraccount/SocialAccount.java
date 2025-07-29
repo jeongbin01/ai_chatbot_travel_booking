@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class SocialAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer social_account_id;
+    private Integer socialAccountId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)

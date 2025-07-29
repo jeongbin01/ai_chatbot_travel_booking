@@ -1,6 +1,6 @@
 package com.example.TravelProject.jwt;
 
-import com.example.TravelProject.dto.UserDTO;
+import com.example.TravelProject.dto.login.UserDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;

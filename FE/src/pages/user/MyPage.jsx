@@ -1,11 +1,36 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import "../../styles/utils/MyPage.css"; // 스타일 파일 추가
-import "../../styles/utils/MyPageLayout.css"; // 기존 스타일 파일 추가
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import "../../styles/utils/MyPage.css";
+import "../../styles/utils/MyPageLayout.css";
+import MyPageAside from "./MyPageAside"; 
+import { AxiosClient } from "../../api/AxiosController.jsx";
+import { AuthContext } from "../../context/AuthContext";
 
 const MyPage = () => {
+  const { auth } = useContext(AuthContext); 
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const getUser = async () => {
+      if (auth){
+        try {
+          console.log(auth.userId)
+          const userData = await AxiosClient("mypage").getById(auth.userId);
+          console.log("userData:", userData);
+        } catch (e) {
+          console.error("유저 정보 불러오기 실패", e);
+        }
+      }
+      else {
+        alert("로그인 해주세요.")
+        navigate("/login")
+      }
+    };
+
+    getUser();
+  }, []);
+
   const [name, setName] = useState("");
-  const location = useLocation();
 
   const handleLogoutAll = () => {
     if (window.confirm("정말 모든 기기에서 로그아웃하시겠습니까?")) {
@@ -22,19 +47,7 @@ const MyPage = () => {
   return (
     <div className="page-wrapper">
       {/* === 좌측 사이드바 메뉴 === */}
-      <aside className="sidebar">
-        <ul>
-          <li className={location.pathname === "/mypage/bookings" ? "active" : ""}>
-            <Link to="/mypage/bookings">예약 내역</Link>
-          </li>
-          <li className={location.pathname === "/mypage/wishlist" ? "active" : ""}>
-            <Link to="/mypage/wishlist">찜 목록</Link>
-          </li>
-          <li className={location.pathname === "/mypage/profile" ? "active" : ""}>
-            <Link to="/mypage/profile">내 정보 관리</Link>
-          </li>
-        </ul>
-      </aside>
+      <MyPageAside/>
 
       {/* === 우측 콘텐츠 === */}
       <section className="page-content">
@@ -79,10 +92,8 @@ const MyPage = () => {
 
         {/* 기기 관리 */}
         <div className="device-section">
-          <h4>접속 기기 관리</h4>
-          <p>로그인 된 모든 기기에서 로그아웃 돼요.</p>
           <button className="logout-btn" onClick={handleLogoutAll}>
-            전체 로그아웃
+            수정하기
           </button>
         </div>
 
