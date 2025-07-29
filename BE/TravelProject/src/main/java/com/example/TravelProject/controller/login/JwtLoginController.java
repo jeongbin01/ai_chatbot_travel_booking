@@ -1,13 +1,11 @@
 package com.example.TravelProject.controller.login;
 
-import com.example.TravelProject.dto.JwtLoginRequest;
-import com.example.TravelProject.dto.JwtResponse;
-import com.example.TravelProject.dto.SignupRequest;
+import com.example.TravelProject.dto.login.JwtLoginRequest;
+import com.example.TravelProject.dto.login.SignupRequest;
 import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.jwt.JwtProvider;
 import com.example.TravelProject.repository.UserAccount.UserRepository;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +42,8 @@ public class JwtLoginController {
         String nickname = user.getNickname();
         String username = user.getUsername();
         String email = user.getEmail(); // email 필드가 없으면 제외하거나 수정
-
+        Integer userid = user.getUserId();
+        int oauthSelect = 0;
         // Set-Cookie 헤더 설정
 //        response.addHeader("Set-Cookie", String.format("jwtToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", accessToken, 60 * 60));
 //        response.addHeader("Set-Cookie", String.format("refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; Secure; SameSite=Strict", refreshToken, 60 * 60));
@@ -67,16 +66,20 @@ public class JwtLoginController {
                 encodedUsername, 60 * 20);
         String nicknameCookie = String.format("nickname=%s; Path=/; Max-Age=%d; SameSite=Strict",
                 encodedNickname, 60 * 20);
-
+        String userIdCookie = String.format("userId=%d; Path=/; Max-Age=%d; SameSite=Strict", userid, 60 * 20);
+        String oauthSelectCookie = String.format("oauthSelect=%d; Path=/; Max-Age=%d; SameSite=Strict", oauthSelect, 60 * 20);
+        response.addHeader("Set-Cookie", userIdCookie);
         response.addHeader("Set-Cookie", nicknameCookie);
         response.addHeader("Set-Cookie", refreshTokenCookie);
         response.addHeader("Set-Cookie", usernameCookie);
         response.addHeader("Set-Cookie", emailCookie);
+        response.addHeader("Set-Cookie", oauthSelectCookie);
         response.addHeader("Set-Cookie", accessTokenCookie);
         Map<String, Object> body = new HashMap<>();
         body.put("message", "로그인 성공");
         body.put("username", username);
         body.put("email", email);
+        body.put("userId", userid);
         return ResponseEntity.ok(body);
     }
 

@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-// axios를 쓸 경우 주석 해제하고 경로 조정하세요.
-// import axios from "axios";
-
+import MyPageAside from "./MyPageAside"; 
 import "../../styles/utils/Favorites.css";
 import "../../styles/utils/MyPageLayout.css";
 
 const Favorites = () => {
-  const location = useLocation();
   const [folders] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState("");
@@ -40,19 +36,7 @@ const Favorites = () => {
   return (
     <div className="favorites-container">
       {/* 사이드바 */}
-      <aside className="favorites-sidebar">
-        <ul>
-          <li className={location.pathname === "/mypage/bookings" ? "active" : ""}>
-            <Link to="/mypage/bookings">예약 내역</Link>
-          </li>
-          <li className={location.pathname === "/mypage/wishlist" ? "active" : ""}>
-            <Link to="/mypage/wishlist">찜 목록</Link>
-          </li>
-          <li className={location.pathname === "/mypage/profile" ? "active" : ""}>
-            <Link to="/mypage/profile">내 정보 관리</Link>
-          </li>
-        </ul>
-      </aside>
+      <MyPageAside/>
 
       {/* 콘텐츠 */}
       <section className="favorites-content">

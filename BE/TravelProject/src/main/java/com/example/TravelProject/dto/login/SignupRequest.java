@@ -1,4 +1,4 @@
-package com.example.TravelProject.dto;
+package com.example.TravelProject.dto.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

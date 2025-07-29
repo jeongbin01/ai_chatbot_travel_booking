@@ -9,7 +9,7 @@ const fetchAccommodationById = async (id) => {
     const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
       AxiosClient("accommodations").getById(id),
       AxiosClient("accommodation-images").get("", {
-        params: { accommodation_id: id },
+        params: { accommodationId: id },
       }),
       AxiosClient("room-types").get("", {
         params: { accommodation_id: id },
@@ -19,6 +19,7 @@ const fetchAccommodationById = async (id) => {
 
     const accommodation = accRes.data;
     const images = imageRes.data ?? [];
+    // console.log(imageRes)
     const roomTypes = roomTypeRes.data ?? [];
 
     const primaryRoomType = roomTypes[0] ?? null;

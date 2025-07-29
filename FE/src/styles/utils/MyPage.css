@@ -67,46 +67,6 @@
   font-style: italic;
 }
 
-/* 기기 관리 섹션 */
-.device-section {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 24px;
-  margin-bottom: 32px;
-}
-
-.device-section h4 {
-  font-size: 18px;
-  font-weight: 600;
-  color: #1e293b;
-  margin: 0 0 8px 0;
-}
-
-.device-section p {
-  font-size: 14px;
-  color: #64748b;
-  margin: 0 0 20px 0;
-  line-height: 1.5;
-}
-
-.logout-btn {
-  background: #ef4444;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.logout-btn:hover {
-  background: #dc2626;
-  transform: translateY(-1px);
-}
-
 /* 회원탈퇴 섹션 */
 .withdraw-section {
   background: #fef2f2;
@@ -152,10 +112,7 @@
     grid-column: 1;
   }
   
-  .device-section,
-  .withdraw-section {
-    padding: 20px;
-  }
+
   
   .info-notice {
     padding: 14px 16px;
@@ -167,12 +124,5 @@
   .form-field input {
     padding: 10px 14px;
     font-size: 15px;
-  }
-  
-  .logout-btn,
-  .withdraw-btn {
-    padding: 12px 24px;
-    font-size: 15px;
-    width: 100%;
   }
 }

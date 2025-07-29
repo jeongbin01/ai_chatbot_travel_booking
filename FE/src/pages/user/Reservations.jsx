@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState, } from "react";
 import "../../styles/utils/Reservations.css";
 import "../../styles/utils/MyPageLayout.css"; // 기존 스타일 파일 추가
+import MyPageAside from "./MyPageAside"; 
+// import { AuthContext } from "../../context/AuthContext";
 
 const Reservations = () => {
-  const location = useLocation();
+  
   const [activeTab, setActiveTab] = useState("국내숙소");
   const [reservationList, setReservationList] = useState([]);
 
@@ -19,7 +20,7 @@ const Reservations = () => {
 
   useEffect(() => {
     setReservationList(sampleData[activeTab] || []);
-  }, [activeTab]);
+  }, []);
 
   const handleFindTrips = () => {
     window.location.href = "/accommodations";
@@ -28,19 +29,7 @@ const Reservations = () => {
   return (
     <div className="page-wrapper">
       {/* 사이드바 */}
-      <aside className="sidebar">
-        <ul>
-          <li className={location.pathname === "/mypage/bookings" ? "active" : ""}>
-            <Link to="/mypage/bookings">예약 내역</Link>
-          </li>
-          <li className={location.pathname === "/mypage/wishlist" ? "active" : ""}>
-            <Link to="/mypage/wishlist">찜 목록</Link>
-          </li>
-          <li className={location.pathname === "/mypage/profile" ? "active" : ""}>
-            <Link to="/mypage/profile">내 정보 관리</Link>
-          </li>
-        </ul>
-      </aside>
+      <MyPageAside/>
 
       {/* 콘텐츠 */}
       <section className="page-content">

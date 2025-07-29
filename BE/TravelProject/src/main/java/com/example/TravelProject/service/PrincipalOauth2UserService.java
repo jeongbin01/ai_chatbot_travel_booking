@@ -1,7 +1,7 @@
 package com.example.TravelProject.service;
 
 
-import com.example.TravelProject.dto.GoogleOAuth2User;
+import com.example.TravelProject.dto.login.GoogleOAuth2User;
 import com.example.TravelProject.entity.useraccount.SocialAccount;
 import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.repository.UserAccount.SocialAccountRepository;
