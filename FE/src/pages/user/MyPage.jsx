@@ -61,7 +61,7 @@ const MyPage = () => {
         }
       };
       getUser();
-    }, [auth, navigate]);
+    }, [auth]);
 
   const handleModify = () => {
     setIsEditable((prev) => !prev); // 토글
@@ -85,7 +85,7 @@ const MyPage = () => {
         <div className="info-grid">
           <div className="form-field">
             <label>닉네임</label>
-            <input type="text" value={userData.nickname && ""} readOnly={!isEditable} />
+            <input type="text" value={userData.nickname || ""} readOnly={!isEditable} />
           </div>
 
           <div className="form-field">

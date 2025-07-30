@@ -2,7 +2,6 @@ package com.example.TravelProject.controller.room;
 
 import com.example.TravelProject.entity.room.Accommodation;
 import com.example.TravelProject.service.Room.AccommodationService;
-import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,6 @@ public class AccommodationController {
     }
 
     // 숙소 ID로 조회
-    @Operation(summary = " 제목 표시 ", description = " 설명글")
     @GetMapping("/{id}")
     public Optional<Accommodation> getAccommodationById(@PathVariable Integer id) {
         return accommodationService.findById(id);
