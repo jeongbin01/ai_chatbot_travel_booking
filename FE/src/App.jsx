@@ -26,6 +26,7 @@ import MyPage from "./pages/user/MyPage";
 import Favorites from "./pages/user/Favorites";
 import Reservations from "./pages/user/reservations";
 import OverseasAccommodationList from "./pages/accommodations/해외 숙소/OverseasAccommodationList";
+import OverseasAccommodationDetail from "./pages/accommodations/해외 숙소/OverseasAccommodationDetail";
 
 function App() {
   const location = useLocation();
@@ -79,7 +80,7 @@ function App() {
 
             {/* 해외숙소 */}
             <Route path="/overseaspages" element={<OverseasAccommodationList />} />
-            <Route path="/overseaspages/:id" element={<AccommodationDetail />} />
+            <Route path="/overseaspages/:id" element={<OverseasAccommodationDetail />} />
 
             {/* 마이페이지 */}
             <Route path="/mypage/profile" element={<MyPage />} />
