@@ -11,7 +11,8 @@ const MyPage = () => {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState(null);
-  const [name, setName] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
@@ -38,8 +39,9 @@ const MyPage = () => {
             userId: data.userId,
             userRole: data.userRole,
             username: data.username,
+            phoneNumber: data.phoneNumber,
+            registrationDate: data.registrationDate
           });
-          if (data.username) setName(data.username);
         } else {
           if (auth.oauthSelect == 0) {
           // 일반 계정이면 /MyUser 요청
@@ -52,8 +54,9 @@ const MyPage = () => {
               userId: data.userId,
               userRole: data.userRole,
               username: data.username,
+              phoneNumber: data.phoneNumber,
+              registrationDate: data.registrationDate
             });
-            if (data.username) setName(data.username);
             }
           }
         } catch (e) {
@@ -61,7 +64,15 @@ const MyPage = () => {
         }
       };
       getUser();
-    }, [auth, navigate]);
+  }, [auth, navigate]);
+  
+  useEffect(() => {
+    if (userData) {
+      setNickname(userData.nickname || "");
+      setPhoneNumber(userData.phoneNumber || "");
+    }
+  }, [userData]);
+
 
   const handleModify = () => {
     setIsEditable((prev) => !prev); // 토글
@@ -84,29 +95,29 @@ const MyPage = () => {
         <h2>내 정보 관리</h2>
         <div className="info-grid">
           <div className="form-field">
-            <label>닉네임</label>
-            <input type="text" value={userData.nickname && ""} readOnly={!isEditable} />
+            <label>아이디</label>
+            <input type="text" value={userData.username} readOnly/>
           </div>
 
           <div className="form-field">
-            <label>예약자 이름</label>
-            <input
-              type="text"
-              value={name}
-              placeholder="미입력 (앱에서 입력해 주세요.)"
-              onChange={(e) => setName(e.target.value)}
-              readOnly={!isEditable}
-            />
+            <label>닉네임</label>
+            <input type="text" 
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              readOnly={!isEditable} />
+          </div>
+
+          <div className="form-field">
+            <label>생성날짜</label>
+            <input type="text" value={userData.registrationDate.split("T")[0] } readOnly />
           </div>
 
           <div className="form-field">
             <label>휴대폰 번호</label>
-            <input type="text" value="01024354661" readOnly={!isEditable}/>
-          </div>
-
-          <div className="form-field">
-            <label>생년월일</label>
-            <input type="text" value="2001년 10월 25일" readOnly={!isEditable} />
+            <input type="text" 
+              value={phoneNumber} 
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              readOnly={!isEditable}/>
           </div>
 
           <div className="form-field full">
@@ -126,19 +137,33 @@ const MyPage = () => {
         </div>
 
         <div className="device-section">
-          <button className="logout-btn" onClick={handleModify}>
+          <button
+            className="logout-btn"
+            onClick={() => {
+              if (isEditable) {
+                setNickname(userData.nickname || "");
+                setPhoneNumber(userData.phoneNumber || "");
+                setIsEditable(false);
+              } else {
+                setIsEditable(true);
+              }
+            }}
+          >
             {isEditable ? "되돌아가기" : "수정모드"}
           </button>
-        </div>
-        
-        {isEditable ? 
-          <div className="device-section">
-            <button className="logout-btn" onClick={handleModify}>
+
+          {isEditable && (
+            <button
+              className="logout-btn"
+              onClick={() => {
+                setIsEditable(false);
+              }}
+            >
               수정완료
             </button>
-          </div> 
-        : null }
-
+          )}
+        </div>
+        
         <div className="withdraw-section">
           <p>더 이상 온쉼 이용을 원하지 않으신가요?</p>
           <button className="withdraw-btn" onClick={handleWithdraw}>
