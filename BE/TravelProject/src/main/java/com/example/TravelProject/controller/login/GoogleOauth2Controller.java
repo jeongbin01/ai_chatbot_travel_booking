@@ -6,6 +6,7 @@ import com.example.TravelProject.jwt.JwtProvider;
 import com.example.TravelProject.repository.UserAccount.SocialAccountRepository;
 import com.example.TravelProject.repository.UserAccount.UserRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,10 @@ public class GoogleOauth2Controller {
     private final JwtProvider jwtProvider;
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Operation(
+    	    summary = "Google 소셜 로그인 처리",
+    	    description = "프론트엔드에서 전달받은 Google access_token을 통해 사용자 정보를 조회하고, " +
+    	                  "회원가입 또는 로그인 처리를 진행한 뒤 JWT 토큰(access/refresh)을 반환합니다.")
     @PostMapping("/google")
     public ResponseEntity<?> googleCallback(@RequestBody Map<String, String> tokenData) {
         try {

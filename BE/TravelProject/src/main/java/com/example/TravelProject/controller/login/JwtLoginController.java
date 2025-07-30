@@ -6,6 +6,7 @@ import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.jwt.JwtProvider;
 import com.example.TravelProject.repository.UserAccount.UserRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,15 @@ public class JwtLoginController {
     private final JwtProvider jwtUProvider;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    
+    @Operation(
+    	    summary = "일반 로그인 (JWT 발급)",
+    	    description = """
+    	        사용자 아이디와 비밀번호를 검증한 후 accessToken 및 refreshToken을 발급합니다.
+    	        또한 사용자 정보(nickname, username, email 등)를 쿠키로 저장합니다.
+    	        성공 시 200 OK와 함께 사용자 정보를 JSON 형태로 반환합니다.
+    	        """
+    	)
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody JwtLoginRequest loginRequest, HttpServletResponse response) throws IOException {
         User user = userRepository.findByUsername(loginRequest.getUsername())
@@ -83,6 +93,16 @@ public class JwtLoginController {
         return ResponseEntity.ok(body);
     }
 
+
+    @Operation(
+        summary = "회원가입",
+        description = """
+        사용자 정보를 입력받아 회원가입을 처리합니다.
+        - 중복된 아이디 또는 이메일은 에러 반환
+        - 비밀번호는 BCrypt로 암호화 저장
+        - 기본 USER 권한 부여
+        """
+    )
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest request) {
 
