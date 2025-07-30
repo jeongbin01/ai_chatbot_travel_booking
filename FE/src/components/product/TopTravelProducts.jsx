@@ -7,6 +7,7 @@ import busan from "../../assets/images/국내 지역/부산.jpg";
 import gangneung from "../../assets/images/국내 지역/강릉.jpg";
 import incheon from "../../assets/images/국내 지역/인천.jpg";
 
+
 const destinations = [
   { name: "제주도", image: jeju, link: "/accommodations?region=jeju" },
   { name: "서울", image: seoul, link: "/accommodations?region=seoul" },

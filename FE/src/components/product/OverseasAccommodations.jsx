@@ -1,67 +1,56 @@
+// src/components/OverseasAccommodations.jsx
 import React, { useRef } from "react";
-import '../../styles/components/OverseasAccommodations.css'
+import "../../styles/components/OverseasAccommodations.css";
 
-
-import jeju from "../../assets/images/국내 지역/제주도.jpg";
-import seoul from "../../assets/images/국내 지역/서울.jpg";
-import busan from "../../assets/images/국내 지역/부산.jpg";
-import gangneung from "../../assets/images/국내 지역/강릉.jpg";
-import incheon from "../../assets/images/국내 지역/인천.jpg";
-import gyeongju from "../../assets/images/국내 지역/경주.jpg";
-import sokcho from "../../assets/images/국내 지역/속초.jpg";
-import jeonju from "../../assets/images/국내 지역/전주.jpg";
-import yeosu from "../../assets/images/국내 지역/여수.jpg";
-import namhae from "../../assets/images/국내 지역/남해.jpg";
+import fukuoka from "../../assets/images/해외 지역/후쿠오카.jpg";
+import bangkok from "../../assets/images/해외 지역/방콕.jpg";
+import paris from "../../assets/images/해외 지역/파리.jpg";
+import rome from "../../assets/images/해외 지역/로마.jpg";
+import singapore from "../../assets/images/해외 지역/싱가포르.jpg";
 
 const destinations = [
-  { name: "제주도", image: jeju, link: "/accommodations?region=jeju" },
-  { name: "서울", image: seoul, link: "/accommodations?region=seoul" },
-  { name: "부산", image: busan, link: "/accommodations?region=busan" },
-  { name: "강릉", image: gangneung, link: "/accommodations?region=gangneung" },
-  { name: "인천", image: incheon, link: "/accommodations?region=incheon" },
-  { name: "경주", image: gyeongju, link: "/accommodations?region=gyeongju" },
-  { name: "속초", image: sokcho, link: "/accommodations?region=sokcho" },
-  { name: "전주", image: jeonju, link: "/accommodations?region=jeonju" },
-  { name: "여수", image: yeosu, link: "/accommodations?region=yeosu" },
-  { name: "남해", image: namhae, link: "/accommodations?region=namhae" },
+  { name: "후쿠오카",     image: fukuoka,   link: "/accommodations?region=fukuoka" },
+  { name: "방콕",         image: bangkok,   link: "/accommodations?region=bangkok" },
+  { name: "파리",         image: paris,     link: "/accommodations?region=paris" },
+  { name: "로마",         image: rome,      link: "/accommodations?region=rome" },
+  { name: "싱가포르",     image: singapore, link: "/accommodations?region=singapore" }
 ];
 
 function OverseasAccommodations() {
   const scrollRef = useRef(null);
 
   const scrollLeft = () => {
-    scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
+    scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
   };
 
   const scrollRight = () => {
-    scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
+    scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
   };
 
   return (
-    <section className="domestic-container">
+    <section className="overseas-container">
       <h2 className="section-title">해외 인기 여행지</h2>
 
       <div className="slider-wrapper">
-        <button className="arrow left" onClick={scrollLeft}>
-          <i className="bi bi-chevron-left"></i>
-        </button>
+        <button className="arrow left"  onClick={scrollLeft}>&lt;</button>
 
         <div className="destination-scroll" ref={scrollRef}>
           {destinations.map((item, idx) => (
             <a href={item.link} className="destination-card" key={idx}>
-              <img src={item.image} alt={item.name} />
-              <h3>{item.name}</h3>
+              <img
+                src={item.image}
+                alt={item.name}
+                className="destination-image"
+              />
+              <h3 className="destination-name">{item.name}</h3>
             </a>
           ))}
         </div>
 
-        <button className="arrow right" onClick={scrollRight}>
-          <i className="bi bi-chevron-right"></i>
-        </button>
+        <button className="arrow right" onClick={scrollRight}>&gt;</button>
       </div>
     </section>
   );
 }
 
-
-export default OverseasAccommodations
+export default OverseasAccommodations;
