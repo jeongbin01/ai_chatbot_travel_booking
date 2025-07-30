@@ -18,17 +18,19 @@ const fetchAccommodations = async () => {
     const prices = priceRes.data;
 
     const result = accommodations.map((acc) => {
-      const relatedRoomTypes = roomTypes.filter(
-        (rt) => rt.accommodation_id === acc.accommodation_id
-      );
-      const primaryRoomType = relatedRoomTypes[0];
-      const price = prices[0]?.basePrice ?? 0;
-      const mainImage = images.find(
-        (img) =>
-          img.accommodation.accommodationId === acc.accommodationId &&
-          img.orderNum === 1
-      );
+      // 이 숙소에 해당하는 roomTypes
+      const relatedRoomTypes = roomTypes.filter(rt => rt.accommodation_id === acc.accommodation_id);
 
+      // 가장 첫 번째 roomType 기준으로 가격 및 인원 추출
+      const primaryRoomType = relatedRoomTypes[0];
+
+      // pricePolicy에서 해당 roomType_id의 정책 찾기
+      const price = prices[0]?.basePrice ?? 0;
+      // 이미지 중 order_num이 가장 작은 하나만 사용
+      const mainImage = images.find(
+        img => img.accommodation.accommodationId === acc.accommodationId && img.orderNum === 1
+      );
+      console.log(prices)
       return {
         id: acc.accommodationId,
         name: acc.name,
@@ -37,9 +39,7 @@ const fetchAccommodations = async () => {
         capacity: primaryRoomType?.max_occupancy ?? 0,
         rating: acc.ratingAvg ?? 0,
         liked: false,
-        image: mainImage?.imageUrl ?? "",
-        reviewCount: acc.reviewCount ?? null,
-        category: acc.category ?? null,
+        image: mainImage?.imageUrl ?? "", // 기본 이미지가 없으면 빈 문자열
       };
     });
     return { data: result };
@@ -49,7 +49,7 @@ const fetchAccommodations = async () => {
   }
 };
 
-export default function AccommodationList() {
+export default function OverseasAccommodationList() {
   const [accommodations, setAccommodations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -76,17 +76,18 @@ export default function AccommodationList() {
   const toggleLike = useCallback((id, event) => {
     event?.stopPropagation();
     setAccommodations((prev) =>
-      prev.map((acc) => (acc.id === id ? { ...acc, liked: !acc.liked } : acc))
+      prev.map((acc) =>
+        acc.id === id ? { ...acc, liked: !acc.liked } : acc
+      )
     );
   }, []);
 
   const filteredAccommodations = useMemo(() => {
     if (!search.trim()) return accommodations;
 
-    return accommodations.filter(
-      (acc) =>
-        acc.name.toLowerCase().includes(search.toLowerCase()) ||
-        acc.location.toLowerCase().includes(search.toLowerCase())
+    return accommodations.filter((acc) =>
+      acc.name.toLowerCase().includes(search.toLowerCase()) ||
+      acc.location.toLowerCase().includes(search.toLowerCase())
     );
   }, [accommodations, search]);
 
@@ -115,7 +116,10 @@ export default function AccommodationList() {
         <div className="error-message">
           <i className="bi bi-exclamation-triangle me-2"></i>
           {error}
-          <button className="btn-retry" onClick={() => window.location.reload()}>
+          <button 
+            className="btn-retry"
+            onClick={() => window.location.reload()}
+          >
             다시 시도
           </button>
         </div>
@@ -126,8 +130,13 @@ export default function AccommodationList() {
   return (
     <div className="accommodation-list-wrapper">
       <header className="accommodation-header">
-        <h2 className="accommodation-title">국내 숙소 목록</h2>
-        <div className="accommodation-stats">총 {filteredAccommodations.length}개의 숙소</div>
+        <h2 className="accommodation-title">
+          해외 숙소 목록
+        </h2>
+
+        <div className="accommodation-stats">
+          총 {filteredAccommodations.length}개의 숙소
+        </div>
       </header>
 
       <div className="search-container">
@@ -141,7 +150,11 @@ export default function AccommodationList() {
             aria-label="숙소 검색"
           />
           {search && (
-            <button className="search-clear" onClick={() => setSearch("")} aria-label="검색어 지우기">
+            <button 
+              className="search-clear"
+              onClick={() => setSearch("")}
+              aria-label="검색어 지우기"
+            >
               <i className="bi bi-x"></i>
             </button>
           )}
@@ -168,16 +181,16 @@ export default function AccommodationList() {
               aria-label={`${acc.name} 상세정보 보기`}
             >
               <button
-                className={`like-button ${acc.liked ? "liked" : ""}`}
+                className={`like-button ${acc.liked ? 'liked' : ''}`}
                 onClick={(e) => toggleLike(acc.id, e)}
                 aria-label={acc.liked ? "찜 해제" : "찜하기"}
               >
                 <i className={`bi ${acc.liked ? "bi-heart-fill" : "bi-heart"}`}></i>
               </button>
-
+              
               <div className="image-container">
                 <img
-                  src={acc.image || "/images/no-image.jpg"}
+                  src={acc.image}
                   alt={`${acc.name} 숙소 이미지`}
                   className="accommodation-image"
                   loading="lazy"
@@ -185,14 +198,16 @@ export default function AccommodationList() {
               </div>
 
               <div className="accommodation-content">
-                <h3 className="acc-name">{acc.name}</h3>
+                <h3 className="acc-name">
+                  {acc.name}
+                </h3>
                 <p className="acc-location">
-                  <i className="bi bi-geo-alt-fill me-1"></i>
+                  <i className="bi bi-geo-alt-fill me-1"></i> 
                   {acc.location}
                 </p>
                 <p className="acc-price">
-                  <span className="price-amount">{acc.price?.toLocaleString() ?? "가격 미정"}원</span>
-                  <span className="price-unit"> / 1박 {acc.capacity ?? 0}인</span>
+                  <span className="price-amount">{acc.price.toLocaleString()}원</span>
+                  <span className="price-unit"> / 1박 {acc.capacity}인</span>
                 </p>
                 <div className="acc-rating">
                   {renderStars(acc.rating)}
