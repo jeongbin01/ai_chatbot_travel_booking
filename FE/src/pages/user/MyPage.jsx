@@ -6,33 +6,27 @@ import MyPageAside from "./MyPageAside";
 import { AxiosClient } from "../../api/AxiosController.jsx";
 import { AuthContext } from "../../context/AuthContext";
 
-const STORAGE_KEY = (userId) => `userInfo_${userId}`;
-
 const MyPage = () => {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [userInfo, setUserInfo] = useState({
-    nickname: "",
-    name: "",
-    phone: "  ",
-    birthdate: "",
-    email: "",
-    gender: ""
-  });
-  const [isLoading, setIsLoading] = useState(true);
+  const [userData, setUserData] = useState(null);
+  const [name, setName] = useState("");
+  const [isEditable, setIsEditable] = useState(false);
 
-  // 1) 로컬스토리지나 API에서 불러오기
   useEffect(() => {
-    const load = async () => {
-      if (!auth?.userId) {
-        alert("로그인이 필요합니다.");
-        return navigate("/login");
+    const getUser = async () => {
+      if (!auth) {
+        alert("로그인 해주세요.");
+        navigate("/login");
+        return;
       }
+      console.log("auth.userId:", auth.userId);
       try {
         let response;
         let data;
         if (auth.oauthSelect == 1) {
+          // 소셜 로그인 계정이면 /mypage 요청
           response = await AxiosClient("mypage").getById(auth.userId);
           data = response.data[0];
           console.log(data)
@@ -60,136 +54,93 @@ const MyPage = () => {
               username: data.username,
             });
             if (data.username) setName(data.username);
+            }
           }
+        } catch (e) {
+          console.error("유저 정보 불러오기 실패", e);
         }
-      } catch {
-        console.warn("API 미연결 상태, 로컬 초기값 사용");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    load();
-  }, [auth, navigate]);
+      };
+      getUser();
+    }, [auth]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserInfo((p) => ({ ...p, [name]: value }));
+  const handleModify = () => {
+    setIsEditable((prev) => !prev); // 토글
   };
 
-  if (isLoading) return <div className="page-content">로딩 중...</div>;
+  const handleWithdraw = () => {
+    // if (window.confirm("정말 탈퇴하시겠습니까?")) {
+    //   alert("회원탈퇴가 완료되었습니다.");
+    //   // 탈퇴 API 호출 및 후처리 필요시 여기에 추가
+    // }
+  };
+
+  if (!userData) return <div>로딩중...</div>;
 
   return (
     <div className="page-wrapper">
       <MyPageAside />
+
       <section className="page-content">
         <h2>내 정보 관리</h2>
-        <div className="info-notice">
-          (현재는 DB 대신 로컬에 저장됩니다)
-        </div>
-
         <div className="info-grid">
-          {/* 닉네임 */}
           <div className="form-field">
             <label>닉네임</label>
-            <input
-              name="nickname"
-              value={userData.nickname}
-              onChange={handleChange}
-              placeholder="닉네임 입력"
-            />
+            <input type="text" value={userData.nickname || ""} readOnly={!isEditable} />
           </div>
 
-          {/* 예약자 이름 */}
           <div className="form-field">
             <label>예약자 이름</label>
-            <input name="name" value={userData.username} readOnly />
+            <input
+              type="text"
+              value={name}
+              placeholder="미입력 (앱에서 입력해 주세요.)"
+              onChange={(e) => setName(e.target.value)}
+              readOnly={!isEditable}
+            />
           </div>
 
-          {/* 휴대폰 번호 */}
           <div className="form-field">
             <label>휴대폰 번호</label>
-            <input
-              name="phone"
-              value="01012345678"
-              onChange={handleChange}
-              placeholder="01012345678"
-            />
+            <input type="text" value="01024354661" readOnly={!isEditable}/>
           </div>
 
-          {/* 생년월일 */}
           <div className="form-field">
             <label>생년월일</label>
+            <input type="text" value="2001년 10월 25일" readOnly={!isEditable} />
+          </div>
+
+          <div className="form-field full">
+            <label>이메일</label>
             <input
-              type="date"
-              name="birthdate"
-              value="2015.08.15"
-              onChange={handleChange}
+              type="text"
+              value={
+                userData.email
+                  ? userData.provider
+                    ? `${userData.email} (${userData.provider})`
+                    : userData.email
+                  : ""
+              }
+              readOnly
             />
           </div>
-
-          {/* 이메일 */}
-          <div className="form-field">
-            <label>이메일</label>
-            <input name="email" 
-            value={
-              userData?.email
-              ? userData.provider
-                ? `${userData.email} (${userData.provider})`
-                : userData.email
-              : ""
-            } 
-            readOnly />
-          </div>
-
-          {/* 성별 (라디오 버튼으로 변경) */}
-          <div className="form-field">
-            <label>성별</label>
-            <div className="radio-group">
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="남성"
-                  checked={userInfo.gender === "남성"}
-                  onChange={handleChange}
-                />
-                남성
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="여성"
-                  checked={userInfo.gender === "여성"}
-                  onChange={handleChange}
-                />
-                여성
-              </label>
-              <label>
-                <input
-                  type="radio"
-                  name="gender"
-                  value="기타"
-                  checked={userInfo.gender === "기타"}
-                  onChange={handleChange}
-                />
-                기타
-              </label>
-            </div>
-          </div>
         </div>
 
-        <div className="action-section">
-          <button className="submit-btn" onClick={handleUpdate}>
-            수정하기
-          </button>
-          <button className="logout-btn" onClick={handleLogoutAll}>
-            전체 로그아웃
+        <div className="device-section">
+          <button className="logout-btn" onClick={handleModify}>
+            {isEditable ? "되돌아가기" : "수정모드"}
           </button>
         </div>
+        
+        {isEditable ? 
+          <div className="device-section">
+            <button className="logout-btn" onClick={handleModify}>
+              수정완료
+            </button>
+          </div> 
+        : null }
 
         <div className="withdraw-section">
-          <p>더 이상 서비스 이용을 원하지 않으신가요?</p>
+          <p>더 이상 온쉼 이용을 원하지 않으신가요?</p>
           <button className="withdraw-btn" onClick={handleWithdraw}>
             회원탈퇴
           </button>
