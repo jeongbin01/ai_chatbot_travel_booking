@@ -42,6 +42,7 @@ public class MyPageService {
         user.setUserRole(dto.getUserRole());
         user.setNickname(dto.getNickname());
         user.setUsername(dto.getUsername());
+        user.setPhoneNumber(dto.getPhoneNumber());
 
         return userRepository.save(user);
     }

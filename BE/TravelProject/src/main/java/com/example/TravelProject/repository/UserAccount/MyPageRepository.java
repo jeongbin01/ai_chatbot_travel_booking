@@ -13,11 +13,10 @@ import java.util.List;
 @Repository
 public interface MyPageRepository extends JpaRepository<SocialAccount, Integer> {
 
-    @Query(value="SELECT new com.example.TravelProject.dto.login.MyPageDTO(" +
-            "u.userId, u.email, u.userRole, u.nickname, u.username, " +
+    @Query("SELECT new com.example.TravelProject.dto.login.MyPageDTO(" +
+            "u.userId, u.email, u.phoneNumber, u.registrationDate, u.userRole, u.nickname, u.username, " +
             "sa.socialAccountId, sa.provider) " +
-            "FROM SocialAccount sa JOIN User u ON sa.user.userId = u.userId WHERE u.userId = :userId "
-    )
+            "FROM SocialAccount sa JOIN sa.user u WHERE u.userId = :userId")
     List<MyPageDTO> findAllByUserId(@Param("userId") Integer userId);
 
 
