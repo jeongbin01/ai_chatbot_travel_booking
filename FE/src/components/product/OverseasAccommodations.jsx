@@ -1,53 +1,35 @@
 // src/components/OverseasAccommodations.jsx
-import React, { useRef } from "react";
+import React from "react";
 import "../../styles/components/OverseasAccommodations.css";
 
-import fukuoka from "../../assets/images/해외 지역/후쿠오카.jpg";
+import fukuoka from "../../assets/images/해외 지역/호쿠오카.jpg";
 import bangkok from "../../assets/images/해외 지역/방콕.jpg";
 import paris from "../../assets/images/해외 지역/파리.jpg";
 import rome from "../../assets/images/해외 지역/로마.jpg";
-import singapore from "../../assets/images/해외 지역/싱가포르.jpg";
+import singapore from "../../assets/images/해외 지역/싱카프로.jpg";
 
 const destinations = [
-  { name: "후쿠오카",     image: fukuoka,   link: "/accommodations?region=fukuoka" },
-  { name: "방콕",         image: bangkok,   link: "/accommodations?region=bangkok" },
-  { name: "파리",         image: paris,     link: "/accommodations?region=paris" },
-  { name: "로마",         image: rome,      link: "/accommodations?region=rome" },
-  { name: "싱가포르",     image: singapore, link: "/accommodations?region=singapore" }
+  { name: "후쿠오카", image: fukuoka, link: "/accommodations?region=fukuoka" },
+  { name: "방콕", image: bangkok, link: "/accommodations?region=bangkok" },
+  { name: "파리", image: paris, link: "/accommodations?region=paris" },
+  { name: "로마", image: rome, link: "/accommodations?region=rome" },
+  { name: "싱가포르", image: singapore, link: "/accommodations?region=singapore"}
 ];
 
 function OverseasAccommodations() {
-  const scrollRef = useRef(null);
-
-  const scrollLeft = () => {
-    scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
-  };
-
-  const scrollRight = () => {
-    scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
-  };
-
   return (
-    <section className="overseas-container">
+    <section className="domestic-container">
       <h2 className="section-title">해외 인기 여행지</h2>
 
       <div className="slider-wrapper">
-        <button className="arrow left"  onClick={scrollLeft}>&lt;</button>
-
-        <div className="destination-scroll" ref={scrollRef}>
+        <div className="destination-scroll">
           {destinations.map((item, idx) => (
             <a href={item.link} className="destination-card" key={idx}>
-              <img
-                src={item.image}
-                alt={item.name}
-                className="destination-image"
-              />
-              <h3 className="destination-name">{item.name}</h3>
+              <img src={item.image} alt={item.name} />
+              <h3>{item.name}</h3>
             </a>
           ))}
         </div>
-
-        <button className="arrow right" onClick={scrollRight}>&gt;</button>
       </div>
     </section>
   );
