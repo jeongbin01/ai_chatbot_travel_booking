@@ -1,8 +1,8 @@
-# 🧠 AI Chatbot Travel Booking API
+# AI Chatbot Travel Booking API
 
 `ai_chatbot_travel_booking` 프로젝트는 AI 챗봇 기반의 숙박/여행 예약 플랫폼입니다. 이 문서는 백엔드 REST API 엔드포인트들을 정리한 문서입니다.
 
-## 📍 기본 정보
+## 기본 정보
 
 - **Base URL**: `http://localhost:8888`
 - **Content-Type**: `application/json`
@@ -14,7 +14,7 @@ Authorization: Bearer {jwt_token}
 
 ---
 
-## 🔐 1. 인증(Authentication) API
+## 1. 인증(Authentication) API
 
 ### 1.1 회원가입
 
@@ -54,7 +54,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 👤 2. 사용자 API
+## 2. 사용자 API
 
 ### 마이페이지
 
@@ -66,7 +66,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 🛏️ 3. 숙소 API
+##  3. 숙소 API
 
 ### 숙소 관리
 
@@ -87,7 +87,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 🏨 4. 객실/객실 타입 API
+## 4. 객실/객실 타입 API
 
 * `GET /app/rooms/{roomId}`: 객실 조회
 * `GET /app/room-types/{roomTypeId}`: 객실 타입 조회
@@ -95,7 +95,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 📅 5. 예약 API
+## 5. 예약 API
 
 * `POST /app/bookings`: 예약 생성
 * `GET /app/bookings/user/{userId}`: 사용자 예약 목록
@@ -104,7 +104,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 💳 6. 결제/환불 API
+## 6. 결제/환불 API
 
 ### 결제
 
@@ -118,7 +118,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 🎟️ 7. 쿠폰/프로모션 API
+## 7. 쿠폰/프로모션 API
 
 * `GET /api/coupons/code/{couponCode}`: 쿠폰 코드 조회
 * `GET /api/user-coupons/user/{userId}`: 사용자 보유 쿠폰
@@ -126,7 +126,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 🧳 8. 여행 상품 API
+## 8. 여행 상품 API
 
 * `GET /app/travel-products/{productId}`: 상품 상세
 * `GET /app/itineraries/product/{productId}`: 일정 조회
@@ -135,7 +135,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 📝 9. 리뷰 API
+## 9. 리뷰 API
 
 * `GET /app/reviews/{id}`: 리뷰 조회
 * `DELETE /app/reviews/{id}`: 리뷰 삭제
@@ -143,7 +143,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 📦 공통 응답 코드
+## 공통 응답 코드
 
 | 상태 코드 | 의미     |
 | ----- | ------ |
@@ -158,7 +158,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 🛠️ 기술 스택
+## 기술 스택
 
 * Spring Boot (Spring Security, OAuth2)
 * JWT 인증 기반 로그인
@@ -167,7 +167,7 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 📂 프로젝트 구조
+## 프로젝트 구조
 
 ```
 ├── controller/
@@ -181,18 +181,17 @@ Google 인증 코드 기반 로그인
 
 ---
 
-## 🧪 테스트 및 문서 확인
+## 테스트 및 문서 확인
 
 * Swagger UI: [http://localhost:8888/swagger-ui/index.html](http://localhost:8888/swagger-ui/index.html)
 
 ---
 
-> ✨ 본 문서는 `controller` 디렉토리 기반 자동 생성 문서를 가공한 예시입니다. 각 API의 **Request/Response DTO 구조**는 Swagger 또는 추가 문서에서 확인 가능합니다.
+> 본 문서는 `controller` 디렉토리 기반 자동 생성 문서를 가공한 예시입니다. 각 API의 **Request/Response DTO 구조**는 Swagger 또는 추가 문서에서 확인 가능합니다.
 
 ```
 
 ---
 
-이제 `README.md` 파일에 위 마크다운을 복사해서 붙여 넣으면, 프로젝트 소개 + API 개요 + 요청 예시 + 기술 스택 등을 깔끔하게 정리할 수 있습니다.  
-필요 시 *Request Body*, *Response Body* 예시나 Swagger 캡처 이미지도 추가 가능합니다. 원한다면 Notion용, Wiki용, PDF용도 버전도 만들어드릴 수 있어요!
+이제 `README.md` 파일에 위 마크다운을 복사해서 붙여 넣으면, 프로젝트 소개 + API 개요 + 요청 예시 + 기술 스택 등
 ```
