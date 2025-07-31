@@ -46,7 +46,7 @@ public class AccommodationService {
         return accommodationRepository.findByNameContaining(keyword);
     }
 
-    // ✅ is_domestic = 'Y' or 'N' 필터로 숙소 조회
+    // is_domestic = 'Y' or 'N' 필터로 숙소 조회
     public List<Accommodation> findByIsDomestic(String isDomestic) {
         return accommodationRepository.findByIsDomestic(isDomestic);
     }
