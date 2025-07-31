@@ -1,0 +1,518 @@
+## ai_chatbot_travel_booking API Documentation
+
+## 개요
+이 문서는ai_chatbot_travel_booking 프로젝트의 REST API 엔드포인트들을 설명합니다.
+
+* **Base URL**: `http://localhost:8888`
+* **Content-Type**: `application/json`
+* **인증**: JWT 토큰 (로그인 후 발급된 토큰을 요청 헤더에 포함)
+
+  ```
+  Authorization: Bearer {jwt_token}
+  ```
+
+---
+
+## 1. 인증(Authentication) API
+
+### 1.1 회원가입 (JwtLoginController)
+
+* **URL**: `POST /app/signup`
+* **설명**: 새 사용자 계정을 생성합니다.
+* **Request Body**: JSON 형식으로 이메일, 비밀번호 등을 전달
+
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123",
+    "name": "사용자명"
+  }
+  ```
+* **Response (201)**: 생성된 사용자 정보
+
+### 1.2 JWT 로그인 (JwtLoginController)
+
+* **URL**: `POST /app/login`
+* **설명**: 사용자 자격증명을 확인하고 JWT 토큰을 발급합니다.
+* **Request Body**:
+
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+* **Response (200)**:
+
+  ```json
+  {
+    "id": 1,
+    "token": "jwt_token_here"
+  }
+  ```
+
+### 1.3 구글 OAuth 로그인 (GoogleOauth2Controller)
+
+* **URL**: `POST /app/oauth/google`
+* **설명**: 구글 OAuth2 인증 코드를 받아 로그인 처리 및 JWT 발급
+* **Request Body**:
+
+  ```json
+  {
+    "code": "google_auth_code"
+  }
+  ```
+* **Response (200)**:
+
+  ```json
+  {
+    "id": 1,
+    "token": "jwt_token_here"
+  }
+  ```
+
+---
+
+## 2. 사용자 관리(User) API
+
+### 2.1 마이페이지 조회/수정/삭제 (MyPageController)
+
+* **URL**: `GET /app/mypage/{userId}`
+
+  * **설명**: 특정 사용자의 마이페이지(프로필) 정보를 조회
+* **URL**: `PUT /app/mypage/user/{userId}`
+
+  * **설명**: 사용자 프로필 정보 수정
+  * **Request Body**: 수정할 사용자 정보(JSON)
+* **URL**: `DELETE /app/mypage/user/{userId}`
+
+  * **설명**: 사용자 계정 삭제
+* **URL**: `PUT /app/mypage/social/{socialAccountId}`
+
+  * **설명**: 소셜 계정 정보 수정
+* **URL**: `DELETE /app/mypage/social/{socialAccountId}`
+
+  * **설명**: 소셜 계정 연결 해제
+
+### 2.2 사용자 상세 조회/수정/삭제 (MyUserController)
+
+* **URL**: `GET /app/myuser/{userId}`
+
+  * **설명**: 사용자 기본 정보 조회
+* **URL**: `PUT /app/myuser/{userId}`
+
+  * **설명**: 사용자 정보 수정
+* **URL**: `DELETE /app/myuser/{userId}`
+
+  * **설명**: 사용자 정보 삭제
+
+---
+
+## 3. 관리자(Admin) API
+
+### 3.1 관리자 홈/로그인/로그아웃 (AdministerController)
+
+* **URL**: `GET /admin/`
+
+  * **설명**: 관리자 대시보드 인덱스
+* **URL**: `GET /admin/login`
+
+  * **설명**: 관리자 로그인 페이지
+* **URL**: `GET /admin/logout`
+
+  * **설명**: 관리자 로그아웃
+
+---
+
+## 4. 예약(Booking) API
+
+### 4.1 예약 관리 (BookingController)
+
+* **URL**: `GET    /app/bookings`
+
+  * **설명**: 전체 예약 목록 조회
+* **URL**: `GET    /app/bookings/{id}`
+
+  * **설명**: 예약 ID로 단건 조회
+* **URL**: `GET    /app/bookings/user/{userId}`
+
+  * **설명**: 사용자 ID로 예약 목록 조회
+* **URL**: `GET    /app/bookings/accommodation/{accommodationId}`
+
+  * **설명**: 숙소 ID로 예약 목록 조회
+* **URL**: `GET    /app/bookings/room-type/{roomTypeId}`
+
+  * **설명**: 룸타입 ID로 예약 목록 조회
+* **URL**: `GET    /app/bookings/status/{status}`
+
+  * **설명**: 상태별 예약 목록 조회
+* **URL**: `GET    /app/bookings/user/{userId}/status/{status}`
+
+  * **설명**: 사용자+상태별 예약 목록 조회
+* **URL**: `GET    /app/bookings/recent/{status}`
+
+  * **설명**: 특정 상태 기준 최신순 조회
+* **URL**: `POST   /app/bookings`
+
+  * **설명**: 새 예약 등록
+  * **Request Body**: Booking 객체(JSON)
+* **URL**: `PUT    /app/bookings/{id}`
+
+  * **설명**: 예약 정보 수정
+  * **Request Body**: 업데이트할 Booking 객체(JSON)
+* **URL**: `DELETE /app/bookings/{id}`
+
+  * **설명**: 예약 삭제
+
+### 4.2 예약 손님 관리 (BookingGuestController)
+
+* **URL**: `GET    /app/booking-guest/{guestId}`
+
+  * **설명**: 예약 손님 ID로 조회
+* **URL**: `GET    /app/booking-guest/email`
+
+  * **설명**: 이메일로 손님 조회
+* **URL**: `POST   /app/booking-guest`
+
+  * **설명**: 새 예약 손님 등록
+* **URL**: `PUT    /app/booking-guest/{guestId}`
+
+  * **설명**: 예약 손님 정보 수정
+* **URL**: `DELETE /app/booking-guest/{guestId}`
+
+  * **설명**: 예약 손님 삭제
+
+---
+
+## 5. 결제(Payment) & 환불(Refund) API
+
+### 5.1 결제 처리 (PaymentController)
+
+* **URL**: `GET    /app/payment/{paymentId}`
+
+  * **설명**: 결제 ID 조회
+* **URL**: `GET    /app/payment/user/{userId}`
+
+  * **설명**: 사용자별 결제 내역 조회
+* **URL**: `GET    /app/payment/user/{userId}/status/{status}`
+
+  * **설명**: 사용자+상태별 결제 내역 조회
+* **URL**: `GET    /app/payment/recent/{status}`
+
+  * **설명**: 특정 상태 기준 최신 결제 조회
+* **URL**: `POST   /app/payment`
+
+  * **설명**: 결제 생성
+* **URL**: `PUT    /app/payment/{paymentId}`
+
+  * **설명**: 결제 정보 수정
+* **URL**: `DELETE /app/payment/{paymentId}`
+
+  * **설명**: 결제 삭제
+
+### 5.2 환불 처리 (RefundController)
+
+* **URL**: `GET    /app/refund/{refundId}`
+
+  * **설명**: 환불 ID 조회
+* **URL**: `GET    /app/refund/payment/{paymentId}/status/{status}`
+
+  * **설명**: 결제 ID+상태별 환불 조회
+* **URL**: `GET    /app/refund/user/{userId}`
+
+  * **설명**: 사용자별 환불 내역 조회
+* **URL**: `POST   /app/refund`
+
+  * **설명**: 환불 생성
+* **URL**: `DELETE /app/refund/{refundId}`
+
+  * **설명**: 환불 요청 취소
+
+---
+
+## 6. 쿠폰(Coupon) API
+
+### 6.1 쿠폰 기본 관리 (CouponController)
+
+* **URL**: `GET    /api/coupons/{id}`
+
+  * **설명**: 쿠폰 ID 조회
+* **URL**: `GET    /api/coupons/code/{couponCode}`
+
+  * **설명**: 쿠폰 코드 조회
+* **URL**: `GET    /api/coupons/available`
+
+  * **설명**: 사용 가능한 쿠폰 목록 조회
+* **URL**: `DELETE /api/coupons/{id}`
+
+  * **설명**: 쿠폰 삭제
+
+### 6.2 프로모션 관리 (PromotionContronller)
+
+* **URL**: `GET    /api/promotions/{id}`
+
+  * **설명**: 프로모션 ID 조회
+* **URL**: `DELETE /api/promotions/{id}`
+
+  * **설명**: 프로모션 삭제
+
+### 6.3 사용자 쿠폰 (UserCouponController)
+
+* **URL**: `GET    /api/user-coupons/user/{userId}`
+
+  * **설명**: 사용자별 소유 쿠폰 조회
+* **URL**: `GET    /api/user-coupons/user/{userId}/available`
+
+  * **설명**: 사용자별 사용 가능 쿠폰 조회
+* **URL**: `GET    /api/user-coupons/check`
+
+  * **설명**: 쿠폰 사용 가능 여부 확인
+
+---
+
+## 7. 리뷰(Review) API
+
+### 7.1 리뷰 관리 (ReviewController)
+
+* **URL**: `GET    /app/reviews/{id}`
+
+  * **설명**: 리뷰 ID 조회
+* **URL**: `DELETE /app/reviews/{id}`
+
+  * **설명**: 리뷰 삭제
+
+### 7.2 리뷰 이미지 (ReviewImageController)
+
+* **URL**: `GET    /app/review-images/{id}`
+
+  * **설명**: 이미지 ID 조회
+* **URL**: `GET    /app/review-images/review/{reviewId}`
+
+  * **설명**: 특정 리뷰의 이미지 목록 조회
+* **URL**: `DELETE /app/review-images/{id}`
+
+  * **설명**: 리뷰 이미지 삭제
+
+---
+
+## 8. 숙소(Accommodation) API
+
+### 8.1 숙소 기본 관리 (AccommodationController)
+
+* **URL**: `GET    /app/accommodations`
+
+  * **설명**: 전체 숙소 목록 조회
+* **URL**: `GET    /app/accommodations/{id}`
+
+  * **설명**: 숙소 ID 조회
+* **URL**: `GET    /app/accommodations/user/{userId}`
+
+  * **설명**: 호스트(사용자)별 숙소 조회
+* **URL**: `GET    /app/accommodations/search?name={keyword}`
+
+  * **설명**: 숙소 이름으로 검색
+* **URL**: `DELETE /app/accommodations/{id}`
+
+  * **설명**: 숙소 삭제
+* **URL**: `POST   /app/accommodations`
+
+  * **설명**: 새 숙소 등록
+* **URL**: `PUT    /app/accommodations/{id}`
+
+  * **설명**: 숙소 정보 수정
+
+### 8.2 숙소 이미지 (AccommodationImageController)
+
+* **URL**: `GET    /app/accommodation-images/{accommodationId}`
+
+  * **설명**: 숙소별 이미지 목록 조회
+* **URL**: `GET    /app/accommodation-images/{accommodationId}/thumbnail`
+
+  * **설명**: 썸네일 이미지 조회
+* **URL**: `GET    /app/accommodation-images/image/{imageId}`
+
+  * **설명**: 이미지 ID 조회
+* **URL**: `DELETE /app/accommodation-images/{imageId}`
+
+  * **설명**: 이미지 삭제
+* **URL**: `DELETE /app/accommodation-images/all/{accommodationId}`
+
+  * **설명**: 숙소의 모든 이미지 삭제
+
+### 8.3 숙소 별 편의시설 (AccommodationAmenityController)
+
+* **URL**: `GET /api/accommodation-amenities/{accommodationId}`
+
+  * **설명**: 숙소별 편의시설 목록 조회
+* **URL**: `GET /api/accommodation-amenities/exists?amenityId={amenityId}&accommodationId={accommodationId}`
+
+  * **설명**: 특정 편의시설 존재 여부 확인
+
+### 8.4 편의시설 관리 (AmenityController)
+
+* **URL**: `GET    /api/amenities/{id}`
+
+  * **설명**: 편의시설 ID 조회
+* **URL**: `DELETE /api/amenities/{id}`
+
+  * **설명**: 편의시설 삭제
+
+---
+
+## 9. 객실(Room) API
+
+### 9.1 객실 기본 관리 (RoomController)
+
+* **URL**: `GET    /app/rooms/{roomId}`
+
+  * **설명**: 객실 ID 조회
+* **URL**: `PUT    /app/rooms/{roomId}`
+
+  * **설명**: 객실 정보 수정
+* **URL**: `DELETE /app/rooms/{roomId}`
+
+  * **설명**: 객실 삭제
+
+### 9.2 객실 타입(RoomTypeController)
+
+* **URL**: `GET    /app/room-types/{roomTypeId}`
+
+  * **설명**: 객실 타입 ID 조회
+* **URL**: `PUT    /app/room-types/{roomTypeId}`
+
+  * **설명**: 객실 타입 정보 수정
+* **URL**: `DELETE /app/room-types/{roomTypeId}`
+
+  * **설명**: 객실 타입 삭제
+
+### 9.3 객실 타입 이미지 (RoomTypeImageController)
+
+* **URL**: `GET    /app/room-type-images/room-type/{roomTypeId}`
+
+  * **설명**: 객실 타입별 이미지 목록 조회
+* **URL**: `GET    /app/room-type-images/{imageId}`
+
+  * **설명**: 이미지 ID 조회
+* **URL**: `DELETE /app/room-type-images/{imageId}`
+
+  * **설명**: 이미지 삭제
+
+### 9.4 객실 편의시설 (RoomAmenityController)
+
+* **URL**: `GET    /api/room-amenities/{id}`
+
+  * **설명**: 객실 편의시설 ID 조회
+* **URL**: `DELETE /api/room-amenities/{id}`
+
+  * **설명**: 객실 편의시설 삭제
+
+### 9.5 클라이언트용 객실 조회 (RoomClientController)
+
+* **URL**: `GET /app/roomClient/{roomId}`
+
+  * **설명**: 클라이언트용 객실 상세 조회
+
+---
+
+## 10. 여행 상품(Travel Product) API
+
+### 10.1 여행 상품 기본 관리 (TravelProductController)
+
+* **URL**: `GET    /app/travel-products/{productId}`
+
+  * **설명**: 여행 상품 ID 조회
+* **URL**: `PUT    /app/travel-products/{productId}`
+
+  * **설명**: 여행 상품 정보 수정
+* **URL**: `DELETE /app/travel-products/{productId}`
+
+  * **설명**: 여행 상품 삭제
+
+### 10.2 포함 서비스(IncludedServiceController)
+
+* **URL**: `GET    /app/included-services/{serviceId}`
+
+  * **설명**: 서비스 ID 조회
+* **URL**: `DELETE /app/included-services/{serviceId}`
+
+  * **설명**: 포함 서비스 삭제
+
+### 10.3 일정(ItineraryController)
+
+* **URL**: `GET    /app/itineraries/{itineraryId}`
+
+  * **설명**: 일정 ID 조회
+* **URL**: `GET    /app/itineraries/product/{productId}`
+
+  * **설명**: 상품별 일정 목록 조회
+* **URL**: `PUT    /app/itineraries/{itineraryId}`
+
+  * **설명**: 일정 정보 수정
+* **URL**: `DELETE /app/itineraries/{itineraryId}`
+
+  * **설명**: 일정 삭제
+
+### 10.4 상품 이미지(ProductImageController)
+
+* **URL**: `GET    /app/product-images/{imageId}`
+
+  * **설명**: 이미지 ID 조회
+* **URL**: `GET    /app/product-images/product/{productId}`
+
+  * **설명**: 상품별 이미지 목록 조회
+* **URL**: `PUT    /app/product-images/{imageId}`
+
+  * **설명**: 이미지 정보 수정
+* **URL**: `DELETE /app/product-images/{imageId}`
+
+  * **설명**: 이미지 삭제
+
+### 10.5 판매 일정(ProductScheduleController)
+
+* **URL**: `GET    /app/product-schedules/{scheduleId}`
+
+  * **설명**: 일정 ID 조회
+* **URL**: `GET    /app/product-schedules/product/{productId}`
+
+  * **설명**: 상품별 일정 목록 조회
+* **URL**: `GET    /app/product-schedules/upcoming`
+
+  * **설명**: 다가오는 일정 조회
+* **URL**: `PUT    /app/product-schedules/{scheduleId}`
+
+  * **설명**: 일정 정보 수정
+* **URL**: `DELETE /app/product-schedules/{scheduleId}`
+
+  * **설명**: 일정 삭제
+
+### 10.6 서비스(ServiceController)
+
+* **URL**: `GET    /app/services/{serviceId}`
+
+  * **설명**: 서비스 ID 조회
+* **URL**: `PUT    /app/services/{serviceId}`
+
+  * **설명**: 서비스 정보 수정
+* **URL**: `DELETE /app/services/{serviceId}`
+
+  * **설명**: 서비스 삭제
+
+---
+
+### 공통 응답 코드
+
+| 상태 코드 | 설명      |
+| ----- | ------- |
+| 200   | 성공      |
+| 201   | 생성됨     |
+| 204   | 내용 없음   |
+| 400   | 잘못된 요청  |
+| 401   | 인증되지 않음 |
+| 403   | 권한 없음   |
+| 404   | 찾을 수 없음 |
+| 500   | 서버 오류   |
+
+---
+
+> 위 문서는 `controller.zip`에 포함된 모든 `@RestController` 클래스와 그 메서드를 기반으로 자동 생성한 예시입니다.
+> 필요에 따라 **Request Body**, **Query Parameter**, **Response DTO** 등을 상세히 보강하시면 완성도 높은 API 문서를 완성하실 수 있습니다.
