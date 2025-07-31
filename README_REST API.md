@@ -1,10 +1,3 @@
-물론입니다! 위에서 정리한 `ai_chatbot_travel_booking` 프로젝트의 REST API 문서를 기반으로, `README.md` 파일에 넣을 수 있는 **리드미 마크다운 예시 코드**를 아래에 제공합니다.
-
----
-
-## ✅ `README.md` 작성 예시
-
-````md
 # 🧠 AI Chatbot Travel Booking API
 
 `ai_chatbot_travel_booking` 프로젝트는 AI 챗봇 기반의 숙박/여행 예약 플랫폼입니다. 이 문서는 백엔드 REST API 엔드포인트들을 정리한 문서입니다.
