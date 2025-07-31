@@ -49,7 +49,7 @@ public class TravelProductController {
             """
     )
     @GetMapping("/{id}")
-    public ResponseEntity<TravelProduct> getById(@PathVariable("id") Integer id) {
+    public ResponseEntity<TravelProduct> getById(@PathVariable Integer id) {
         return travelProductService.getProductById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -63,7 +63,7 @@ public class TravelProductController {
             """
     )
     @PutMapping("/{id}")
-    public ResponseEntity<TravelProduct> update(@PathVariable("id") Integer id, @RequestBody TravelProduct product) {
+    public ResponseEntity<TravelProduct> update(@PathVariable Integer id, @RequestBody TravelProduct product) {
         return ResponseEntity.ok(travelProductService.updateProduct(id, product));
     }
 
@@ -75,7 +75,7 @@ public class TravelProductController {
             """
     )
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         travelProductService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }

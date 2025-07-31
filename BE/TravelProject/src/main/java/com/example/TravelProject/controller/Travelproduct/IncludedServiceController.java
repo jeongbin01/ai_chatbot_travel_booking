@@ -56,7 +56,7 @@ public class IncludedServiceController {
             """
     )
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<IncludedService>> getByProduct(@PathVariable("productId") Integer productId) {
+    public ResponseEntity<List<IncludedService>> getByProduct(@PathVariable Integer productId) {
         List<IncludedService> list = includedServiceService.getIncludedServicesByProductId(productId);
         return ResponseEntity.ok(list);
     }
@@ -70,8 +70,8 @@ public class IncludedServiceController {
     )
     @DeleteMapping("/{productId}/{serviceId}")
     public ResponseEntity<Void> deleteIncludedService(
-            @PathVariable("productId") Integer productId,
-            @PathVariable("serviceId") Integer serviceId) {
+            @PathVariable Integer productId,
+            @PathVariable Integer serviceId) {
         includedServiceService.deleteIncludedService(productId, serviceId);
         return ResponseEntity.noContent().build();
     }

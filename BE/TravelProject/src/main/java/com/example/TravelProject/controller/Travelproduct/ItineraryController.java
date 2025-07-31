@@ -52,7 +52,7 @@ public class ItineraryController {
             """
     )
     @GetMapping("/{itineraryId}")
-    public ResponseEntity<Itinerary> getItineraryById(@PathVariable("itineraryId") Integer itineraryId) {
+    public ResponseEntity<Itinerary> getItineraryById(@PathVariable Integer itineraryId) {
         Itinerary iti = itineraryService.getItineraryById(itineraryId);
         return ResponseEntity.ok(iti);
     }
@@ -65,7 +65,7 @@ public class ItineraryController {
             """
     )
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<Itinerary>> getByProduct(@PathVariable("productId") Integer productId) {
+    public ResponseEntity<List<Itinerary>> getByProduct(@PathVariable Integer productId) {
         List<Itinerary> list = itineraryService.getItinerariesByProductId(productId);
         return ResponseEntity.ok(list);
     }
@@ -79,7 +79,7 @@ public class ItineraryController {
     )
     @PutMapping("/{itineraryId}")
     public ResponseEntity<Itinerary> updateItinerary(
-            @PathVariable("itineraryId") Integer itineraryId,
+            @PathVariable Integer itineraryId,
             @RequestBody ItineraryDto dto
     ) {
         Itinerary updated = itineraryService.updateItinerary(itineraryId, dto);
@@ -94,7 +94,7 @@ public class ItineraryController {
             """
     )
     @DeleteMapping("/{itineraryId}")
-    public ResponseEntity<Void> deleteItinerary(@PathVariable("itineraryId") Integer itineraryId) {
+    public ResponseEntity<Void> deleteItinerary(@PathVariable Integer itineraryId) {
         itineraryService.deleteItinerary(itineraryId);
         return ResponseEntity.noContent().build();
     }

@@ -104,7 +104,7 @@ const MyPage = () => {
             <input type="text" 
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              readOnly={!isEditable}/>
+              readOnly={!isEditable} />
           </div>
 
           <div className="form-field">
