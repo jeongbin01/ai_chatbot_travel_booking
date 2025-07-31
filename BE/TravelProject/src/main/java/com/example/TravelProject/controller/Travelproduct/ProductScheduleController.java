@@ -51,7 +51,7 @@ public class ProductScheduleController {
             """
     )
     @GetMapping("/{scheduleId}")
-    public ResponseEntity<ProductSchedule> getScheduleById(@PathVariable Integer scheduleId) {
+    public ResponseEntity<ProductSchedule> getScheduleById(@PathVariable("scheduleId}") Integer scheduleId) {
         ProductSchedule schedule = scheduleService.getProductScheduleById(scheduleId);
         return ResponseEntity.ok(schedule);
     }
@@ -64,7 +64,7 @@ public class ProductScheduleController {
             """
     )
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<ProductSchedule>> getByProduct(@PathVariable Integer productId) {
+    public ResponseEntity<List<ProductSchedule>> getByProduct(@PathVariable("productId") Integer productId) {
         List<ProductSchedule> list = scheduleService.getSchedulesByProductId(productId);
         return ResponseEntity.ok(list);
     }

@@ -29,10 +29,9 @@ const Header = () => {
 
   // 로그아웃 처리
   const handleLogout = () => {
-    Cookies.remove("jwtToken", { path: "/" });
-    Cookies.remove("refreshToken", { path: "/" });
-    Cookies.remove("username", { path: "/" });
-    Cookies.remove("email", { path: "/" });
+    Object.keys(Cookies.get()).forEach(cookieName => {
+      Cookies.remove(cookieName, { path: "/" });
+    });
     setIsLoggedIn(false);
     setAuth(null);
     setUser(null);

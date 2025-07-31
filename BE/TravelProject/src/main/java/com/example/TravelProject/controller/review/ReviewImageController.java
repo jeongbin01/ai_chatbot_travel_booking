@@ -67,7 +67,7 @@ public class ReviewImageController {
         )
     // 이미지 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteImage(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteImage(@PathVariable("id") Integer id) {
         reviewImageService.deleteReviewImage(id);
         return ResponseEntity.noContent().build();
     }

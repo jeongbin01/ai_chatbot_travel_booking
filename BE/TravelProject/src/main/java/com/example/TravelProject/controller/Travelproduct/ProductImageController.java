@@ -51,7 +51,7 @@ public class ProductImageController {
             """
     )
     @GetMapping("/{imageId}")
-    public ResponseEntity<ProductImage> getProductImageById(@PathVariable Integer imageId) {
+    public ResponseEntity<ProductImage> getProductImageById(@PathVariable("imageId") Integer imageId) {
         ProductImage img = productImageService.getProductImageById(imageId);
         return ResponseEntity.ok(img);
     }
@@ -64,7 +64,7 @@ public class ProductImageController {
             """
     )
     @GetMapping("/product/{productId}")
-    public ResponseEntity<List<ProductImage>> getProductImagesByProductId(@PathVariable Integer productId) {
+    public ResponseEntity<List<ProductImage>> getProductImagesByProductId(@PathVariable("productId") Integer productId) {
         List<ProductImage> list = productImageService.getProductImagesByProductId(productId);
         return ResponseEntity.ok(list);
     }
@@ -78,7 +78,7 @@ public class ProductImageController {
     )
     @PutMapping("/{imageId}")
     public ResponseEntity<ProductImage> updateProductImage(
-            @PathVariable Integer imageId,
+            @PathVariable("imageId") Integer imageId,
             @RequestBody ProductImageDto dto
     ) {
         ProductImage updated = productImageService.updateProductImage(imageId, dto);
@@ -93,7 +93,7 @@ public class ProductImageController {
             """
     )
     @DeleteMapping("/{imageId}")
-    public ResponseEntity<Void> deleteProductImage(@PathVariable Integer imageId) {
+    public ResponseEntity<Void> deleteProductImage(@PathVariable("imageId") Integer imageId) {
         productImageService.deleteProductImage(imageId);
         return ResponseEntity.noContent().build();
     }

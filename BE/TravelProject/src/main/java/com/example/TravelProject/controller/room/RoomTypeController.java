@@ -61,7 +61,7 @@ public class RoomTypeController {
             """
     )
     @PutMapping("/{roomTypeId}")
-    public RoomType update(@PathVariable Integer roomTypeId, @RequestBody RoomType updatedRoomType) {
+    public RoomType update(@PathVariable("roomTypeId") Integer roomTypeId, @RequestBody RoomType updatedRoomType) {
         return roomTypeService.update(roomTypeId, updatedRoomType);
     }
 
@@ -73,7 +73,7 @@ public class RoomTypeController {
             """
     )
     @DeleteMapping("/{roomTypeId}")
-    public void delete(@PathVariable Integer roomTypeId) {
+    public void delete(@PathVariable("roomTypeId") Integer roomTypeId) {
         roomTypeService.deleteById(roomTypeId);
     }
 }

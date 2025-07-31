@@ -61,7 +61,7 @@ public class RoomTypeImageController {
             """
     )
     @DeleteMapping("/{imageId}")
-    public void delete(@PathVariable Integer imageId) {
+    public void delete(@PathVariable("imageId") Integer imageId) {
         roomImageService.deleteById(imageId);
     }
 }
