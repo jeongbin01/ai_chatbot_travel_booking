@@ -43,7 +43,10 @@ public class AccommodationDTO {
     private LocalTime checkInTime;       
     
     // 체크아웃 시간
-    private LocalTime checkOutTime;      
+    private LocalTime checkOutTime; 
+    
+    // 국내/해외 여부 (Y = 국내, N = 해외)
+    private String isDomestic;  
     
     // 평균 평점
     private BigDecimal ratingAvg;        

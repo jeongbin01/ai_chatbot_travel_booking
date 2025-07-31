@@ -18,4 +18,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, In
 
     // 숙소 활성화 여부로 조회
     List<Accommodation> findByIsActive(boolean isActive);
+    
+    // 숙소 국내(Y) / 해외(N) 여부로 조회
+    List<Accommodation> findByIsDomestic(String isDomestic);
 }

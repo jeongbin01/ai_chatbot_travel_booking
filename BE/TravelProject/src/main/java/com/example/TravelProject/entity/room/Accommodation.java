@@ -58,6 +58,11 @@ public class Accommodation {
 
     @Column(name = "check_out_time")
     private LocalTime checkOutTime;
+    
+    // is_domestic 칼럼 매핑 추가
+    @Builder.Default
+    @Column(name = "is_domestic", nullable = false, columnDefinition = "CHAR(1) DEFAULT 'Y'")
+    private String isDomestic = "Y";
 
     @Builder.Default
     @Column(name = "rating_avg", precision = 3, scale = 2)

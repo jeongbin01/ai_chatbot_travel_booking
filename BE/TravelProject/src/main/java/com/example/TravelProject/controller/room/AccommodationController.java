@@ -17,12 +17,12 @@ public class AccommodationController {
     private final AccommodationService accommodationService;
 
     @Operation(
-            summary = "전체 숙소 목록 조회",
-            description = """
-                등록된 모든 숙소 정보를 조회합니다.
-                관리자 또는 유저용 숙소 리스트 화면 등에 사용됩니다.
-                """
-        )
+        summary = "전체 숙소 목록 조회",
+        description = """
+            등록된 모든 숙소 정보를 조회합니다.
+            관리자 또는 유저용 숙소 리스트 화면 등에 사용됩니다.
+            """
+    )
     @GetMapping
     public List<Accommodation> getAllAccommodations() {
         return accommodationService.findAll();
@@ -88,5 +88,18 @@ public class AccommodationController {
     @GetMapping("/search")
     public List<Accommodation> searchByName(@RequestParam String keyword) {
         return accommodationService.searchByName(keyword);
+    }
+
+    @Operation(
+        summary = "국내/해외 숙소 필터링 조회",
+        description = """
+            isDomestic 값('Y' 또는 'N')을 기준으로 숙소를 필터링하여 조회합니다.
+            - 'Y' : 국내 숙소
+            - 'N' : 해외 숙소
+            """
+    )
+    @GetMapping("/filter")
+    public List<Accommodation> getAccommodationsByDomestic(@RequestParam String isDomestic) {
+        return accommodationService.findByIsDomestic(isDomestic.toUpperCase());
     }
 }
