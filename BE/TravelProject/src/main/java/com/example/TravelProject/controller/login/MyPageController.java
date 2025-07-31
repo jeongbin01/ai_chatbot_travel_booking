@@ -24,7 +24,7 @@ public class MyPageController {
         )
     // User와 연관된 SocialAccount 목록 조회
     @GetMapping("/{userId}")
-    public ResponseEntity<List<MyPageDTO>> getMyPageData(@PathVariable("userId") Integer userId) {
+    public ResponseEntity<List<MyPageDTO>> getMyPageData(@PathVariable Integer userId) {
         List<MyPageDTO> data = myPageService.getMyPageDataByUserId(userId);
         return ResponseEntity.ok(data);
     }
@@ -36,7 +36,7 @@ public class MyPageController {
     // User 정보 업데이트
     @PutMapping("/user/{userId}")
     public ResponseEntity<User> updateUserData(
-            @PathVariable("userId") Integer userId,
+            @PathVariable Integer userId,
             @RequestBody MyPageDTO dto) {
         User updated = myPageService.updateUserData(userId, dto);
         return ResponseEntity.ok(updated);
@@ -49,7 +49,7 @@ public class MyPageController {
         )
     // User 삭제
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<Void> deleteUserData(@PathVariable("userId") Integer userId) {
+    public ResponseEntity<Void> deleteUserData(@PathVariable Integer userId) {
         myPageService.deleteUserData(userId);
         return ResponseEntity.noContent().build();
     }
@@ -61,7 +61,7 @@ public class MyPageController {
     // SocialAccount 정보 업데이트 (socialAccountId 기준)
     @PutMapping("/social/{socialAccountId}")
     public ResponseEntity<SocialAccount> updateSocialAccountData(
-            @PathVariable("socialAccountId") Integer socialAccountId,
+            @PathVariable Integer socialAccountId,
             @RequestBody MyPageDTO dto) {
         SocialAccount updated = myPageService.updateMyPageData(socialAccountId, dto);
         return ResponseEntity.ok(updated);
@@ -73,7 +73,7 @@ public class MyPageController {
         )
     // SocialAccount 삭제
     @DeleteMapping("/social/{socialAccountId}")
-    public ResponseEntity<Void> deleteSocialAccountData(@PathVariable("socialAccountId") Integer socialAccountId) {
+    public ResponseEntity<Void> deleteSocialAccountData(@PathVariable Integer socialAccountId) {
         myPageService.deleteMyPageData(socialAccountId);
         return ResponseEntity.noContent().build();
     }
