@@ -49,7 +49,7 @@ public class MyPageController {
         )
     // User 삭제
     @DeleteMapping("/user/{userId}")
-    public ResponseEntity<Void> deleteUserData(@PathVariable Integer userId) {
+    public ResponseEntity<Void> deleteUserData(@PathVariable("userId") Integer userId) {
         myPageService.deleteUserData(userId);
         return ResponseEntity.noContent().build();
     }
@@ -61,7 +61,7 @@ public class MyPageController {
     // SocialAccount 정보 업데이트 (socialAccountId 기준)
     @PutMapping("/social/{socialAccountId}")
     public ResponseEntity<SocialAccount> updateSocialAccountData(
-            @PathVariable Integer socialAccountId,
+            @PathVariable("socialAccountId") Integer socialAccountId,
             @RequestBody MyPageDTO dto) {
         SocialAccount updated = myPageService.updateMyPageData(socialAccountId, dto);
         return ResponseEntity.ok(updated);
@@ -73,7 +73,7 @@ public class MyPageController {
         )
     // SocialAccount 삭제
     @DeleteMapping("/social/{socialAccountId}")
-    public ResponseEntity<Void> deleteSocialAccountData(@PathVariable Integer socialAccountId) {
+    public ResponseEntity<Void> deleteSocialAccountData(@PathVariable("socialAccountId") Integer socialAccountId) {
         myPageService.deleteMyPageData(socialAccountId);
         return ResponseEntity.noContent().build();
     }

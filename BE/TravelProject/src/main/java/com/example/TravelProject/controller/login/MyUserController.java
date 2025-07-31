@@ -27,7 +27,7 @@ public class MyUserController {
         )
     // 사용자 ID로 조회
     @GetMapping("/{userId}")
-    public ResponseEntity<MyUserDTO> getUserById(@PathVariable Integer userId) {
+    public ResponseEntity<MyUserDTO> getUserById(@PathVariable ("userId") Integer userId) {
         Optional<MyUserDTO> user = myUserService.getUserById(userId);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -55,7 +55,7 @@ public class MyUserController {
                 """
         )
     @PutMapping("/{userId}")
-    public ResponseEntity<MyUserDTO> updateUser(@PathVariable Integer userId, @RequestBody User updatedUser) {
+    public ResponseEntity<MyUserDTO> updateUser(@PathVariable("userId") Integer userId, @RequestBody User updatedUser) {
         Optional<MyUserDTO> user = myUserService.updateUser(userId, updatedUser);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -69,7 +69,7 @@ public class MyUserController {
                 """
         )
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer userId) {
+    public ResponseEntity<Void> deleteUser(@PathVariable("userId") Integer userId) {
         boolean deleted = myUserService.deleteUser(userId);
         return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }

@@ -37,7 +37,7 @@ public class AccommodationImageController {
                 """
         )
     @GetMapping("/{accommodationId}")
-    public List<AccommodationImage> getImagesByAccommodation(@PathVariable Integer accommodationId) {
+    public List<AccommodationImage> getImagesByAccommodation(@PathVariable("accommodationId") Integer accommodationId) {
         return accommodationImageService.findImagesByAccommodationId(accommodationId);
     }
 
@@ -48,7 +48,7 @@ public class AccommodationImageController {
                 """
         )
     @GetMapping("/{accommodationId}/thumbnail")
-    public AccommodationImage getThumbnail(@PathVariable Integer accommodationId) {
+    public AccommodationImage getThumbnail(@PathVariable("accommodationId") Integer accommodationId) {
         return accommodationImageService.findThumbnail(accommodationId);
     }
 
@@ -72,7 +72,7 @@ public class AccommodationImageController {
                 """
         )
     @DeleteMapping("/{imageId}")
-    public void deleteImage(@PathVariable Integer imageId) {
+    public void deleteImage(@PathVariable("imageId") Integer imageId) {
         accommodationImageService.deleteById(imageId);
     }
 
@@ -84,7 +84,7 @@ public class AccommodationImageController {
                 """
         )
     @DeleteMapping("/all/{accommodationId}")
-    public void deleteAllImagesByAccommodation(@PathVariable Integer accommodationId) {
+    public void deleteAllImagesByAccommodation(@PathVariable("accommodationId") Integer accommodationId) {
         accommodationImageService.deleteAllByAccommodationId(accommodationId);
     }
 
@@ -95,7 +95,7 @@ public class AccommodationImageController {
                 """
         )
     @GetMapping("/image/{imageId}")
-    public Optional<AccommodationImage> findById(@PathVariable Integer imageId) {
+    public Optional<AccommodationImage> findById(@PathVariable("imageId") Integer imageId) {
         return accommodationImageService.findById1(imageId);
     }
 }
