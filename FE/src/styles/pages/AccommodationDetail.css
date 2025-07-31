@@ -1,284 +1,157 @@
-/* 📁 src/styles/pages/AccommodationDetail.css */
-
-.detail-wrapper {
+.accommodation-detail-wrapper {
+  max-width: 1000px;
+  margin: 100px auto;
   padding: 2rem;
-  max-width: 1100px;
-  margin: 0 auto;
   font-family: 'Noto Sans KR', sans-serif;
-  color: #333;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
-.detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.acc-detail-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.acc-detail-address {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
   margin-bottom: 2rem;
 }
 
-.back-button {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  font-size: 1rem;
-  color: #007bff;
-  cursor: pointer;
-}
-.back-button i {
-  margin-right: 0.5rem;
-}
-
-.like-button {
-  display: flex;
-  align-items: center;
-  background: none;
-  border: none;
-  font-size: 1rem;
-  cursor: pointer;
-  color: #888;
-}
-.like-button.liked {
-  color: #f44336;
-}
-.like-button i {
-  margin-right: 0.3rem;
-}
-
-.detail-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-/* 이미지 갤러리 */
-.image-gallery {
-  position: relative;
-}
-.main-image-container {
-  position: relative;
+.gallery-img {
   width: 100%;
-  height: 420px;
-  overflow: hidden;
-  border-radius: 12px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
 }
-.main-image {
+
+.no-image {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+.acc-detail-info p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.reservation-section {
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.reserve-button,
+.review-button,
+.like-button-detail {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.reserve-button {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.review-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.like-button-detail {
+  background-color: #f44336;
+  color: white;
+}
+
+.reserve-button:hover {
+  background-color: #45a049;
+}
+
+.review-button:hover {
+  background-color: #1976d2;
+}
+
+.like-button-detail:hover {
+  background-color: #d32f2f;
+}
+
+.calendar-section {
+  margin-top: 2rem;
+}
+
+.calendar-section h4 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.map-section {
+  margin-top: 2rem;
+}
+
+.map-section h4 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  display: block;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
 }
 
-.image-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255, 255, 255, 0.7);
-  border: none;
-  padding: 0.5rem;
-  font-size: 1.4rem;
-  cursor: pointer;
-  z-index: 2;
-  border-radius: 50%;
-}
-.image-nav.prev {
-  left: 1rem;
-}
-.image-nav.next {
-  right: 1rem;
-}
-
-.image-indicators {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   text-align: center;
 }
-.indicator {
-  width: 10px;
-  height: 10px;
-  background: #ccc;
-  border: none;
-  border-radius: 50%;
-  margin: 0 4px;
-  display: inline-block;
-  cursor: pointer;
-}
-.indicator.active {
-  background: #007bff;
-}
 
-/* 기본 정보 */
-.detail-info h1.accommodation-name {
-  font-size: 1.6rem;
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-}
-.detail-info h2 {
-  font-size: 1.2rem;
+.close-modal {
   margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-.location-rating {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.location {
-  color: #555;
-}
-.rating {
-  display: flex;
-  align-items: center;
-}
-.star-rating i {
-  font-size: 1rem;
-}
-.rating-text {
-  font-size: 0.85rem;
-  margin-left: 0.3rem;
-  color: #666;
-}
-.price-capacity {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
-}
-.price {
-  font-size: 1.1rem;
-  color: #222;
-}
-.price-amount {
-  font-weight: bold;
-}
-.capacity {
-  font-size: 1rem;
-  color: #444;
-}
-
-/* 설명 */
-.description-section .description {
-  font-size: 0.95rem;
-  line-height: 1.6;
-}
-
-/* 편의시설 */
-.amenities-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
-  margin-top: 0.5rem;
-}
-.amenity-item {
-  background: #f8f9fa;
-  border-radius: 6px;
-  padding: 0.4rem 0.75rem;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-}
-
-/* 체크인/체크아웃 */
-.check-info {
-  display: flex;
-  gap: 2rem;
-}
-.check-item {
-  font-size: 0.95rem;
-}
-.check-label {
-  font-weight: 600;
-  margin-right: 0.3rem;
-}
-
-/* 정책 */
-.policies-list {
-  padding-left: 1rem;
-  font-size: 0.95rem;
-}
-.policy-item {
-  margin-bottom: 0.3rem;
-}
-
-/* 연락처 */
-.contact-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-.contact-item {
-  display: flex;
-  align-items: center;
-  font-size: 0.95rem;
-}
-
-/* 예약 섹션 */
-.booking-section {
-  position: sticky;
-  bottom: 0;
-  background: white;
-  border-top: 1px solid #eee;
-  padding: 1rem 0;
-  margin-top: 3rem;
-}
-.booking-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.booking-info {
-  font-size: 1rem;
-}
-.total-price {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
-.booking-button {
-  background: #007bff;
-  border: none;
+  padding: 0.5rem 1rem;
+  background-color: #999;
   color: white;
-  padding: 0.6rem 1.5rem;
-  font-size: 1rem;
-  border-radius: 6px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
 }
-.booking-button:hover {
-  background: #0056b3;
+
+.close-modal:hover {
+  background-color: #777;
 }
 
 /* 로딩 및 에러 */
 .loading,
-.error-message,
-.no-results {
+.error {
   text-align: center;
-  margin-top: 3rem;
-  font-size: 1rem;
-}
-.spinner {
-  width: 2rem;
-  height: 2rem;
-  border: 4px solid #ccc;
-  border-top: 4px solid #007bff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1rem;
-}
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-.btn-retry {
-  margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.btn-retry:hover {
-  background: #0056b3;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #555;
 }

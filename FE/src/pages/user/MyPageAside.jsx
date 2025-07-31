@@ -21,7 +21,3 @@ const MyPageAside = () => {
 }
 
 export default MyPageAside
-
-
-
-    

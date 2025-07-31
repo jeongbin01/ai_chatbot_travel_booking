@@ -13,8 +13,6 @@
 // export const searchAccommodations = (keyword) =>
 //   axios.get(`${BASE_URL}/search?keyword=${keyword}`);
 
-
-
 // // GET /api/accommodations               → 프론트에서 전체 숙소 목록 불러올 때 사용
 // // GET /api/accommodations/search?keyword=xxx  → 숙소 이름으로 검색
 // // GET /api/accommodations/{id}         → (사용 안 함) 상세 조회용
@@ -46,5 +44,8 @@ export const saveAccommodation = (accommodation) =>
   axios.post(BASE_URL, accommodation);
 
 // 숙소 삭제
-export const deleteAccommodation = (id) =>
-  axios.delete(`${BASE_URL}/${id}`);
+export const deleteAccommodation = (id) => axios.delete(`${BASE_URL}/${id}`);
+
+// 국내/해외 숙소 필터
+export const filterByIsDomestic = (isDomestic) =>
+  axios.get(`${BASE_URL}/filter`, { params: { isDomestic } });
