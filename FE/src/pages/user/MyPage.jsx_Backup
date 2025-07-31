@@ -1,0 +1,161 @@
+// import React, { useState, useEffect, useContext } from "react";
+// import { useNavigate } from "react-router-dom";
+// import "../../styles/utils/MyPage.css";
+// import "../../styles/utils/MyPageLayout.css";
+// import MyPageAside from "./MyPageAside.jsx";
+// import { AxiosClient } from "../../api/AxiosController.jsx";
+// import { AuthContext } from "../../context/AuthContext.js";
+
+// const MyPage = () => {
+//   const { auth } = useContext(AuthContext);
+//   const navigate = useNavigate();
+
+//   const [userData, setUserData] = useState(null);
+//   const [nickname, setNickname] = useState("");
+//   const [phoneNumber, setPhoneNumber] = useState("");
+//   const [isEditable, setIsEditable] = useState(false);
+
+//   useEffect(() => {
+//     const getUser = async () => {
+//       if (!auth) {
+//         alert("로그인 해주세요.");
+//         navigate("/login");
+//         return;
+//       }
+
+//       try {
+//         // 소셜/일반 둘 다 /mypage 엔드포인트 사용
+//         const response = await AxiosClient("mypage").getById(auth.userId);
+//         const data = response.data;
+//         console.log("mypage data:", data);
+
+//         setUserData({
+//           email: data.email,
+//           nickname: data.nickname,
+//           provider: data.provider,
+//           socialAccountId: data.socialAccountId,
+//           userId: data.userId,
+//           userRole: data.userRole,
+//           username: data.username,
+//           phoneNumber: data.phoneNumber,
+//           registrationDate: data.registrationDate,
+//         });
+//       } catch (e) {
+//         console.error("유저 정보 불러오기 실패", e);
+//         if (e.response) {
+//           console.error("응답 데이터:", e.response.data);
+//         }
+//       }
+//     };
+//     getUser();
+//   }, [auth, navigate]);
+
+//   useEffect(() => {
+//     if (userData) {
+//       setNickname(userData.nickname || "");
+//       setPhoneNumber(userData.phoneNumber || "");
+//     }
+//   }, [userData]);
+
+//   const handleModify = () => {
+//     // 수정모드 토글 & 취소 시 원복
+//     if (isEditable) {
+//       setNickname(userData.nickname || "");
+//       setPhoneNumber(userData.phoneNumber || "");
+//     }
+//     setIsEditable((prev) => !prev);
+//   };
+
+//   const handleWithdraw = () => {
+//     // TODO: 탈퇴 로직
+//   };
+
+//   if (!userData) return <div>로딩중...</div>;
+
+//   return (
+//     <div className="page-wrapper">
+//       <MyPageAside />
+
+//       <section className="page-content">
+//         <h2>내 정보 관리</h2>
+//         <div className="info-grid">
+//           <div className="form-field">
+//             <label>아이디</label>
+//             <input type="text" value={userData.username} readOnly />
+//           </div>
+
+//           <div className="form-field">
+//             <label>닉네임</label>
+//             <input
+//               type="text"
+//               value={nickname}
+//               onChange={(e) => setNickname(e.target.value)}
+//               readOnly={!isEditable}
+//             />
+//           </div>
+
+//           <div className="form-field">
+//             <label>생성날짜</label>
+//             <input
+//               type="text"
+//               value={userData.registrationDate.split("T")[0]}
+//               readOnly
+//             />
+//           </div>
+
+//           <div className="form-field">
+//             <label>휴대폰 번호</label>
+//             <input
+//               type="text"
+//               value={phoneNumber}
+//               onChange={(e) => setPhoneNumber(e.target.value)}
+//               readOnly={!isEditable}
+//             />
+//           </div>
+
+//           <div className="form-field full">
+//             <label>이메일</label>
+//             <input
+//               type="text"
+//               value={
+//                 userData.email
+//                   ? userData.provider
+//                     ? `${userData.email} (${userData.provider})`
+//                     : userData.email
+//                   : ""
+//               }
+//               readOnly
+//             />
+//           </div>
+//         </div>
+
+//         <div className="device-section">
+//           <button className="logout-btn" onClick={handleModify}>
+//             {isEditable ? "되돌아가기" : "수정모드"}
+//           </button>
+
+//           {isEditable && (
+//             <button
+//               className="logout-btn"
+//               onClick={() => {
+//                 // TODO: 수정 완료 API 호출
+//                 setIsEditable(false);
+//               }}
+//             >
+//               수정완료
+//             </button>
+//           )}
+//         </div>
+
+//         <div className="withdraw-section">
+//           <p>더 이상 온쉼 이용을 원하지 않으신가요?</p>
+//           <button className="withdraw-btn" onClick={handleWithdraw}>
+//             회원탈퇴
+//           </button>
+//         </div>
+//       </section>
+//     </div>
+//   );
+// };
+
+// export default MyPage;
