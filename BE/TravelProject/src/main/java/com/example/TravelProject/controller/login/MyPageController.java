@@ -24,7 +24,7 @@ public class MyPageController {
         )
     // User와 연관된 SocialAccount 목록 조회
     @GetMapping("/{userId}")
-    public ResponseEntity<List<MyPageDTO>> getMyPageData(@PathVariable Integer userId) {
+    public ResponseEntity<List<MyPageDTO>> getMyPageData(@PathVariable("userId") Integer userId) {
         List<MyPageDTO> data = myPageService.getMyPageDataByUserId(userId);
         return ResponseEntity.ok(data);
     }
@@ -36,7 +36,7 @@ public class MyPageController {
     // User 정보 업데이트
     @PutMapping("/user/{userId}")
     public ResponseEntity<User> updateUserData(
-            @PathVariable Integer userId,
+            @PathVariable("userId") Integer userId,
             @RequestBody MyPageDTO dto) {
         User updated = myPageService.updateUserData(userId, dto);
         return ResponseEntity.ok(updated);
