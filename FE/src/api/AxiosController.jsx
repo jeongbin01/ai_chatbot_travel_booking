@@ -2,27 +2,30 @@ import React from 'react';
 import axios from 'axios';
 
 // Base path
-export const AxiosClient = (controllerPath) => {
+export const AxiosClient = (controllerPath, token = null) => {
   const pathURL = `http://localhost:8888/app/${controllerPath}`;
 
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token && { 'Authorization': `Bearer ${token.trim()}` })
+    }
+  };
+
   return {
-    // 일반 GET (쿼리스트링 포함 GET용)
-    get: (path = "", config = {}) => axios.get(`${pathURL}${path}`, config),
+    // get: (path = "", onfig = {}) =>
+    //   axios.get(`${pathURL}${path}`, headers ),
 
     // 전체 목록 조회
-    getAll: () => axios.get(pathURL),
+    getAll: () => axios.get(pathURL, config),
 
-    // 새 리소스 생성
-    create: (data) => axios.post(pathURL, data),
+    create: (data) => axios.post(pathURL, data, config),
 
-    // 업데이트
-    update: (id, data) => axios.put(`${pathURL}/${id}`, data),
+    update: (id, data) => axios.put(`${pathURL}/${id}`, data, config),
 
-    // 삭제
-    remove: (id) => axios.delete(`${pathURL}/${id}`),
+    remove: (id) => axios.delete(`${pathURL}/${id}`, config),
 
-    // 상세 조회
-    getById: (id) => axios.get(`${pathURL}/${id}`)
+    getById: (id) => axios.get(`${pathURL}/${id}`, config)
   };
 };
 

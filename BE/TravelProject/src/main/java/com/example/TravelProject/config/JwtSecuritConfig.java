@@ -36,6 +36,8 @@ public class JwtSecuritConfig implements WebMvcConfigurer {
 
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/app/signup","/app/login", "/app/login/oauth2/**", "/app/**","/error", "/swagger-ui/**").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

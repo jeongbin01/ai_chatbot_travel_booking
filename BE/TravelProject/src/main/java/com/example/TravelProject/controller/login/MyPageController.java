@@ -38,6 +38,7 @@ public class MyPageController {
     public ResponseEntity<User> updateUserData(
             @PathVariable Integer userId,
             @RequestBody MyPageDTO dto) {
+        System.out.println("answer"+dto);
         User updated = myPageService.updateUserData(userId, dto);
         return ResponseEntity.ok(updated);
     }
