@@ -4,6 +4,7 @@ import com.example.TravelProject.entity.booking.Booking;
 import com.example.TravelProject.service.Booking.BookingService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Tag(name = "BookingController", description = "방 예약 컨트롤러")
 @RestController
 @RequestMapping("/app/bookings")
 @RequiredArgsConstructor

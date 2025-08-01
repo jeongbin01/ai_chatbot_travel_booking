@@ -15,6 +15,8 @@ const MyPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isEditable, setIsEditable] = useState(false);
 
+  console.log("auth.userId :::::" + auth.userId)
+
   useEffect(() => {
     const getUser = async () => {
       if (!auth) {
@@ -22,15 +24,23 @@ const MyPage = () => {
         navigate("/login");
         return;
       }
-      console.log("auth.userId:", auth.userId);
+      console.log("auth.userId : - ", auth.userId);
       try {
         let response;
         let data;
+
+        console.log("oauth 출력 :: ")
+        console.log(auth)
+
         if (auth.oauthSelect == 1) {
           // 소셜 로그인 계정이면 /mypage 요청
           response = await AxiosClient("mypage").getById(auth.userId);
           data = response.data[0];
+
+          console.log("data 출력 1 [소셜 로그인] ::")
           console.log(data)
+
+
           setUserData({
             email: data.email,
             nickname: data.nickname,
@@ -41,13 +51,18 @@ const MyPage = () => {
             username: data.username,
             phoneNumber: data.phoneNumber,
             registrationDate: data.registrationDate
+
+
           });
         } else {
           if (auth.oauthSelect == 0) {
           // 일반 계정이면 /MyUser 요청
             response = await AxiosClient("myuser").getById(auth.userId);
-            data = response?.data;
+            data = response.data;
+
+            console.log("data 출력 0 [일반 로그인] ::")
             console.log(data)
+
             setUserData({
               email: data.email,
               nickname: data.nickname,
@@ -74,8 +89,30 @@ const MyPage = () => {
   }, [userData]);
 
 
-  const handleModify = () => {
-    setIsEditable((prev) => !prev); // 토글
+  const handleModify = async (nickname, phoneNumber) => {
+    
+    try {
+      console.log(auth.oauthSelect)
+      const updatedUserData = {
+        ...userData,
+        nickname,
+        phoneNumber,
+      };
+      console.log(updatedUserData)
+      console.log(auth.token)
+      /// 소셜 로그인 계정이면 /mypage 요청
+      
+      if (auth && auth.oauthSelect == 1) {
+        AxiosClient("mypage/user",auth.token).update(auth.userId, updatedUserData );
+      } else if (auth && auth.oauthSelect == 0) {
+        // 일반 계정이면 /MyUser 요청
+        AxiosClient("myuser",auth.token).update(auth.userId, updatedUserData);
+      }
+    }
+    catch (error) {
+      console.error("수정 중 오류 발생:", error);
+    
+    }
   };
 
   const handleWithdraw = () => {
@@ -156,6 +193,9 @@ const MyPage = () => {
             <button
               className="logout-btn"
               onClick={() => {
+                setNickname(userData.nickname || "");
+                setPhoneNumber(userData.phoneNumber || "");
+                handleModify(nickname, phoneNumber);
                 setIsEditable(false);
               }}
             >

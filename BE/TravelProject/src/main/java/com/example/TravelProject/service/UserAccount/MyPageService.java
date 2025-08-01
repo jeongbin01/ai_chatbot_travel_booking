@@ -39,10 +39,11 @@ public class MyPageService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setEmail(dto.getEmail());
-        user.setUserRole(dto.getUserRole());
         user.setNickname(dto.getNickname());
-        user.setUsername(dto.getUsername());
         user.setPhoneNumber(dto.getPhoneNumber());
+        user.setUserRole(dto.getUserRole());
+        user.setUsername(dto.getUsername());
+
 
         return userRepository.save(user);
     }
