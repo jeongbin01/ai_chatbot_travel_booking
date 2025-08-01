@@ -3,10 +3,10 @@ package com.example.TravelProject.jwt;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
@@ -15,11 +15,12 @@ public class JwtProvider {
     private Key key;
     private final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60;      // 1시간
     private final long REFRESH_TOKEN_VALIDITY = 1000L * 60 * 60 * 24; // 24시간
-
+    @Value("${jwt.secret}")
+    private String jwtSecret;
     @PostConstruct
     public void init() {
-        // 랜덤 키 생성 (실무에선 환경변수나 Vault 등에서 관리)
-        key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        byte[] secretBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+        key = Keys.hmacShaKeyFor(secretBytes);
     }
 
     public String createAccessToken(String subject) {
@@ -68,6 +69,7 @@ public class JwtProvider {
 
     public Boolean isExpired(String token) {
         return Jwts.parserBuilder()
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)    // 변경
                 .getBody()
@@ -84,7 +86,7 @@ public class JwtProvider {
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
-                .signWith(Keys.secretKeyFor(SignatureAlgorithm.HS256)) // signWith 필요
+                .signWith(key)
                 .compact();
     }
 }

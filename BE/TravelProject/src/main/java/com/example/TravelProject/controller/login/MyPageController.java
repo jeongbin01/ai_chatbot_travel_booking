@@ -37,7 +37,9 @@ public class MyPageController {
     @PutMapping("/user/{userId}")
     public ResponseEntity<User> updateUserData(
             @PathVariable("userId") Integer userId,
-            @RequestBody MyPageDTO dto) {
+            @RequestBody MyPageDTO dto){
+    	System.out.println("anwer" + dto);
+  
         User updated = myPageService.updateUserData(userId, dto);
         return ResponseEntity.ok(updated);
     }

@@ -39,7 +39,11 @@ public class JwtFilter extends OncePerRequestFilter {
         // 1. 먼저 Authorization 헤더에서 토큰 확인
         String headerAuth = request.getHeader("Authorization");
         if (headerAuth != null && !headerAuth.isEmpty()) {
-            token = headerAuth;
+            if (headerAuth.startsWith("Bearer ")) {
+                token = headerAuth.substring(7).trim();  // 공백 제거 추가
+            } else {
+                token = headerAuth.trim();  // 공백 제거 추가
+            }
             System.out.println("JWT from Header: " + token);
         }
 
