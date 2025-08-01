@@ -37,7 +37,7 @@ public class RoomController {
             """
     )
     @GetMapping("/{roomId}")
-    public Optional<Room> findRoomById(@PathVariable Integer roomId) {
+    public Optional<Room> findRoomById(@PathVariable("roomId") Integer roomId) {
         return roomService.findById(roomId);
     }
 
@@ -61,7 +61,7 @@ public class RoomController {
             """
     )
     @PutMapping("/{roomId}")
-    public Room updateRoom(@PathVariable Integer roomId, @RequestBody Room updatedRoom) {
+    public Room updateRoom(@PathVariable("roomId") Integer roomId, @RequestBody Room updatedRoom) {
         return roomService.update(roomId, updatedRoom);
     }
 
@@ -73,7 +73,7 @@ public class RoomController {
             """
     )
     @DeleteMapping("/{roomId}")
-    public void deleteRoom(@PathVariable Integer roomId) {
+    public void deleteRoom(@PathVariable("roomId") Integer roomId) {
         roomService.deleteById(roomId);
     }
 }

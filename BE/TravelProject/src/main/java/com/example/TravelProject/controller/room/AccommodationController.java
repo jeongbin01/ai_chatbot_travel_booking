@@ -36,7 +36,7 @@ public class AccommodationController {
             """
     )
     @GetMapping("/{id}")
-    public Optional<Accommodation> getAccommodationById(@PathVariable Integer id) {
+    public Optional<Accommodation> getAccommodationById(@PathVariable("id") Integer id) {
         return accommodationService.findById(id);
     }
 
@@ -61,7 +61,7 @@ public class AccommodationController {
             """
     )
     @DeleteMapping("/{id}")
-    public void deleteAccommodation(@PathVariable Integer id) {
+    public void deleteAccommodation(@PathVariable("id") Integer id) {
         accommodationService.deleteById(id);
     }
 
@@ -73,7 +73,7 @@ public class AccommodationController {
             """
     )
     @GetMapping("/user/{userId}")
-    public List<Accommodation> getAccommodationsByOwner(@PathVariable Integer userId) {
+    public List<Accommodation> getAccommodationsByOwner(@PathVariable("userId") Integer userId) {
         return accommodationService.findByOwnerUserId(userId);
     }
 
@@ -86,7 +86,7 @@ public class AccommodationController {
             """
     )
     @GetMapping("/search")
-    public List<Accommodation> searchByName(@RequestParam String keyword) {
+    public List<Accommodation> searchByName(@RequestParam("search") String keyword) {
         return accommodationService.searchByName(keyword);
     }
 

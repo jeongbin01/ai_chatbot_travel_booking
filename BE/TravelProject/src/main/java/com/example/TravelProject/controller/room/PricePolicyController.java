@@ -37,7 +37,7 @@ public class PricePolicyController {
             """
     )
     @GetMapping("/{id}")
-    public Optional<PricePolicy> getPricePolicyById(@PathVariable Integer id) {
+    public Optional<PricePolicy> getPricePolicyById(@PathVariable("id") Integer id) {
         return pricePolicyService.findById(id);
     }
 
@@ -61,7 +61,7 @@ public class PricePolicyController {
             """
     )
     @DeleteMapping("/{id}")
-    public void deletePricePolicy(@PathVariable Integer id) {
+    public void deletePricePolicy(@PathVariable("id") Integer id) {
         pricePolicyService.deleteById(id);
     }
 }

@@ -25,7 +25,7 @@ public class RoomTypeImageController {
                 """
         )
     @GetMapping("/room-type/{roomTypeId}")
-    public List<RoomTypeImage> findByRoomTypeId(@PathVariable Integer roomTypeId) {
+    public List<RoomTypeImage> findByRoomTypeId(@PathVariable("roomTypeId") Integer roomTypeId) {
         return roomImageService.deleteAllByRoomTypeId(roomTypeId);
     }
 
@@ -37,7 +37,7 @@ public class RoomTypeImageController {
             """
     )
     @GetMapping("/{imageId}")
-    public Optional<RoomTypeImage> findById(@PathVariable Integer imageId) {
+    public Optional<RoomTypeImage> findById(@PathVariable("imageId") Integer imageId) {
         return roomImageService.findById(imageId);
     }
 
@@ -61,7 +61,7 @@ public class RoomTypeImageController {
             """
     )
     @DeleteMapping("/{imageId}")
-    public void delete(@PathVariable Integer imageId) {
+    public void delete(@PathVariable("imageId") Integer imageId) {
         roomImageService.deleteById(imageId);
     }
 }

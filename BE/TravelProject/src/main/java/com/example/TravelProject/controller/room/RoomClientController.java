@@ -41,7 +41,7 @@ public class RoomClientController {
                 """
         )
         @GetMapping("/{roomId}")
-        public Optional<Room> findRoomById(@PathVariable Integer roomId) {
+        public Optional<Room> findRoomById(@PathVariable("roomId") Integer roomId) {
             return roomService.findById(roomId);
         }
     }

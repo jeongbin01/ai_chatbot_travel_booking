@@ -40,7 +40,7 @@ public class ReviewImageController {
         )
     // 이미지 ID로 조회
     @GetMapping("/{id}")
-    public ResponseEntity<ReviewImage> getImageById(@PathVariable Integer id) {
+    public ResponseEntity<ReviewImage> getImageById(@PathVariable("id") Integer id) {
         return reviewImageService.getReviewImageById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -53,8 +53,8 @@ public class ReviewImageController {
                 """
         )
     // 리뷰 ID로 이미지 목록 조회
-    @GetMapping("/review/{reviewId}")
-    public ResponseEntity<List<ReviewImage>> getImagesByReviewId(@PathVariable Integer reviewId) {
+    @GetMapping("/review/{id}")
+    public ResponseEntity<List<ReviewImage>> getImagesByReviewId(@PathVariable("id") Integer reviewId) {
         return ResponseEntity.ok(reviewImageService.getImagesByReviewId(reviewId));
     }
 
@@ -67,7 +67,7 @@ public class ReviewImageController {
         )
     // 이미지 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteImage(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteImage(@PathVariable("id") Integer id) {
         reviewImageService.deleteReviewImage(id);
         return ResponseEntity.noContent().build();
     }

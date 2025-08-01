@@ -39,7 +39,7 @@ public class ReviewController {
         )
     // 리뷰 ID로 조회
     @GetMapping("/{id}")
-    public ResponseEntity<Review> getReviewById(@PathVariable Integer id) {
+    public ResponseEntity<Review> getReviewById(@PathVariable("id") Integer id) {
         return reviewService.getReviewById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -67,7 +67,7 @@ public class ReviewController {
         )
     // 리뷰 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteReview(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteReview(@PathVariable("id") Integer id) {
         reviewService.deleteReview(id);
         return ResponseEntity.noContent().build();
     }
@@ -81,7 +81,7 @@ public class ReviewController {
         )
     // 리뷰 승인
     @PatchMapping("/{id}/approve")
-    public ResponseEntity<Review> approveReview(@PathVariable Integer id) {
+    public ResponseEntity<Review> approveReview(@PathVariable("id") Integer id) {
         Review approved = reviewService.approveReview(id);
         return ResponseEntity.ok(approved);
     }
@@ -95,7 +95,7 @@ public class ReviewController {
         )
     // 도움돼요 카운트 증가
     @PatchMapping("/{id}/helpful")
-    public ResponseEntity<Review> increaseHelpful(@PathVariable Integer id) {
+    public ResponseEntity<Review> increaseHelpful(@PathVariable("id") Integer id) {
         Review updated = reviewService.increaseHelpfulCount(id);
         return ResponseEntity.ok(updated);
     }
