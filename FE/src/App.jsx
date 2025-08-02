@@ -18,11 +18,11 @@ import GoogleForm from "./pages/login/GoogleForm";
 import SignupForm from "./pages/login/SignupForm";
 import HttpHeadersProvider from "./context/HttpHeader";
 import AuthProvider from "./context/AuthProvider";
-import AccommodationList from "./pages/accommodations/국내 숙소/AccommodationList";
-import AccommodationDetail from "./pages/accommodations/국내 숙소/AccommodationDetail";
 import MyPage from "./pages/user/MyPage";
 import Favorites from "./pages/user/Favorites";
 import Reservations from "./pages/user/Reservations"; // ✅ 누락된 import 추가
+import AccommodationList from "./pages/accommodations/숙소/AccommodationList";
+import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDetail";
 
 function App() {
   const location = useLocation();
