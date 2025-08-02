@@ -15,11 +15,19 @@ public class JwtProvider {
     private Key key;
     private final long ACCESS_TOKEN_VALIDITY = 1000L * 60 * 60;      // 1시간
     private final long REFRESH_TOKEN_VALIDITY = 1000L * 60 * 60 * 24; // 24시간
+
     @Value("${jwt.secret}")
     private String jwtSecret;
+
     @PostConstruct
     public void init() {
         byte[] secretBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
+
+        // ✅ 검증 추가
+        if (secretBytes.length < 32) {
+            throw new IllegalArgumentException("jwt.secret 값은 최소 256비트(32바이트) 이상이어야 합니다. 현재 길이: " + secretBytes.length);
+        }
+
         key = Keys.hmacShaKeyFor(secretBytes);
     }
 
@@ -49,32 +57,17 @@ public class JwtProvider {
                 .build()
                 .parseClaimsJws(token);
     }
+
     public String getUsername(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("username", String.class);
+        return parseToken(token).getBody().get("username", String.class);
     }
 
     public String getRole(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role", String.class);
+        return parseToken(token).getBody().get("role", String.class);
     }
 
     public Boolean isExpired(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)    // 변경
-                .getBody()
-                .getExpiration()
-                .before(new Date());
+        return parseToken(token).getBody().getExpiration().before(new Date());
     }
 
     public String createJwt(String username, String role, Long expiredMs) {
