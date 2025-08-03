@@ -49,3 +49,9 @@ export const deleteAccommodation = (id) => axios.delete(`${BASE_URL}/${id}`);
 // 국내/해외 숙소 필터
 export const filterByIsDomestic = (isDomestic) =>
   axios.get(`${BASE_URL}/filter`, { params: { isDomestic } });
+
+// 숙소 이미지 조회
+export const fetchAccommodationImages = (accommodationId) =>
+  axios.get("/app/accommodation-images", {
+    params: { accommodationId },
+  });

@@ -11,7 +11,7 @@ import jejuImg from "../../../assets/images/domestic/제주도.jpg";
 
 import romaImg from "../../../assets/images/overseas/로마.jpg";
 import bangkokImg from "../../../assets/images/overseas/방콕.jpg";
-import singaporeImg from "../../../assets/images/overseas/싱카프로.jpg";
+import singaporeImg from "../../../assets/images/overseas/싱가포르.jpg";
 import parisImg from "../../../assets/images/overseas/로마.jpg";
 
 // 이미지 매핑 테이블
@@ -52,7 +52,7 @@ const getFixedPriceText = (name) => {
     case "파리 센강 호텔":
       return "1박 2인 / ₩230,000";
     default:
-      return "1박 기준 / 가격 미정";
+      return "가격 정보 없음";
   }
 };
 

@@ -68,12 +68,10 @@
   background-color: #4CAF50;
   color: white;
 }
-
 .review-button {
   background-color: #2196F3;
   color: white;
 }
-
 .like-button-detail {
   background-color: #f44336;
   color: white;
@@ -82,11 +80,9 @@
 .reserve-button:hover {
   background-color: #45a049;
 }
-
 .review-button:hover {
   background-color: #1976d2;
 }
-
 .like-button-detail:hover {
   background-color: #d32f2f;
 }
@@ -94,7 +90,6 @@
 .calendar-section {
   margin-top: 2rem;
 }
-
 .calendar-section h4 {
   margin-bottom: 1rem;
   font-weight: 600;
@@ -103,10 +98,44 @@
 .map-section {
   margin-top: 2rem;
 }
-
 .map-section h4 {
   margin-bottom: 1rem;
   font-weight: 600;
+}
+
+/* ✅ 추가된 버튼 그룹 스타일 */
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.btn {
+  flex: 1;
+  padding: 0.75rem 1.2rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+.btn.primary {
+  background-color: #4CAF50;
+  color: white;
+  border: 2px solid #4CAF50;
+}
+.btn.primary:hover {
+  background-color: #43a047;
+  border-color: #43a047;
+}
+.btn.outline {
+  background-color: white;
+  color: #4CAF50;
+  border: 2px solid #4CAF50;
+}
+.btn.outline:hover {
+  background-color: #f1f8f4;
 }
 
 /* 모달 스타일 */
@@ -142,7 +171,6 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
 .close-modal:hover {
   background-color: #777;
 }

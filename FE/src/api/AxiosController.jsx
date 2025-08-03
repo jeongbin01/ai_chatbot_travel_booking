@@ -17,7 +17,8 @@ export const AxiosClient = (controllerPath, token = null) => {
     create: (data) => axios.post(pathURL, data, config),
     update: (id, data) => axios.put(`${pathURL}/${id}`, data, config),
     remove: (id) => axios.delete(`${pathURL}/${id}`, config),
-    getById: (id) => axios.get(`${pathURL}/${id}`, config)
+    getById: (id) => axios.get(`${pathURL}/${id}`, config),
+    getByQuery: (query) => axios.get(`${pathURL}?${query}`, config)
   };
 };
 
