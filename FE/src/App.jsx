@@ -23,7 +23,7 @@ import Favorites from "./pages/user/Favorites";
 import Reservations from "./pages/user/Reservations"; // ✅ 누락된 import 추가
 import AccommodationList from "./pages/accommodations/숙소/AccommodationList";
 import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDetail";
-import BookingCard from "./pages/booking/bookingPage";
+import BookingPage from "./pages/booking/bookingPage"; // ✅ 이 줄을 추가하세요
 
 function App() {
   const location = useLocation();
@@ -80,12 +80,18 @@ function App() {
             />
 
             {/* 국내 숙소 상세 */}
-            <Route path="/domesticpages/:id" element={<AccommodationDetail />} />
+            <Route
+              path="/domesticpages/:id"
+              element={<AccommodationDetail />}
+            />
 
             {/* 해외 숙소 상세 */}
-            <Route path="/overseaspages/:id" element={<AccommodationDetail />} />
+            <Route
+              path="/overseaspages/:id"
+              element={<AccommodationDetail />}
+            />
             {/* ✅ 예약 페이지 */}
-            <Route path="/booking/:id" element={<BookingCard />} />
+            <Route path="/booking/:id" element={<BookingPage />} />
 
             {/* ✅ 마이페이지 */}
             <Route path="/mypage/profile" element={<MyPage />} />
