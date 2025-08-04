@@ -1,101 +1,193 @@
-// AccommodationDetail.jsx
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { AxiosClient } from "../../../api/AxiosController";
 import "../../../styles/pages/AccommodationDetail.css";
 
-// 이미지 import
-import gangneungImg from "../../../assets/images/domestic/강릉.jpg";
-import sokchoImg from "../../../assets/images/domestic/속초.jpg";
-import yeosuImg from "../../../assets/images/domestic/여수.jpg";
-import incheonImg from "../../../assets/images/domestic/인천.jpg";
-import jejuImg from "../../../assets/images/domestic/제주도.jpg";
-import romaImg from "../../../assets/images/overseas/로마.jpg";
-import bangkokImg from "../../../assets/images/overseas/방콕.jpg";
-import singaporeImg from "../../../assets/images/overseas/싱가포르.jpg";
-import parisImg from "../../../assets/images/overseas/파리.jpg";
+import { AxiosClient } from "../../../api/AxiosController";
 
-const DOMESTIC_IMAGES = {
-  "강릉 게스트하우스": gangneungImg,
-  "속초 리조트": sokchoImg,
-  "여수 게스트하우스": yeosuImg,
-  "인천 비즈니스 호텔": incheonImg,
-  "제주도 오션뷰 펜션": jejuImg,
-};
+const fetchAccommodationById = async (id) => {
+  try {
+    const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
+      AxiosClient("accommodations").getById(id),
+      AxiosClient("accommodation-images").get("", {
+        params: { accommodation_id: id },
+      }),
+      AxiosClient("room-types").get("", {
+        params: { accommodation_id: id },
+      }),
+      AxiosClient("price-policies").getAll(), // 여긴 아직 전체 받아오는 방식
+    ]);
 
-const OVERSEAS_IMAGES = {
-  "로마 부티크 호텔": romaImg,
-  "방콕 리버사이드 호텔": bangkokImg,
-  "싱가포르 시티 호텔": singaporeImg,
-  "파리 센강 호텔": parisImg,
-};
+    const accommodation = accRes.data;
+    const images = imageRes.data ?? [];
+    const roomTypes = roomTypeRes.data ?? [];
+
+    const primaryRoomType = roomTypes[0] ?? null;
+
+    const pricePolicies = priceRes.data.filter(p =>
+      primaryRoomType && p.room_type_id === primaryRoomType.room_type_id
+    );
+
+    const primaryPrice = pricePolicies[0] ?? null;
+
+    return {
+      data: {
+        id: accommodation.accommodationId,
+        name: accommodation.name,
+        location: accommodation.address,
+        price: primaryPrice?.basePrice ?? 0,
+        capacity: primaryRoomType?.maxOccupancy ?? 1,
+        rating: accommodation.ratingAvg ?? 0,
+        liked: false,
+        description: accommodation.description,
+        amenities: Array.isArray(accommodation.amenities)
+          ? accommodation.amenities
+          : [],
+        images: images
+          .sort((a, b) => a.orderNum - b.orderNum)
+          .map(img => img.imageUrl),
+        checkIn: accommodation.checkInTime,
+        checkOut: accommodation.checkOutTime,
+        policies: ["금연", "반려동물 불가", "파티 불가"], // 임시
+        contact: accommodation.contact ?? "000-0000-0000", // 임시
+        address: accommodation.address,
+        ratingAvg: accommodation.ratingAvg ?? 0,
+        totalReviews: accommodation.totalReviews ?? 0,
+      },
+    };
+  } catch (err) {
+    console.error("fetchAccommodations error:", err);
+    throw err;
+  }
+}
 
 export default function AccommodationDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [accommodation, setAccommodation] = useState(null);
-  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [liked, setLiked] = useState(false);
 
-  // 찜 상태 복원
-  useEffect(() => {
-    const saved = localStorage.getItem(`liked_accommodation_${id}`);
-    if (saved === "true") setLiked(true);
-  }, [id]);
+  // 국내/해외 여부 판단 (URL 또는 다른 로직으로 결정)
+  const isDomestic = window.location.pathname.includes('domestic') || true; // 기본값을 국내로 설정
+  
+  // 기본 이미지 fallback
+  const fallbackImage = "/images/default-accommodation.jpg";
 
-  // 숙소 및 이미지 정보 fetch
   useEffect(() => {
-    const fetchDetail = async () => {
+    const loadAccommodation = async () => {
       try {
-        const [accRes, imgRes] = await Promise.all([
-          AxiosClient("accommodations").getById(id),
-          AxiosClient("accommodation-images").getByQuery(
-            `accommodationId=${id}`
-          ),
-        ]);
-        setAccommodation(accRes.data);
-        setImages(imgRes.data ?? []);
+        setLoading(true);
+        setError(null);
+        const res = await fetchAccommodationById(id);
+        setAccommodation(res.data);
+        setLiked(res.data.liked);
       } catch (err) {
-        console.error("❌ 에러 발생:", err.response?.status, err.message);
-        alert("숙소 정보를 불러오는 데 실패했습니다.");
+        setError(err.message);
+        console.error("Failed to fetch accommodation:", err);
       } finally {
         setLoading(false);
       }
     };
-    fetchDetail();
+
+    if (id) {
+      loadAccommodation();
+    }
   }, [id]);
 
-  if (loading) return <div className="loading">로딩 중...</div>;
-  if (!accommodation)
-    return <div className="error">숙소 정보를 찾을 수 없습니다.</div>;
+  const toggleLike = useCallback(() => {
+    setLiked(!liked);
+    // 실제로는 서버에 찜 상태를 저장하는 API 호출
+  }, [liked]);
 
-  const isDomestic = accommodation.isDomestic === "Y";
-  const fallbackImage = (isDomestic ? DOMESTIC_IMAGES : OVERSEAS_IMAGES)[
-    accommodation.name
-  ];
+  const handleBooking = useCallback(() => {
+    if (accommodation) {
+      navigate(`/booking/${id}`);
+    }
+  }, [accommodation, navigate, id]);
 
-  const toggleLike = () => {
-    const newState = !liked;
-    setLiked(newState);
-    localStorage.setItem(`liked_accommodation_${id}`, newState.toString());
-  };
+  const handleBack = useCallback(() => {
+    navigate(-1);
+  }, [navigate]);
+
+  const renderStars = useCallback((rating = 0) => {
+    const full = Math.floor(rating);
+    const half = rating % 1 >= 0.5;
+    const empty = 5 - full - (half ? 1 : 0);
+    
+    return (
+      <div className="star-rating" aria-label={`${rating}점 만점에 ${rating}점`}>
+        {Array(full).fill().map((_, i) => (
+          <i key={`full-${i}`} className="bi bi-star-fill text-warning"></i>
+        ))}
+        {half && <i className="bi bi-star-half text-warning"></i>}
+        {Array(empty).fill().map((_, i) => (
+          <i key={`empty-${i}`} className="bi bi-star text-muted"></i>
+        ))}
+        <span className="rating-text ms-1">({rating})</span>
+      </div>
+    );
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="detail-wrapper">
+        <div className="loading" role="status" aria-live="polite">
+          <div className="spinner"></div>
+          <span>숙소 정보를 불러오는 중...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="detail-wrapper">
+        <div className="error-message">
+          <i className="bi bi-exclamation-triangle me-2"></i>
+          {error}
+          <button 
+            className="btn-retry"
+            onClick={handleBack}
+          >
+            목록으로 돌아가기
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!accommodation) {
+    return (
+      <div className="detail-wrapper">
+        <div className="no-results">
+          <i className="bi bi-house-x me-2"></i>
+          숙소 정보를 찾을 수 없습니다.
+          <button 
+            className="btn-retry"
+            onClick={handleBack}
+          >
+            목록으로 돌아가기
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="accommodation-detail-wrapper">
       <div className="image-header">
         <div className="image-preview">
-          {images.length > 0 ? (
-            images.map((img, i) => (
+          {accommodation.images && accommodation.images.length > 0 ? (
+            accommodation.images.map((imageUrl, i) => (
               <img
                 key={i}
                 src={
-                  img.imageUrl.startsWith("http")
-                    ? img.imageUrl
-                    : `/images/accommodation/${img.imageUrl}`
+                  imageUrl.startsWith("http")
+                    ? imageUrl
+                    : `/images/accommodation/${imageUrl}`
                 }
-                alt="숙소 이미지"
+                alt={`${accommodation.name} 이미지 ${i + 1}`}
                 className="gallery-img"
               />
             ))
@@ -118,26 +210,73 @@ export default function AccommodationDetail() {
           <i className="bi bi-geo-alt-fill me-1" />
           {accommodation.address}
         </p>
-        <p>
-          <strong>설명:</strong> {accommodation.description}
-        </p>
-        <p>
-          <strong>체크인:</strong> {accommodation.checkInTime}
-        </p>
-        <p>
-          <strong>체크아웃:</strong> {accommodation.checkOutTime}
-        </p>
+        
+        {accommodation.description && (
+          <p>
+            <strong>설명:</strong> {accommodation.description}
+          </p>
+        )}
+        
+        {accommodation.checkIn && (
+          <p>
+            <strong>체크인:</strong> {accommodation.checkIn}
+          </p>
+        )}
+        
+        {accommodation.checkOut && (
+          <p>
+            <strong>체크아웃:</strong> {accommodation.checkOut}
+          </p>
+        )}
+        
         <p>
           <strong>연락처:</strong> {accommodation.contact}
         </p>
-        <p>
-          <strong>평점:</strong> ⭐ {accommodation.ratingAvg ?? 0} (
-          {accommodation.totalReviews ?? 0}개 리뷰)
-        </p>
+        
+        <div className="rating-section">
+          <strong>평점:</strong> 
+          {renderStars(accommodation.ratingAvg)}
+          <span className="review-count">({accommodation.totalReviews}개 리뷰)</span>
+        </div>
+
+        {accommodation.price > 0 && (
+          <p className="price-info">
+            <strong>1박 요금:</strong> {accommodation.price.toLocaleString()}원
+          </p>
+        )}
+
+        {accommodation.capacity && (
+          <p>
+            <strong>최대 인원:</strong> {accommodation.capacity}명
+          </p>
+        )}
+
+        {accommodation.amenities && accommodation.amenities.length > 0 && (
+          <div className="amenities-section">
+            <strong>편의시설:</strong>
+            <ul>
+              {accommodation.amenities.map((amenity, index) => (
+                <li key={index}>{amenity}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {accommodation.policies && accommodation.policies.length > 0 && (
+          <div className="policies-section">
+            <strong>숙소 정책:</strong>
+            <ul>
+              {accommodation.policies.map((policy, index) => (
+                <li key={index}>{policy}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         <div className="button-group">
           <button
             className="btn primary"
-            onClick={() => navigate(`/booking/${id}`)}
+            onClick={handleBooking}
           >
             예약하기
           </button>

@@ -21,7 +21,7 @@ import AuthProvider from "./context/AuthProvider";
 import MyPage from "./pages/user/MyPage";
 import Favorites from "./pages/user/Favorites";
 import Reservations from "./pages/user/Reservations"; // ✅ 누락된 import 추가
-import AccommodationList from "./pages/accommodations/숙소/AccommodationList";
+import AccommodationList from "./pages/accommodations/숙소/AccommodationList.jsx";
 import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDetail";
 import BookingPage from "./pages/booking/bookingPage"; // ✅ 이 줄을 추가하세요
 

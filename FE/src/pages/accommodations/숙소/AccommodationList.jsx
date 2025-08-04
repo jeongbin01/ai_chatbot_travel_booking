@@ -1,177 +1,152 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import "../../../styles/pages/AccommodationList.css";
 import { AxiosClient } from "../../../api/AxiosController";
 
-import gangneungImg from "../../../assets/images/domestic/강릉.jpg";
-import sokchoImg from "../../../assets/images/domestic/속초.jpg";
-import yeosuImg from "../../../assets/images/domestic/여수.jpg";
-import incheonImg from "../../../assets/images/domestic/인천.jpg";
-import jejuImg from "../../../assets/images/domestic/제주도.jpg";
+const fetchAccommodations = async ({ isDomestic }) => {
+  try {
+    // console.log(isDomestic, isDomestic ? 'Y' : 'N')
+    const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
+      AxiosClient("accommodations/filter").get("", {
+        params: { isDomestic: isDomestic ? 'Y' : 'N' },
+        }),
+      AxiosClient("accommodation-images").getAll(),
+      AxiosClient("room-types").getAll(),
+      AxiosClient("price-policies").getAll(),
+    ]);
 
-import romaImg from "../../../assets/images/overseas/로마.jpg";
-import bangkokImg from "../../../assets/images/overseas/방콕.jpg";
-import singaporeImg from "../../../assets/images/overseas/싱가포르.jpg";
-import parisImg from "../../../assets/images/overseas/로마.jpg";
-
-// 이미지 매핑 테이블
-const DOMESTIC_IMAGES = {
-  "강릉 게스트하우스": gangneungImg,
-  "속초 리조트": sokchoImg,
-  "여수 게스트하우스": yeosuImg,
-  "인천 비즈니스 호텔": incheonImg,
-  "제주도 오션뷰 펜션": jejuImg,
-};
-
-const OVERSEAS_IMAGES = {
-  "로마 부티크 호텔": romaImg,
-  "방콕 리버사이드 호텔": bangkokImg,
-  "싱가포르 시티 호텔": singaporeImg,
-  "파리 센강 호텔": parisImg,
-};
-
-// ✅ 숙소별 가격 문구 하드코딩 함수
-const getFixedPriceText = (name) => {
-  switch (name) {
-    case "강릉 게스트하우스":
-      return "1박 2인 / ₩85,000";
-    case "속초 리조트":
-      return "1박 4인 / ₩120,000";
-    case "여수 게스트하우스":
-      return "1박 2인 / ₩90,000";
-    case "인천 비즈니스 호텔":
-      return "1박 2인 / ₩110,000";
-    case "제주도 오션뷰 펜션":
-      return "1박 3인 / ₩130,000";
-    case "로마 부티크 호텔":
-      return "1박 2인 / ₩210,000";
-    case "방콕 리버사이드 호텔":
-      return "1박 3인 / ₩115,000";
-    case "싱가포르 시티 호텔":
-      return "1박 2인 / ₩198,000";
-    case "파리 센강 호텔":
-      return "1박 2인 / ₩230,000";
-    default:
-      return "가격 정보 없음";
-  }
-};
-
-// ✅ 숙소 데이터 불러오기
-const fetchAccommodations = async () => {
-  const [accRes, imageRes] = await Promise.all([
-    AxiosClient("accommodations").getAll(),
-    AxiosClient("accommodation-images").getAll(),
-  ]);
-
-  const accommodations = accRes.data;
-  const images = imageRes.data;
-
-  return {
-    data: accommodations.map((acc) => {
-      const mainImage = images.find(
-        (img) =>
-          img.accommodation.accommodationId === acc.accommodationId &&
-          img.orderNum === 1
+    const accommodations = accRes.data;
+    const images = imageRes.data;
+    const roomTypes = roomTypeRes.data;
+    const prices = priceRes.data;
+    
+    // 기본 이미지 URL
+    
+    const result = accommodations.map((acc) => {
+      const relatedRoomTypes = roomTypes.filter(
+        rt => rt.accommodation_id === acc.accommodationId
       );
+      const primaryRoomType = relatedRoomTypes[0];
+      const relatedPrice = prices.find(
+        p => p.roomType_id === primaryRoomType?.roomType_id
+      );
+      
+      const mainImage = images.find(
+        img =>
+            img?.accommodation?.accommodationId == acc.accommodationId &&
+            img?.orderNum == 1 &&
+            img?.imageUrl
+        );
 
       return {
         id: acc.accommodationId,
         name: acc.name,
         location: acc.address,
+        price: relatedPrice?.basePrice ?? 0,
+        capacity: primaryRoomType?.max_occupancy ?? 0,
         rating: acc.ratingAvg ?? 0,
         liked: false,
-        image: mainImage?.imageUrl || "",
-        isDomestic: acc.isDomestic === "Y",
+        image: mainImage?.imageUrl ?? null,
       };
-    }),
-  };
+    });
+    
+    return { data: result };
+  } catch (err) {
+    console.error("fetchAccommodations error:", err);
+    throw err;
+  }
 };
 
 export default function AccommodationList({ isDomestic }) {
-  const [allAccommodations, setAllAccommodations] = useState([]);
+  const [accommodations, setAccommodations] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
     const loadAccommodations = async () => {
       try {
-        const res = await fetchAccommodations();
-        setAllAccommodations(res.data);
-      } catch {
-        alert("숙소 데이터를 불러오는 데 실패했습니다.");
+        setLoading(true);
+        setError(null);
+        const res = await fetchAccommodations({ isDomestic });
+        setAccommodations(res.data);
+      } catch (err) {
+        setError("숙소 정보를 불러오는데 실패했습니다.");
+        console.error("Failed to fetch accommodations:", err);
       } finally {
         setLoading(false);
       }
     };
 
     loadAccommodations();
-  }, []);
-
-  const filteredByType = useMemo(() => {
-    return allAccommodations.filter((acc) => acc.isDomestic === isDomestic);
-  }, [allAccommodations, isDomestic]);
-
-  const filteredBySearch = useMemo(() => {
-    if (!search.trim()) return filteredByType;
-    return filteredByType.filter(
-      (acc) =>
-        acc.name.toLowerCase().includes(search.toLowerCase()) ||
-        acc.location.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [filteredByType, search]);
-
-  const imageMap = isDomestic ? DOMESTIC_IMAGES : OVERSEAS_IMAGES;
-  const finalList = useMemo(() => {
-    return filteredBySearch.map((acc) => ({
-      ...acc,
-      image: acc.image || imageMap[acc.name] || imageMap.default,
-    }));
-  }, [filteredBySearch, imageMap]);
+  }, [isDomestic]);
 
   const toggleLike = useCallback((id, event) => {
     event?.stopPropagation();
-    setAllAccommodations((prev) =>
-      prev.map((acc) => (acc.id === id ? { ...acc, liked: !acc.liked } : acc))
+    setAccommodations((prev) =>
+      prev.map((acc) =>
+        acc.id === id ? { ...acc, liked: !acc.liked } : acc
+      )
     );
   }, []);
 
-  const renderStars = (rating = 0) => {
+  const filteredAccommodations = useMemo(() => {
+    if (!search.trim()) return accommodations;
+
+    return accommodations.filter((acc) =>
+      acc.name.toLowerCase().includes(search.toLowerCase()) ||
+      acc.location.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [accommodations, search]);
+
+  const renderStars = useCallback((rating = 0) => {
     const full = Math.floor(rating);
     const half = rating % 1 >= 0.5;
     const empty = 5 - full - (half ? 1 : 0);
 
     return (
-      <div className="star-rating">
-        {Array(full)
-          .fill()
-          .map((_, i) => (
-            <i key={`full-${i}`} className="bi bi-star-fill text-warning" />
-          ))}
-        {half && <i className="bi bi-star-half text-warning" />}
-        {Array(empty)
-          .fill()
-          .map((_, i) => (
-            <i key={`empty-${i}`} className="bi bi-star text-muted" />
-          ))}
+      <div className="star-rating" aria-label={`${rating}점 만점에 ${rating}점`}>
+        {Array(full).fill().map((_, i) => (
+          <i key={`full-${i}`} className="bi bi-star-fill text-warning"></i>
+        ))}
+        {half && <i className="bi bi-star-half text-warning"></i>}
+        {Array(empty).fill().map((_, i) => (
+          <i key={`empty-${i}`} className="bi bi-star text-muted"></i>
+        ))}
         <span className="rating-text ms-1">({rating})</span>
       </div>
     );
-  };
+  }, []);
 
-  if (loading) {
+  if (error) {
     return (
-      <div className="loading">
-        <div className="spinner"></div>
-        <span>숙소 정보를 불러오는 중...</span>
+      <div className="accommodation-list-wrapper">
+        <div className="error-message">
+          <i className="bi bi-exclamation-triangle me-2"></i>
+          {error}
+          <button 
+            className="btn-retry"
+            onClick={() => window.location.reload()}
+          >
+            다시 시도
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="accommodation-list-wrapper">
-      <h2 className="accommodation-title">
-        {isDomestic ? "국내 숙소" : "해외 숙소"}
-      </h2>
+      <header className="accommodation-header">
+        <h2 className="accommodation-title">
+          <i className="bi bi-house-door-fill me-2"></i>{isDomestic ? '국내 숙소 목록' : '해외 숙소 목록'}
+        </h2>
+
+        <div className="accommodation-stats">
+          총 {filteredAccommodations.length}개의 숙소
+        </div>
+      </header>
+
       <div className="search-container">
         <div className="search-box">
           <i className="bi bi-search"></i>
@@ -180,59 +155,78 @@ export default function AccommodationList({ isDomestic }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="숙소명 또는 지역을 검색하세요"
+            aria-label="숙소 검색"
           />
           {search && (
-            <button className="search-clear" onClick={() => setSearch("")}>
-              <i className="bi bi-x" />
+            <button 
+              className="search-clear"
+              onClick={() => setSearch("")}
+              aria-label="검색어 지우기"
+            >
+              <i className="bi bi-x"></i>
             </button>
           )}
         </div>
       </div>
 
-      <div className="accommodation-grid">
-        {finalList.map((acc) => (
-          <div className="accommodation-card-wrapper" key={acc.id}>
-            <button
-              className={`like-button ${acc.liked ? "liked" : ""}`}
-              onClick={() => toggleLike(acc.id)}
-              aria-label={acc.liked ? "찜 해제" : "찜하기"}
-            >
-              <i className={`bi ${acc.liked ? "bi-heart-fill" : "bi-heart"}`} />
-            </button>
-
+      {loading ? (
+        <div className="loading" role="status" aria-live="polite">
+          <div className="spinner"></div>
+          <span>숙소 정보를 불러오는 중...</span>
+        </div>
+      ) : filteredAccommodations.length === 0 ? (
+        <div className="no-results">
+          <i className="bi bi-search me-2"></i>
+          {search ? `'${search}'에 대한 검색 결과가 없습니다.` : "등록된 숙소가 없습니다."}
+        </div>
+      ) : (
+        <div className="accommodation-grid">
+          {filteredAccommodations.map((acc) => (
             <Link
-              to={`/${isDomestic ? "domesticpages" : "overseaspages"}/${
-                acc.id
-              }`}
+              to={`/${isDomestic ? 'domesticpages' : 'overseaspages'}/${acc.id}`}
+              key={acc.id}
               className="accommodation-card"
+              aria-label={`${acc.name} 상세정보 보기`}
             >
+              <button
+                className={`like-button ${acc.liked ? 'liked' : ''}`}
+                onClick={(e) => toggleLike(acc.id, e)}
+                aria-label={acc.liked ? "찜 해제" : "찜하기"}
+              >
+                <i className={`bi ${acc.liked ? "bi-heart-fill" : "bi-heart"}`}></i>
+              </button>
+              
               <div className="image-container">
                 <img
                   src={acc.image}
                   alt={`${acc.name} 숙소 이미지`}
                   className="accommodation-image"
+                  loading="lazy"
                 />
-                <span
-                  className={`badge ${
-                    isDomestic ? "badge-domestic" : "badge-overseas"
-                  }`}
-                >
-                  {isDomestic ? "국내" : "해외"}
-                </span>
               </div>
 
               <div className="accommodation-content">
-                <h3 className="acc-name">{acc.name}</h3>
+                <h3 className="acc-name">
+                  <i className="bi bi-building me-2"></i>
+                  {acc.name}
+                </h3>
                 <p className="acc-location">
-                  <i className="bi bi-geo-alt-fill me-1"></i> {acc.location}
+                  <i className="bi bi-geo-alt-fill me-1"></i> 
+                  {acc.location}
                 </p>
-                <p className="acc-price">{getFixedPriceText(acc.name)}</p>
-                <div className="acc-rating">{renderStars(acc.rating)}</div>
+                <p className="acc-price">
+                  <i className="bi bi-cash-coin me-1"></i>
+                  <span className="price-amount">{acc.price.toLocaleString()}원</span>
+                  <span className="price-unit"> / 1박 {acc.capacity}인</span>
+                </p>
+                <div className="acc-rating">
+                  {renderStars(acc.rating)}
+                </div>
               </div>
             </Link>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
