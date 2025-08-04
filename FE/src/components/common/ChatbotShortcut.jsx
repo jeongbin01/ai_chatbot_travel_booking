@@ -1,16 +1,21 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ 추가
 import '../../styles/components/ChatbotShortcut.css';
-import '../../assets/images/Main/오리너구리.gif'
+import '../../assets/images/Main/오리너구리.gif';
 
 const ChatbotShortcut = () => {
+  const navigate = useNavigate(); // ✅ 훅 사용
+
   const handleClick = () => {
-    // 실제 챗봇 동작 or 페이지 이동 로직 넣기
-    alert('챗봇 열기 (예: 채팅창 팝업 또는 /chatbot 페이지로 이동)');
-    // 또는: window.location.href = "/chatbot";
+    navigate('/chatbot'); // ✅ 페이지 이동
   };
 
   return (
-    <button className="chatbot-button" onClick={handleClick} aria-label="챗봇 바로가기">
+    <button
+      className="chatbot-button"
+      onClick={handleClick}
+      aria-label="챗봇 바로가기"
+    >
       <i className="bi bi-chat-dots-fill"></i>
     </button>
   );

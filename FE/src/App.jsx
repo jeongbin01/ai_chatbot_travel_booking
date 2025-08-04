@@ -51,6 +51,7 @@ function App() {
                   <ChatbotShortcut />
                   <ScrollToTopButton />
                   <ReviewSlider />
+                  <BookingPage />
                 </>
               }
             />
@@ -91,12 +92,15 @@ function App() {
               element={<AccommodationDetail />}
             />
             {/* ✅ 예약 페이지 */}
-            <Route path="/booking/:id" element={<BookingPage />} />
+            {/* <Route path="/booking/:id" element={<BookingPage />} /> */}
 
             {/* ✅ 마이페이지 */}
             <Route path="/mypage/profile" element={<MyPage />} />
             <Route path="/mypage/wishlist" element={<Favorites />} />
             <Route path="/mypage/bookings" element={<Reservations />} />
+
+            {/* 챗봇 */}
+             <Route path="/chatbot" element={<ChatbotShortcut />} />
           </Routes>
 
           {/* ✅ Footer는 특정 경로에서만 제거 */}
