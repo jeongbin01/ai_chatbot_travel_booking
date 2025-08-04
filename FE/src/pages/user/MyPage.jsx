@@ -32,17 +32,7 @@ const MyPage = () => {
           data = response.data[0];
           console.log("data 출력 1 [소셜 로그인] ::")
           console.log(data)
-          setUserData({
-            email: data.email,
-            nickname: data.nickname,
-            provider: data.provider,
-            socialAccountId: data.socialAccountId,
-            userId: data.userId,
-            userRole: data.userRole,
-            username: data.username,
-            phoneNumber: data.phoneNumber,
-            registrationDate: data.registrationDate
-          });
+          setUserData(data);
         } else {
           if (auth.oauthSelect == 0) {
           // 일반 계정이면 /MyUser 요청
@@ -50,15 +40,7 @@ const MyPage = () => {
             data = response.data;
             console.log("data 출력 0 [일반 로그인] ::")
             console.log(data)
-            setUserData({
-              email: data.email,
-              nickname: data.nickname,
-              userId: data.userId,
-              userRole: data.userRole,
-              username: data.username,
-              phoneNumber: data.phoneNumber,
-              registrationDate: data.registrationDate
-            });
+            setUserData(data);
             }
           }
         } catch (e) {

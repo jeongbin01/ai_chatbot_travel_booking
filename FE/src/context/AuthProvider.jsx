@@ -38,7 +38,7 @@ function AuthProvider({ children }) {
       const oauthSelect = getCookie("oauthSelect")
       if (usernameCookie && jwtToken) {
         const updatedAuth = nicknameCookie
-          ? { username: usernameCookie, nickname: nicknameCookie, token: jwtToken, userID: userId, oauthSelect: oauthSelect}
+          ? { username: usernameCookie, nickname: nicknameCookie, token: jwtToken, userId: userId, oauthSelect: oauthSelect}
           : { username: usernameCookie, token: jwtToken, userId: userId, oauthSelect: oauthSelect };
 
         if (

@@ -13,6 +13,8 @@ export const AxiosClient = (controllerPath, token = null) => {
     // get: (path = "", onfig = {}) =>
     //   axios.get(`${pathURL}${path}`, headers ),
     // 전체 목록 조회
+    get: (path = "", configOverride = {}) =>
+      axios.get(`${pathURL}${path}`, { ...config, ...configOverride }),
     getAll: () => axios.get(pathURL, config),
     create: (data) => axios.post(pathURL, data, config),
     update: (id, data) => axios.put(`${pathURL}/${id}`, data, config),
