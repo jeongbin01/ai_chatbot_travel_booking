@@ -3,26 +3,24 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../../../styles/pages/AccommodationDetail.css";
 
 import { AxiosClient } from "../../../api/AxiosController";
-
 const fetchAccommodationById = async (id) => {
   try {
     const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
       AxiosClient("accommodations").getById(id),
-      AxiosClient("accommodation-images").get("", {
-        params: { accommodation_id: id },
+      AxiosClient("accommodations/filter-img").get("", {
+        params: { accommodationId: id }, 
       }),
       AxiosClient("room-types").get("", {
         params: { accommodation_id: id },
       }),
-      AxiosClient("price-policies").getAll(), // 여긴 아직 전체 받아오는 방식
+      AxiosClient("price-policies").getAll(),
     ]);
 
     const accommodation = accRes.data;
     const images = imageRes.data ?? [];
     const roomTypes = roomTypeRes.data ?? [];
-
     const primaryRoomType = roomTypes[0] ?? null;
-
+    console.log(images)
     const pricePolicies = priceRes.data.filter(p =>
       primaryRoomType && p.room_type_id === primaryRoomType.room_type_id
     );
@@ -42,13 +40,22 @@ const fetchAccommodationById = async (id) => {
         amenities: Array.isArray(accommodation.amenities)
           ? accommodation.amenities
           : [],
-        images: images
-          .sort((a, b) => a.orderNum - b.orderNum)
-          .map(img => img.imageUrl),
+        images: (() => {
+          const seen = new Set();
+          return images
+            .sort((a, b) => a.orderNum - b.orderNum)
+            .filter(img => {
+              const cleanedUrl = img.imageUrl?.trim().toLowerCase();
+              if (seen.has(cleanedUrl)) return false;
+              seen.add(cleanedUrl);
+              return true;
+            })
+            .map(img => img.imageUrl);
+        })(),
         checkIn: accommodation.checkInTime,
         checkOut: accommodation.checkOutTime,
-        policies: ["금연", "반려동물 불가", "파티 불가"], // 임시
-        contact: accommodation.contact ?? "000-0000-0000", // 임시
+        policies: ["금연", "반려동물 불가", "파티 불가"],
+        contact: accommodation.contact ?? "000-0000-0000",
         address: accommodation.address,
         ratingAvg: accommodation.ratingAvg ?? 0,
         totalReviews: accommodation.totalReviews ?? 0,
@@ -58,7 +65,9 @@ const fetchAccommodationById = async (id) => {
     console.error("fetchAccommodations error:", err);
     throw err;
   }
-}
+};
+
+
 
 export default function AccommodationDetail() {
   const { id } = useParams();
@@ -80,6 +89,7 @@ export default function AccommodationDetail() {
         setLoading(true);
         setError(null);
         const res = await fetchAccommodationById(id);
+        console.log(res)
         setAccommodation(res.data);
         setLiked(res.data.liked);
       } catch (err) {
@@ -182,11 +192,7 @@ export default function AccommodationDetail() {
             accommodation.images.map((imageUrl, i) => (
               <img
                 key={i}
-                src={
-                  imageUrl.startsWith("http")
-                    ? imageUrl
-                    : `/images/accommodation/${imageUrl}`
-                }
+                src={imageUrl}
                 alt={`${accommodation.name} 이미지 ${i + 1}`}
                 className="gallery-img"
               />

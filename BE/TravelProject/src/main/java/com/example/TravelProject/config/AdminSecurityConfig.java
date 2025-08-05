@@ -30,7 +30,8 @@ public class AdminSecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/admin/logout")
-                        .logoutSuccessUrl("/admin/login?logout=true")
+
+                        .logoutSuccessUrl("/admin/logout-success")
                 )
                 .userDetailsService(adminUserDetailsService);
 
