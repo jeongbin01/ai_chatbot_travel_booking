@@ -1,644 +1,258 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>OnComma - 메인 대시보드</title>
-<style>
-* {	
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 50%, #d4f1f4 100%);
-    min-height: 100vh;
-    position: relative;
-    overflow-x: hidden;
-}
-
-/* 배경 애니메이션 요소들 */
-body::before {
-    content: '';
-    position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 183, 77, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 180, 188, 0.1) 0%, transparent 50%);
-    animation: float 20s ease-in-out infinite;
-    z-index: -1;
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0px) rotate(0deg); }
-    50% { transform: translateY(-20px) rotate(1deg); }
-}
-
-/* 헤더 */
-.header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(120, 180, 188, 0.2);
-    padding: 20px 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 30px;
-}
-
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.logo-small {
-    width: 60px;
-    height: auto;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-}
-
-.brand-text {
-    font-size: 24px;
-    font-weight: bold;
-    color: #2c5e63;
-}
-
-.brand-text .on {
-    color: #8B4513;
-}
-
-.user-section {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.welcome-user {
-    color: #2c5e63;
-    font-weight: 500;
-    font-size: 16px;
-}
-
-.logout-btn {
-    padding: 10px 20px;
-    background: linear-gradient(135deg, #78b4bc 0%, #2c5e63 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.logout-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(120, 180, 188, 0.4);
-}
-
-/* 메인 컨테이너 */
-.main-container {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 30px;
-    animation: fadeInUp 0.8s ease-out;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
+  <meta charset="UTF-8">
+  <title>OnComma - 메인 대시보드</title>
+  <style>
+    /* === RESET & BASE === */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg,#f0f8ff 0%,#e6f3ff 50%,#d4f1f4 100%);
+      min-height: 100vh; overflow-x: hidden;
+      opacity: 0; transition: opacity .8s ease-in;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    /* === 헤더 스타일 === */
+    .header {
+      position: sticky; top: 0; width: 100%;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(120,180,188,0.2);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+      z-index: 100; transition: background .3s;
     }
-}
-
-/* 환영 섹션 */
-.welcome-section {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 40px;
-    margin-bottom: 40px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.welcome-section::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #78b4bc, #2c5e63, #78b4bc);
-    background-size: 200% 100%;
-    animation: gradientSlide 3s ease-in-out infinite;
-}
-
-@keyframes gradientSlide {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-.welcome-title {
-    font-size: 32px;
-    color: #2c5e63;
-    margin-bottom: 15px;
-    font-weight: 300;
-}
-
-.welcome-subtitle {
-    font-size: 18px;
-    color: #78b4bc;
-    opacity: 0.8;
-    margin-bottom: 20px;
-}
-
-.current-time {
-    display: inline-block;
-    background: linear-gradient(135deg, #78b4bc, #2c5e63);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: 500;
-    margin-top: 10px;
-}
-
-/* 버튼 섹션 스타일 */
-.button-section {
-    margin-bottom: 40px;
-}
-
-.button-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-}
-
-.button-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg #78b4bc);
-    background-size: 200% 100%;
-    animation: gradientSlide 3s ease-in-out infinite;
-}
-
-.simple-form {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.simple-form button {
-    padding: 15px 30px;
-    background: linear-gradient(135deg, #78b4bc 0%, rgb(139, 197, 203) 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    min-width: 120px;
-    font-family: inherit;
-}
-
-.simple-form button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s;
-}
-
-.simple-form button:hover::before {
-    left: 100%;
-}
-
-.simple-form button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px #78b4bc(120, 180, 188, 0.4);
-}
-
-.simple-form button:active {
-    transform: translateY(-1px);
-}
-
-/* 데이터 섹션 스타일 */
-.data-section {
-    margin-bottom: 40px;
-}
-
-.data-container {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.data-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #78b4bc);
-    background-size: 200% 100%;
-    animation: gradientSlide 3s ease-in-out infinite;
-}
-
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    border: none !important;
-}
-
-.styled-table th {
-    background: linear-gradient(135deg, #78b4bc);
-    color: white;
-    padding: 18px 25px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 16px;
-    letter-spacing: 0.5px;
-    border: none !important;
-}
-
-.styled-table td {
-    padding: 18px 25px;
-    text-align: center;
-    color: #78b4bc;
-    font-size: 15px;
-    font-weight: 500;
-    background: white;
-    border: none !important;
-    border-bottom: 1px solid #e9ecef !important;
-    transition: all 0.3s ease;
-}
-
-.styled-table tbody tr {
-    transition: all 0.3s ease;
-}
-
-.styled-table tbody tr:hover {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
-    transform: scale(1.02);
-    box-shadow: 0 4px 15px rgba(120, 180, 188, 0.2);
-}
-
-.styled-table tbody tr:last-child td {
-    border-bottom: none !important;
-}
-
-/* 푸터 */
-.footer {
-    text-align: center;
-    padding: 40px;
-    color: #78b4bc;
-    font-size: 14px;
-    margin-top: 60px;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
+    .header.scrolled { background: rgba(255,255,255,0.85); }
     .header-content {
-        padding: 0 20px;
-        flex-direction: column;
-        gap: 15px;
+      max-width: 1200px; margin: 0 auto; padding: 0 30px;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    
+    .user-section { display: flex; align-items: center; gap: 12px; }
+    .welcome-user { font-size: 16px; color: #2c5e63; }
+    .logout-link {
+      font-size: 14px; font-weight: 600; color: #2c5e63;
+      text-decoration: none; padding: 6px 12px;
+      border: 1px solid #78b4bc; border-radius: 6px;
+      transition: background .2s, color .2s;
+    }
+    .logout-link:hover { background: #78b4bc; color: #fff; }
+
+    /* === 메인 컨테이너 === */
     .main-container {
-        padding: 0 20px;
-        margin: 20px auto;
+      max-width: 1200px; margin: 40px auto; padding: 0 30px;
+      animation: fadeInUp .8s ease-out;
     }
-    
-    .welcome-section {
-        padding: 30px 20px;
+    @keyframes fadeInUp {
+      from { opacity:0; transform:translateY(30px); }
+      to   { opacity:1; transform:translateY(0); }
     }
-    
-    .welcome-title {
-        font-size: 24px;
+
+    /* === 박스형 섹션 === */
+    .button-section, .data-section { margin-bottom: 40px; }
+    .button-container, .data-container {
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+      border-radius: 20px; padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      text-align: center; overflow: hidden;
     }
-    
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+
+    /* === 버튼 폼 === */
+    .simple-form { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    .simple-form button {
+      padding: 15px 25px; border: none; border-radius: 12px;
+      background: linear-gradient(135deg,#78b4bc 0%,#8bc5cb 100%);
+      color: #fff; font-size: 16px; font-weight: 600;
+      cursor: pointer; transition: transform .3s, box-shadow .3s;
     }
-    
-    .stats-section {
-        grid-template-columns: repeat(2, 1fr);
+    .simple-form button:hover, .simple-form button:focus {
+      transform: translateY(-3px); box-shadow: 0 8px 25px rgba(120,180,188,0.4);
+      outline: none;
     }
-}
 
-/* 부드러운 스크롤 */
-html {
-    scroll-behavior: smooth;
-}
+    /* === 필터 바 (그리드 레이아웃) === */
+    .filter-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .filter-bar input {
+      width: 100%;
+      padding: 8px 12px; font-size: 14px;
+      border: 1px solid #ccc; border-radius: 6px;
+      transition: border-color .2s;
+    }
+    .filter-bar input:focus {
+      border-color: #78b4bc; outline: none;
+    }
 
-/* 로딩 애니메이션 */
-.loading {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: #fff;
-    animation: spin 1s ease-in-out infinite;
-}
+    /* === 데이터 테이블 === */
+    .data-container h2 {
+      margin-bottom: 20px;
+      color: #2c5e63; font-size: 24px; font-weight: 600;
+    }
+    .table-container { overflow-x: auto; }
+    .styled-table {
+      width: 100%; border-collapse: collapse;
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      min-width: 600px; font-size: 15px;
+    }
+    .styled-table th, .styled-table td {
+      padding: 18px 25px; text-align: center;
+    }
+    .styled-table th {
+      background: #78b4bc; color: #fff; font-weight: 600;
+    }
+    .styled-table td {
+      background: #fff; color: #2c5e63;
+      border-bottom: 1px solid #e9ecef;
+    }
+    .styled-table tbody tr {
+      transition: transform .3s, background .3s; cursor: pointer;
+    }
+    .styled-table tbody tr:hover, .styled-table tbody tr:focus {
+      background: #f1f8fa; transform: scale(1.01); outline: none;
+    }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
+    /* === 푸터 === */
+    .footer {
+      text-align: center; padding: 40px;
+      color: #78b4bc; font-size: 14px; margin-top: 60px;
+    }
 
-/* 떠다니는 요소들 */
-.floating-elements {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: -1;
-}
-
-.floating-circle {
-    position: absolute;
-    border-radius: 50%;
-    opacity: 0.1;
-    animation: floatCircle 15s infinite linear;
-}
-
-.circle-1 {
-    width: 20px;
-    height: 20px;
-    background: #78b4bc;
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.circle-2 {
-    width: 15px;
-    height: 15px;
-    background: #ffb74d;
-    top: 60%;
-    right: 15%;
-    animation-delay: 5s;
-}
-
-.circle-3 {
-    width: 25px;
-    height: 25px;
-    background: #2c5e63;
-    bottom: 30%;
-    left: 20%;
-    animation-delay: 10s;
-}
-
-@keyframes floatCircle {
-    0% { transform: translateY(0px) rotate(0deg); }
-    25% { transform: translateY(-20px) rotate(90deg); }
-    50% { transform: translateY(0px) rotate(180deg); }
-    75% { transform: translateY(-15px) rotate(270deg); }
-    100% { transform: translateY(0px) rotate(360deg); }
-}
-</style>
+    /* === 반응형 === */
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; padding: 0 20px; }
+      .main-container { padding: 0 20px; }
+      .data-container h2 { font-size: 20px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="floating-elements">
-        <div class="floating-circle circle-1"></div>
-        <div class="floating-circle circle-2"></div>
-        <div class="floating-circle circle-3"></div>
+  <!-- 배경용 플로팅 요소 -->
+  <div class="floating-elements">
+    <div class="floating-circle circle-1"></div>
+    <div class="floating-circle circle-2"></div>
+    <div class="floating-circle circle-3"></div>
+  </div>
+
+  <!-- 헤더 -->
+  <header class="header" id="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <!-- SVG 로고 삽입 -->
+      </div>
+      <div class="user-section">
+        <span class="welcome-user">환영합니다, <span sec:authentication="name"></span>님!</span>
+        <a th:href="@{/admin/logout}" class="logout-link">로그아웃</a>
+      </div>
     </div>
+  </header>
 
-    <!-- 헤더 -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-section">
-                <svg class="logo-small" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-                    <!-- 태양과 광선들 -->
-                    <g>
-                        <!-- 외부 광선들 -->
-                        <line x1="200" y1="10" x2="200" y2="25" stroke="#78b4bc" stroke-width="3" opacity="0.6"/>
-                        <line x1="260" y1="20" x2="255" y2="32" stroke="#78b4bc" stroke-width="3" opacity="0.6"/>
-                        <line x1="300" y1="45" x2="290" y2="52" stroke="#78b4bc" stroke-width="3" opacity="0.6"/>
-                        <line x1="320" y1="80" x2="308" y2="82" stroke="#78b4bc" stroke-width="3" opacity="0.6"/>
-                        <line x1="140" y1="20" x2="145" y2="32" stroke="#78b4bc" stroke-width="3" opacity="0.6"/>
-                        <line x1="100" y1="45" x2="110" y2="52" stroke="#78b4bc" stroke-width="3" opacity="0.6"/>
-                        <line x1="80" y1="80" x2="92" y2="82" stroke="#78b4bc" stroke-width="3" opacity="0.6"/>
-                        
-                        <!-- 메인 원형 배경 -->
-                        <circle cx="200" cy="80" r="65" fill="#f4f1e8" stroke="#78b4bc" stroke-width="2" opacity="0.8"/>
-                        
-                        <!-- 태양 -->
-                        <circle cx="200" cy="60" r="25" fill="#ffb74d">
-                            <animate attributeName="fill" values="#ffb74d;#ffc947;#ffb74d" dur="3s" repeatCount="indefinite"/>
-                        </circle>
-                        
-                        <!-- 태양 광선들 -->
-                        <g stroke="#ffc947" stroke-width="2" opacity="0.8">
-                            <line x1="200" y1="30" x2="200" y2="25">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="218" y1="35" x2="222" y2="30">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="230" y1="50" x2="235" y2="47">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="230" y1="70" x2="235" y2="73">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="218" y1="85" x2="222" y2="90">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="200" y1="90" x2="200" y2="95">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="182" y1="85" x2="178" y2="90">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="170" y1="70" x2="165" y2="73">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="170" y1="50" x2="165" y2="47">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                            <line x1="182" y1="35" x2="178" y2="30">
-                                <animateTransform attributeName="transform" type="rotate" values="0 200 60;360 200 60" dur="8s" repeatCount="indefinite"/>
-                            </line>
-                        </g>
-                        
-                        <!-- 구름들 -->
-                        <g fill="#78b4bc" opacity="0.6">
-                            <ellipse cx="160" cy="70" rx="8" ry="4"/>
-                            <ellipse cx="165" cy="68" rx="6" ry="3"/>
-                            <ellipse cx="170" cy="70" rx="5" ry="3"/>
-                            
-                            <ellipse cx="240" cy="75" rx="6" ry="3"/>
-                            <ellipse cx="245" cy="73" rx="8" ry="4"/>
-                            <ellipse cx="250" cy="75" rx="5" ry="3"/>
-                            
-                            <ellipse cx="220" cy="85" rx="5" ry="3"/>
-                            <ellipse cx="225" cy="83" rx="6" ry="3"/>
-                        </g>
-                        
-                        <!-- 파도 -->
-                        <path d="M 135 100 Q 155 95, 175 100 T 215 100 T 255 100 T 295 100" 
-                              fill="none" stroke="#78b4bc" stroke-width="4" opacity="0.8">
-                            <animate attributeName="d" 
-                                     values="M 135 100 Q 155 95, 175 100 T 215 100 T 255 100 T 295 100;
-                                             M 135 100 Q 155 105, 175 100 T 215 100 T 255 100 T 295 100;
-                                             M 135 100 Q 155 95, 175 100 T 215 100 T 255 100 T 295 100" 
-                                     dur="4s" repeatCount="indefinite"/>
-                        </path>
-                        <path d="M 140 105 Q 160 100, 180 105 T 220 105 T 260 105 T 300 105" 
-                              fill="none" stroke="#78b4bc" stroke-width="3" opacity="0.6">
-                            <animate attributeName="d" 
-                                     values="M 140 105 Q 160 100, 180 105 T 220 105 T 260 105 T 300 105;
-                                             M 140 105 Q 160 110, 180 105 T 220 105 T 260 105 T 300 105;
-                                             M 140 105 Q 160 100, 180 105 T 220 105 T 260 105 T 300 105" 
-                                     dur="3.5s" repeatCount="indefinite"/>
-                        </path>
-                    </g>
-                    
-                    <!-- 로고 텍스트 배경 -->
-                    <rect x="50" y="125" width="300" height="50" rx="25" fill="white" opacity="0.9" 
-                          stroke="#78b4bc" stroke-width="2"/>
-                    
-                    <!-- OnComma 텍스트 -->
-                    <text x="85" y="160" font-family="Arial, sans-serif" font-size="36" font-weight="bold">
-                        <tspan fill="#8B4513">On</tspan><tspan fill="#2c5e63">Comma</tspan>
-                    </text>
-                </svg>
-                <div class="brand-text">
-                    <span class="on">OnComma</span>
-                </div>
-            </div>
-            
-            <div class="user-section">
-                <span class="welcome-user">환영합니다,  <span sec:authentication="name"></span>님!</span>
-                <form th:action="@{/admin/logout}" method="post" style="display: inline;">
-                    <button type="submit" class="logout-btn" style="border: none; font-family: inherit;">로그아웃</button>
-                </form>
-            </div>
+  <!-- 메인 영역 -->
+  <main class="main-container">
+    <!-- 테이블 목록 버튼 -->
+    <section class="button-section" th:if="${rows == null}">
+      <div class="button-container">
+        <div class="simple-form">
+          <button type="button"
+                  th:each="table : ${tables}"
+                  th:text="${table}"
+                  th:attr="data-table=${table}">
+          </button>
         </div>
-    </header>
+      </div>
+    </section>
 
-    <!-- 메인 컨테이너 -->
-    <main class="main-container">
-        <!-- 버튼 폼 -->
-        <section class="button-section">
-            <div class="button-container">
-                <div class=class="simple-form">
-                    <button type="button"
-                            th:each="table : ${tables}"
-                            th:text="${table}"
-                            th:attr="data-table=${table}"
-                            onclick="goToTable(this)">
-                    </button>
-                </div>
-            </div>
-            <script>
-                function goToTable(button) {
-                    const table = button.getAttribute("data-table");
-                    window.location.href = "/admin/index/" + table;
-                }
-            </script>
-        </section>
+    <!-- 데이터 테이블 -->
+    <section class="data-section" th:if="${rows}">
+      <div class="data-container">
+        <h2 th:text="'[' + ${tableName} + '] 테이블 데이터'"></h2>
 
-        <!-- 데이터 테이블 -->
-        <section class="data-section" th:if="${rows}">
-            <h2 th:text="'[' + ${tableName} + '] 테이블 데이터'"></h2>
-            <div class="data-container">
-                <table border="1" class="styled-table">
-                    <thead>
-                    <tr>
-                        <th th:each="col : ${columns}" th:text="${col}"></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="row : ${rows}">
-                        <td th:each="cell : ${row}" th:text="${cell}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-    </main>
+        <!-- 검색 필터 바 -->
+        <div class="filter-bar">
+          <input type="text" id="col-search-all" placeholder="전체 검색..." />
+          <input type="text" data-col="1" placeholder="Address 검색" />
+          <input type="text" data-col="4" placeholder="Contact 검색" />
+        </div>
 
-    <!-- 푸터 -->
-    <footer class="footer">
-        <p>&copy; 2025 OnComma . 온전한 쉼을 위한 공간입니다.</p>
-    </footer>
+        <!-- 테이블 출력 -->
+        <div class="table-container">
+          <table class="styled-table" tabindex="0">
+            <thead>
+              <tr>
+                <th th:each="col : ${columns}" th:text="${col}"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="row : ${rows}" tabindex="0">
+                <td th:each="cell : ${row}" th:text="${cell}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <script>
-        // 폼 버튼 클릭 이벤트
-        document.querySelectorAll('.simple-form button').forEach((button, index) => {
-            button.addEventListener('click', function() {
-                alert(`버튼 ${index + 1}이 클릭되었습니다!`);
-            });
+  <!-- 푸터 -->
+  <footer class="footer">
+    <p>&copy; 2025 OnComma. 온전한 쉼을 위한 공간입니다.</p>
+  </footer>
+
+  <script>
+    // 페이지 로드 시 페이드인 효과
+    window.addEventListener('load', () => document.body.style.opacity = '1');
+
+    // 스크롤에 따라 헤더 배경 투명도 조절
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // 버튼 클릭 시 해당 테이블 페이지로 이동
+    document.querySelectorAll('.simple-form button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const table = btn.getAttribute('data-table');
+        window.location.href = `/admin/index/${table}`;
+      });
+    });
+
+    // 테이블 행 클릭 및 키보드 접근성
+    document.querySelectorAll('.styled-table tbody tr').forEach(row => {
+      row.addEventListener('click', () => {
+        const cells = Array.from(row.children).map(td => td.textContent).slice(0,3);
+        alert(`선택된 데이터:\n키: ${cells[0]}\n이름: ${cells[1]}\n값: ${cells[2]}`);
+      });
+      row.addEventListener('keydown', e => {
+        if (['Enter',' '].includes(e.key)) row.click();
+      });
+    });
+
+    // ===== 필터 기능 =====
+    const rows = Array.from(document.querySelectorAll('.styled-table tbody tr'));
+
+    // 전체 검색 입력
+    document.getElementById('col-search-all').addEventListener('input', e => {
+      const v = e.target.value.trim().toLowerCase();
+      rows.forEach(r => {
+        r.style.display = r.textContent.toLowerCase().includes(v) ? '' : 'none';
+      });
+    });
+
+    // 컬럼별 검색 입력
+    document.querySelectorAll('.filter-bar [data-col]').forEach(input => {
+      input.addEventListener('input', e => {
+        const idx = +e.target.getAttribute('data-col');
+        const v   = e.target.value.trim().toLowerCase();
+        rows.forEach(r => {
+          const txt = r.children[idx]?.textContent.toLowerCase() || '';
+          r.style.display = txt.includes(v) ? '' : 'none';
         });
-
-        // 테이블 행 클릭 이벤트
-        document.querySelectorAll('.styled-table tbody tr').forEach(row => {
-            row.addEventListener('click', function() {
-                const cells = this.querySelectorAll('td');
-                const key = cells[0].textContent;
-                const name = cells[1].textContent;
-                const value = cells[2].textContent;
-                
-                alert(`선택된 데이터:\n키: ${key}\n이름: ${name}\n값: ${value}`);
-            });
-        });
-
-        // 부드러운 페이드인 효과
-        window.addEventListener('load', function() {
-            document.body.style.opacity = '1';
-        });
-    </script>
+      });
+    });
+    // ===== 필터 기능 끝 =====
+  </script>
 </body>
 </html>
