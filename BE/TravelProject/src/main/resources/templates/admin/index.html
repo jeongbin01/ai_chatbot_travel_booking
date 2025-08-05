@@ -5,152 +5,149 @@
   <title>OnComma - 메인 대시보드</title>
   <style>
     /* === RESET & BASE === */
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg,#f0f8ff 0%,#e6f3ff 50%,#d4f1f4 100%);
-      min-height: 100vh; overflow-x: hidden;
-      opacity: 0; transition: opacity .8s ease-in;
+      min-height:100vh; overflow-x:hidden; opacity:0;
+      transition:opacity .8s ease-in;
     }
-
-    /* === 헤더 스타일 === */
+    /* === HEADER === */
     .header {
-      position: sticky; top: 0; width: 100%;
-      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(120,180,188,0.2);
-      box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-      z-index: 100; transition: background .3s;
+      position:sticky; top:0; width:100%;
+      background:rgba(255,255,255,0.95); backdrop-filter:blur(10px);
+      border-bottom:1px solid rgba(120,180,188,0.2);
+      box-shadow:0 2px 20px rgba(0,0,0,0.1); z-index:100;
+      transition:background .3s;
     }
-    .header.scrolled { background: rgba(255,255,255,0.85); }
+    .header.scrolled { background:rgba(255,255,255,0.85); }
     .header-content {
-      max-width: 1200px; margin: 0 auto; padding: 0 30px;
-      display: flex; justify-content: space-between; align-items: center;
+      max-width:1200px; margin:0 auto; padding:0 30px;
+      display:flex; justify-content:space-between; align-items:center;
     }
-    .user-section { display: flex; align-items: center; gap: 12px; }
-    .welcome-user { font-size: 16px; color: #2c5e63; }
-    .logout-link {
-      font-size: 14px; font-weight: 600; color: #2c5e63;
-      text-decoration: none; padding: 6px 12px;
-      border: 1px solid #78b4bc; border-radius: 6px;
-      transition: background .2s, color .2s;
-    }
-    .logout-link:hover { background: #78b4bc; color: #fff; }
+    .user-section { display:flex; align-items:center; gap:12px; }
+    .welcome-user { font-size:16px; color:#2c5e63; }
 
-    /* === 메인 컨테이너 === */
+    /* === 로그아웃 폼 버튼 === */
+    .logout-btn {
+      font-size:14px; font-weight:600;
+      background:none; border:1px solid #78b4bc;
+      color:#2c5e63; padding:6px 12px; border-radius:6px;
+      cursor:pointer; transition:background .2s, color .2s;
+    }
+    .logout-btn:hover { background:#78b4bc; color:#fff; }
+
+    /* === MAIN === */
     .main-container {
-      max-width: 1200px; margin: 40px auto; padding: 0 30px;
-      animation: fadeInUp .8s ease-out;
+      max-width:1200px; margin:40px auto; padding:0 30px;
+      animation:fadeInUp .8s ease-out;
     }
     @keyframes fadeInUp {
       from { opacity:0; transform:translateY(30px); }
       to   { opacity:1; transform:translateY(0); }
     }
 
-    /* === 박스형 섹션 === */
-    .button-section, .data-section { margin-bottom: 40px; }
+    /* === 버튼 & 테이블 박스 === */
+    .button-section, .data-section { margin-bottom:40px; }
     .button-container, .data-container {
-      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-      border-radius: 20px; padding: 30px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      text-align: center; overflow: hidden;
+      background:rgba(255,255,255,0.95); backdrop-filter:blur(10px);
+      border-radius:20px; padding:30px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.1);
+      text-align:center; overflow:hidden;
     }
 
-    /* === 버튼 폼 === */
-    .simple-form { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+    /* === 테이블 전환 버튼 === */
+    .simple-form { display:flex; gap:15px; justify-content:center; flex-wrap:wrap; }
     .simple-form button {
-      padding: 15px 25px; border: none; border-radius: 12px;
-      background: linear-gradient(135deg,#78b4bc 0%,#8bc5cb 100%);
-      color: #fff; font-size: 16px; font-weight: 600;
-      cursor: pointer; transition: transform .3s, box-shadow .3s;
+      padding:15px 25px; border:none; border-radius:12px;
+      background:linear-gradient(135deg,#78b4bc 0%,#8bc5cb 100%);
+      color:#fff; font-size:16px; font-weight:600;
+      cursor:pointer; transition:transform .3s, box-shadow .3s;
     }
     .simple-form button:hover, .simple-form button:focus {
-      transform: translateY(-3px); box-shadow: 0 8px 25px rgba(120,180,188,0.4);
-      outline: none;
+      transform:translateY(-3px); box-shadow:0 8px 25px rgba(120,180,188,0.4);
+      outline:none;
     }
 
-    /* === 필터 바 (그리드 레이아웃) === */
+    /* === 검색바 (Grid) === */
     .filter-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      gap:12px; margin-bottom:20px;
     }
     .filter-bar input {
-      width: 100%;
-      padding: 8px 12px; font-size: 14px;
-      border: 1px solid #ccc; border-radius: 6px;
-      transition: border-color .2s;
+      width:100%; padding:8px 12px; font-size:14px;
+      border:1px solid #ccc; border-radius:6px;
+      transition:border-color .2s;
     }
-    .filter-bar input:focus {
-      border-color: #78b4bc; outline: none;
-    }
+    .filter-bar input:focus { border-color:#78b4bc; outline:none; }
 
-    /* === 데이터 테이블 === */
+    /* === 데이터 테이블 스타일 === */
     .data-container h2 {
-      margin-bottom: 20px;
-      color: #2c5e63; font-size: 24px; font-weight: 600;
+      margin-bottom:20px;
+      color:#2c5e63; font-size:24px; font-weight:600;
     }
-    .table-container { overflow-x: auto; }
+    .table-container { overflow-x:auto; }
     .styled-table {
-      width: 100%; border-collapse: collapse;
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      min-width: 600px; font-size: 15px;
+      width:100%; border-collapse:collapse;
+      border-radius:12px; overflow:hidden;
+      box-shadow:0 4px 15px rgba(0,0,0,0.1);
+      min-width:600px; font-size:15px;
     }
     .styled-table th, .styled-table td {
-      padding: 18px 25px; text-align: center;
+      padding:18px 25px; text-align:center;
     }
     .styled-table th {
-      background: #78b4bc; color: #fff; font-weight: 600;
+      background:#78b4bc; color:#fff; font-weight:600;
     }
     .styled-table td {
-      background: #fff; color: #2c5e63;
-      border-bottom: 1px solid #e9ecef;
+      background:#fff; color:#2c5e63;
+      border-bottom:1px solid #e9ecef;
     }
     .styled-table tbody tr {
-      transition: transform .3s, background .3s; cursor: pointer;
+      transition:transform .3s, background .3s; cursor:pointer;
     }
     .styled-table tbody tr:hover, .styled-table tbody tr:focus {
-      background: #f1f8fa; transform: scale(1.01); outline: none;
+      background:#f1f8fa; transform:scale(1.01); outline:none;
     }
 
     /* === 푸터 === */
     .footer {
-      text-align: center; padding: 40px;
-      color: #78b4bc; font-size: 14px; margin-top: 60px;
+      text-align:center; padding:40px;
+      color:#78b4bc; font-size:14px; margin-top:60px;
     }
 
     /* === 반응형 === */
-    @media (max-width: 768px) {
-      .header-content { flex-direction: column; padding: 0 20px; }
-      .main-container { padding: 0 20px; }
-      .data-container h2 { font-size: 20px; }
+    @media (max-width:768px) {
+      .header-content { flex-direction:column; padding:0 20px; }
+      .main-container { padding:0 20px; }
+      .data-container h2 { font-size:20px; }
     }
   </style>
 </head>
 <body>
-  <!-- 배경용 플로팅 요소 -->
-  <div class="floating-elements">
-    <div class="floating-circle circle-1"></div>
-    <div class="floating-circle circle-2"></div>
-    <div class="floating-circle circle-3"></div>
-  </div>
-
-  <!-- 헤더 -->
+  <!-- HEADER -->
   <header class="header" id="header">
     <div class="header-content">
       <div class="logo-section">
         <!-- SVG 로고 삽입 -->
       </div>
       <div class="user-section">
-        <span class="welcome-user">환영합니다, <span sec:authentication="name"></span>님!</span>
-        <a th:href="@{/admin/logout}" class="logout-link">로그아웃</a>
+        <!-- 환영 메세지 -->
+        <span class="welcome-user">
+          환영합니다, <strong th:text="${#authentication.name}"></strong>님!
+        </span>
+        <!-- 로그아웃 POST 폼 (CSRF 토큰 포함) -->
+        <form th:action="@{/admin/logout}" method="post" style="display:inline">
+          <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+          <button type="submit" class="logout-btn">로그아웃</button>
+        </form>
       </div>
     </div>
   </header>
 
-  <!-- 메인 영역 -->
+  <!-- MAIN -->
   <main class="main-container">
     <!-- 테이블 목록 버튼 -->
     <section class="button-section" th:if="${rows == null}">
@@ -169,14 +166,12 @@
     <section class="data-section" th:if="${rows}">
       <div class="data-container">
         <h2 th:text="'[' + ${tableName} + '] 테이블 데이터'"></h2>
-
         <!-- 검색 필터 바 -->
         <div class="filter-bar">
           <input type="text" id="col-search-all" placeholder="전체 검색..." />
           <input type="text" data-col="1" placeholder="Address 검색" />
           <input type="text" data-col="4" placeholder="Contact 검색" />
         </div>
-
         <!-- 테이블 출력 -->
         <div class="table-container">
           <table class="styled-table" tabindex="0">
@@ -196,63 +191,54 @@
     </section>
   </main>
 
-  <!-- 푸터 -->
+  <!-- FOOTER -->
   <footer class="footer">
     <p>&copy; 2025 OnComma. 온전한 쉼을 위한 공간입니다.</p>
   </footer>
 
   <script>
-    // 페이지 로드 시 페이드인 효과
-    window.addEventListener('load', () => document.body.style.opacity = '1');
-
-    // 스크롤에 따라 헤더 배경 투명도 조절
+    // 페이드인 & 헤더 배경 토글
+    window.addEventListener('load', ()=>document.body.style.opacity='1');
     const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 50);
-    });
+    window.addEventListener('scroll', ()=>header.classList.toggle('scrolled', window.scrollY>50));
 
-    // 버튼 클릭 시 해당 테이블 페이지로 이동
-    document.querySelectorAll('.simple-form button').forEach(btn => {
-      btn.addEventListener('click', () => {
+    // 테이블 전환 버튼
+    document.querySelectorAll('.simple-form button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
         const table = btn.getAttribute('data-table');
         window.location.href = `/admin/index/${table}`;
       });
     });
 
-    // 테이블 행 클릭 및 키보드 접근성
-    document.querySelectorAll('.styled-table tbody tr').forEach(row => {
-      row.addEventListener('click', () => {
-        const cells = Array.from(row.children).map(td => td.textContent).slice(0,3);
+    // 행 클릭 & 키보드 접근성
+    document.querySelectorAll('.styled-table tbody tr').forEach(row=>{
+      row.addEventListener('click', ()=>{
+        const cells = Array.from(row.children).map(td=>td.textContent).slice(0,3);
         alert(`선택된 데이터:\n키: ${cells[0]}\n이름: ${cells[1]}\n값: ${cells[2]}`);
       });
-      row.addEventListener('keydown', e => {
-        if (['Enter',' '].includes(e.key)) row.click();
+      row.addEventListener('keydown', e=>{
+        if(['Enter',' '].includes(e.key)) row.click();
       });
     });
 
     // ===== 필터 기능 =====
     const rows = Array.from(document.querySelectorAll('.styled-table tbody tr'));
-
-    // 전체 검색 입력
-    document.getElementById('col-search-all').addEventListener('input', e => {
+    // 전체 검색
+    document.getElementById('col-search-all').addEventListener('input', e=>{
       const v = e.target.value.trim().toLowerCase();
-      rows.forEach(r => {
-        r.style.display = r.textContent.toLowerCase().includes(v) ? '' : 'none';
-      });
+      rows.forEach(r=>r.style.display = r.textContent.toLowerCase().includes(v)?'':'none');
     });
-
-    // 컬럼별 검색 입력
-    document.querySelectorAll('.filter-bar [data-col]').forEach(input => {
-      input.addEventListener('input', e => {
-        const idx = +e.target.getAttribute('data-col');
-        const v   = e.target.value.trim().toLowerCase();
-        rows.forEach(r => {
-          const txt = r.children[idx]?.textContent.toLowerCase() || '';
-          r.style.display = txt.includes(v) ? '' : 'none';
+    // 컬럼별 검색
+    document.querySelectorAll('.filter-bar [data-col]').forEach(inp=>{
+      inp.addEventListener('input', e=>{
+        const idx = +e.target.getAttribute('data-col'), v = e.target.value.trim().toLowerCase();
+        rows.forEach(r=>{
+          const txt = r.children[idx]?.textContent.toLowerCase()||'';
+          r.style.display = txt.includes(v)?'':'none';
         });
       });
     });
-    // ===== 필터 기능 =====
+    // ===== 필터 기능 끝 =====
   </script>
 </body>
 </html>
