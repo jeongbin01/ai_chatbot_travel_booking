@@ -573,37 +573,37 @@ html {
         <!-- 버튼 폼 -->
         <section class="button-section">
             <div class="button-container">
-                <form class="simple-form">
-                    <button type="button">버튼 1</button>
-                    <button type="button">버튼 2</button>
-                    <button type="button">버튼 3</button>
-                    <button type="button">버튼 4</button>
-                </form>
+                <div class=class="simple-form">
+                    <button type="button"
+                            th:each="table : ${tables}"
+                            th:text="${table}"
+                            th:attr="data-table=${table}"
+                            onclick="goToTable(this)">
+                    </button>
+                </div>
             </div>
+            <script>
+                function goToTable(button) {
+                    const table = button.getAttribute("data-table");
+                    window.location.href = "/admin/index/" + table;
+                }
+            </script>
         </section>
 
         <!-- 데이터 테이블 -->
-        <section class="data-section">
+        <section class="data-section" th:if="${rows}">
+            <h2 th:text="'[' + ${tableName} + '] 테이블 데이터'"></h2>
             <div class="data-container">
                 <table border="1" class="styled-table">
                     <thead>
-                        <tr>
-                            <th>키</th>
-                            <th>이름</th>
-                            <th>값</th>
-                        </tr>
+                    <tr>
+                        <th th:each="col : ${columns}" th:text="${col}"></th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>하림</td>
-                            <td>남</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>상민</td>
-                            <td>남</td>
-                        </tr>
+                    <tr th:each="row : ${rows}">
+                        <td th:each="cell : ${row}" th:text="${cell}"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

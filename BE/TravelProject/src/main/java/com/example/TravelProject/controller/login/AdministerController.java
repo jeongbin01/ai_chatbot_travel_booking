@@ -1,20 +1,47 @@
 package com.example.TravelProject.controller.login;
 
+import com.example.TravelProject.service.AdministerService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@RequestMapping("/admin")
+import javax.swing.*;
+import java.util.List;
+
 @Controller
+@RequestMapping("/admin")
 public class AdministerController {
+    private AdministerService administerService;
+
+    @Autowired
+    public AdministerController(AdministerService administerService) {
+        this.administerService = administerService;
+    }
+
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        List<String> tables = administerService.fetchTables();
+        model.addAttribute("tables", tables);
         return "admin/index";  // templates/admin/index.html 렌더링
     }
 
+    @GetMapping("/index/{table}")
+    public String viewTable(@PathVariable("table") String table, Model model) {
+        List<Object[]> rows = administerService.getTableData(table);
+        List<String> columns = administerService.getTableColumns(table);
+
+        model.addAttribute("tableName", table);
+        model.addAttribute("rows", rows);
+        model.addAttribute("columns", columns);
+
+        return "admin/index";
+    }
 
     @GetMapping("/login")
     public String login() {
