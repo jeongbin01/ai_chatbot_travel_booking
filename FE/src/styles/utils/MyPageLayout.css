@@ -54,97 +54,146 @@
 }
 
 /* 콘텐츠 영역 */
+/* 전체 레이아웃 */
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
 .page-content {
   flex: 1;
-  background: #ffffff;
-  border: 1px solid #e5e7eb;
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 40px 32px;
+  background-color: #fff;
   border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #222;
 }
 
+/* 제목 */
 .page-content h2 {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 700;
-  color: #111827;
-  margin: 0 0 30px 0;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #e5e7eb;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 16px;
 }
 
-/* 빈 상태 박스 */
-.empty-box {
-  text-align: center;
-  padding: 80px 40px;
-  background: #f9fafb;
-  border-radius: 12px;
-  margin: 40px 0;
+/* 정보 입력 그리드 */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 32px;
 }
 
-.empty-title {
-  font-size: 20px;
+.form-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.form-field.full {
+  grid-column: 1 / -1;
+}
+
+/* 라벨 및 인풋 */
+label {
+  font-size: 14px;
   font-weight: 600;
-  color: #374151;
-  margin: 0 0 10px 0;
+  color: #444;
+  margin-bottom: 6px;
 }
 
-.empty-sub {
-  font-size: 16px;
-  color: #6b7280;
-  margin: 0 0 30px 0;
+input[type="text"] {
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  transition: all 0.25s ease;
 }
 
-/* 공통 버튼 스타일 */
-.find-button {
-  background: #2563eb;
+input[readonly] {
+  background-color: #f2f2f2;
+  color: #777;
+  cursor: not-allowed;
+}
+
+input[type="text"]:not([readonly]):focus {
+  background-color: #fff;
+  border-color: #007bff;
+  outline: none;
+}
+
+/* 버튼 */
+.device-section {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.logout-btn {
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 16px;
-  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.25s ease;
 }
 
-.find-button:hover {
-  background: #1d4ed8;
-  transform: translateY(-1px);
+.logout-btn:hover {
+  background-color: #007bff;
 }
 
-/* 반응형 디자인 */
+/* 회원 탈퇴 */
+.withdraw-section {
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.withdraw-section p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.withdraw-btn {
+  padding: 10px 24px;
+  font-size: 14px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+.withdraw-btn:hover {
+  background-color: #d9363e;
+}
+
+/* 반응형 */
 @media (max-width: 768px) {
-  .page-wrapper {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .device-section {
     flex-direction: column;
-    gap: 20px;
-    padding: 20px 15px;
+    gap: 12px;
   }
-  
-  .sidebar {
-    flex: none;
-  }
-  
-  .sidebar ul {
-    display: flex;
-    overflow-x: auto;
-  }
-  
-  .sidebar li {
-    flex-shrink: 0;
-  }
-  
-  .sidebar a {
-    padding: 12px 20px;
-    border-left: none;
-    border-bottom: 3px solid transparent;
-  }
-  
-  .sidebar li.active a {
-    border-left: none;
-    border-bottom-color: #2563eb;
-  }
-  
+
   .page-content {
-    padding: 25px;
+    padding: 24px 16px;
   }
 }
