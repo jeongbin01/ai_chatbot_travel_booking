@@ -1,6 +1,8 @@
 package com.example.TravelProject.controller.room;
 
 import com.example.TravelProject.entity.room.Accommodation;
+import com.example.TravelProject.entity.room.AccommodationImage;
+import com.example.TravelProject.service.Room.AccommodationImageService;
 import com.example.TravelProject.service.Room.AccommodationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +17,12 @@ import java.util.Optional;
 public class AccommodationController {
 
     private final AccommodationService accommodationService;
+    private final AccommodationImageService accommodationImageService;
 
+    @GetMapping("/filter-img")
+    public List<AccommodationImage> getByAccommodationId(@RequestParam("accommodationId") Integer accommodationId) {
+        return accommodationImageService.findImagesByAccommodationId(accommodationId);
+    }
     @Operation(
         summary = "전체 숙소 목록 조회",
         description = """
