@@ -23,7 +23,7 @@ import Favorites from "./pages/user/Favorites";
 import Reservations from "./pages/user/Reservations"; // ✅ 누락된 import 추가
 import AccommodationList from "./pages/accommodations/숙소/AccommodationList.jsx";
 import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDetail";
-import BookingPage from "./pages/booking/bookingPage"; // ✅ 이 줄을 추가하세요
+import Chatbotpages from "./pages/chatbot/Chatbotpages.jsx";
 
 function App() {
   const location = useLocation();
@@ -51,7 +51,6 @@ function App() {
                   <ChatbotShortcut />
                   <ScrollToTopButton />
                   <ReviewSlider />
-                  <BookingPage />
                 </>
               }
             />
@@ -100,7 +99,7 @@ function App() {
             <Route path="/mypage/bookings" element={<Reservations />} />
 
             {/* 챗봇 */}
-             <Route path="/chatbot" element={<ChatbotShortcut />} />
+             <Route path="/chatbot" element={<Chatbotpages />} />
           </Routes>
 
           {/* ✅ Footer는 특정 경로에서만 제거 */}
