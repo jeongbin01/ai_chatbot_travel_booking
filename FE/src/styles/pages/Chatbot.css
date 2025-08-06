@@ -1,42 +1,25 @@
-/* ChatGPTClone.css */
-
-/* 테마 변수 */
-:root {
-  --color-primary: #2fa05a;       /* OnComma 그린 */
-  --color-primary-dark: #278c4d;  /* hover 용 다크 그린 */
-  --color-header-bg: #ffffff;     /* 헤더 배경 (화이트) */
-  --color-header-text: #333333;   /* 헤더 텍스트 (딥 그레이) */
-  --color-bg: #f8f8f8;            /* 전체 배경 톤 */
-  --color-messages-bg: #f2f2f2;    /* 메시지 컨테이너 배경 */
-  --color-bot-bg: #e8e8e8;         /* 봇 메시지 배경 */
-  --color-text-default: #1f2937;   /* 메시지 기본 텍스트 */
-  --color-input-bg: #ffffff;      /* 입력창 배경 */
-  --color-input-border: #d1d5db;  /* 입력창 테두리 */
-  --color-border-muted: #e5e7eb;  /* 구분선/보더 */
-}
-
-/* 최상위 컨테이너 */
 .chatgpt-container {
+  width: 100%;
+  max-width: 600px;
+  height: 80vh;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  max-width: 720px;
-  margin: 0 auto;
-  background: var(--color-bg);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ffffff;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 /* 헤더 */
 .chatgpt-header {
-  height: 56px;
-  background: var(--color-header-bg);
-  color: var(--color-header-text);
-  display: flex;
-  align-items: center;
-  padding: 0 16px;
-  font-size: 1.125rem;
-  font-weight: 600;
-  border-bottom: 1px solid var(--color-border-muted);
+  padding: 12px 16px;
+  background: #4caf50;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: center;
 }
 
 /* 메시지 리스트 */
@@ -44,106 +27,105 @@
   flex: 1;
   padding: 16px;
   overflow-y: auto;
+  background: #f7f7f7;
   list-style: none;
-  margin: 0;
-  background: var(--color-messages-bg);
 }
 
-/* 메시지 아이템 */
+/* 개별 메시지 */
 .message {
-  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+/* 아바타 */
+.message-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+/* 메시지 컨텐츠 래퍼 */
+.message-content {
   max-width: 75%;
-  padding: 12px 16px;
-  margin-bottom: 16px;
-  border-radius: 8px;
-  line-height: 1.4;
-  word-break: break-word;
-  color: var(--color-text-default);
+  display: flex;
+  flex-direction: column;
+  word-wrap: break-word;
 }
 
-/* 유저 메시지 */
+/* 봇 텍스트 메시지 */
+.message.bot .message-content p {
+  background: #e0e0e0;
+  color: #333;
+  padding: 10px 14px;
+  border-radius: 12px 12px 12px 2px;
+}
+
+/* 사용자 텍스트 메시지 */
 .message.user {
-  margin-left: auto;
-  background: var(--color-primary);
-  color: #ffffff;
-  border-bottom-right-radius: 0;
+  flex-direction: row-reverse;
+}
+.message.user .message-content p {
+  background: #4caf50;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px 12px 2px 12px;
 }
 
-.message.user::after {
-  content: '';
-  position: absolute;
-  right: -8px;
-  bottom: 0;
-  border: 8px solid transparent;
-  border-top-color: var(--color-primary);
-  border-right: 0;
-  border-bottom: 0;
-  margin-bottom: -8px;
+/* 이미지 / GIF 메시지 */
+.message-image {
+  max-width: 200px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 8px;
 }
 
-/* 봇 메시지 */
-.message.bot {
-  margin-right: auto;
-  background: var(--color-bot-bg);
-  border-bottom-left-radius: 0;
-}
-
-.message.bot::before {
-  content: '';
-  position: absolute;
-  left: -8px;
-  bottom: 0;
-  border: 8px solid transparent;
-  border-top-color: var(--color-bot-bg);
-  border-left: 0;
-  border-bottom: 0;
-  margin-bottom: -8px;
+/* 자동 스크롤용 빈 div */
+.chatgpt-messages > div {
+  float: none;
+  clear: both;
 }
 
 /* 입력 영역 */
 .chatgpt-input-area {
   display: flex;
   align-items: center;
-  padding: 12px 16px;
-  background: var(--color-input-bg);
-  border-top: 1px solid var(--color-border-muted);
+  padding: 8px 12px;
+  border-top: 1px solid #e0e0e0;
+  background: #fafafa;
 }
 
-/* 텍스트 입력창 */
+/* 텍스트 에어리어 */
 .chatgpt-textarea {
   flex: 1;
   resize: none;
-  border: 1px solid var(--color-input-border);
-  border-radius: 4px;
-  padding: 8px;
-  font-size: 1rem;
-  background: var(--color-input-bg);
-  color: var(--color-text-default);
-}
-
-.chatgpt-textarea::placeholder {
-  color: #9ca3af; /* 은은한 회색 */
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+  transition: border-color 0.2s;
 }
 
 .chatgpt-textarea:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px rgba(47, 160, 90, 0.3);
+  border-color: #4caf50;
 }
 
 /* 전송 버튼 */
 .chatgpt-button {
   margin-left: 8px;
-  background: var(--color-primary);
-  color: #ffffff;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  background: #4caf50;
+  color: white;
   border: none;
-  padding: 0 16px;
-  height: 36px;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 20px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
 }
 
 .chatgpt-button:hover {
-  background: var(--color-primary-dark);
+  background: #43a047;
 }
