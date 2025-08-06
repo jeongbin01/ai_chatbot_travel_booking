@@ -57,3 +57,8 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// 파라미터 자동으로 처리 
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs << "-parameters"
+}

@@ -106,7 +106,7 @@ public class AccommodationController {
             """
     )
     @GetMapping("/filter")
-    public List<Accommodation> getAccommodationsByDomestic(@RequestParam String isDomestic) {
+    public List<Accommodation> getAccommodationsByDomestic(@RequestParam("isDomestic") String isDomestic) {
         return accommodationService.findByIsDomestic(isDomestic.toUpperCase());
     }
 }
