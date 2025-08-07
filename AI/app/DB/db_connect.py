@@ -9,9 +9,9 @@ class DBConnector:
     def __init__(self):
         load_dotenv()
 
-        self.__DB_INFO = {"host" : "192.168.0.70",
+        self.__DB_INFO = {"host" : "127.0.0.1",
             "port" : 3306,
-            "db" : "prpt",
+            "db" : "teamDB",
             "user" : "root",
             "passwd" : quote_plus(os.getenv("MYSQL_DB_PASSWORD"))
         }
