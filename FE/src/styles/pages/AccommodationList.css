@@ -1,4 +1,3 @@
-/* 📦 전체 Wrapper */
 .accommodation-list-wrapper {
   max-width: 1200px;
   margin: 100px auto;
@@ -6,15 +5,16 @@
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* 📌 제목 */
+/* 제목 */
 .accommodation-title {
   font-size: 1.8rem;
-  font-weight: bold;
+  font-weight: 700;
   text-align: center;
   margin-bottom: 1.5rem;
+  color: #111827; /* 다크 그레이 텍스트 */
 }
 
-/* 🔍 검색창 */
+/* 검색창 */
 .search-container {
   display: flex;
   justify-content: center;
@@ -24,9 +24,10 @@
 .search-box {
   display: flex;
   align-items: center;
-  background: #f3f4f6;
+  background: #FFFFFF; /* 화이트 배경 */
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border: 1px solid #E5E7EB; /* 라이트 그레이 경계 */
+  border-radius: 8px;
   gap: 0.5rem;
   width: 100%;
   max-width: 500px;
@@ -37,30 +38,35 @@
   border: none;
   background: transparent;
   font-size: 1rem;
+  color: #374151; /* 중간 그레이 텍스트 */
   outline: none;
+}
+
+.search-box input::placeholder {
+  color: #9CA3AF; /* 라이트 그레이 플레이스홀더 */
 }
 
 .search-clear {
   background: none;
   border: none;
   cursor: pointer;
-  color: #aaa;
+  color: #6B7280; /* 그레이 아이콘 */
   font-size: 1.2rem;
 }
 
-/* 🔄 로딩 */
+/* 로딩 */
 .loading {
   text-align: center;
   padding: 2rem;
   font-size: 1.2rem;
-  color: #555;
+  color: #6B7280;
 }
 
 .spinner {
   width: 24px;
   height: 24px;
-  border: 3px solid #ddd;
-  border-top: 3px solid #666;
+  border: 3px solid #E5E7EB;
+  border-top: 3px solid #3B82F6; /* 블루 엑센트 */
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
@@ -72,20 +78,20 @@
   }
 }
 
-/* ❌ 에러 메시지 */
+/* 에러 메시지 */
 .error-message {
-  background: #fff3f3;
-  border: 1px solid #ffbdbd;
+  background: #FEF2F2; /* 라이트 레드 배경 */
+  border: 1px solid #FCA5A5; /* 레드 경계 */
   padding: 1rem;
   border-radius: 8px;
   text-align: center;
-  color: #c00;
+  color: #B91C1C; /* 다크 레드 텍스트 */
   margin-bottom: 2rem;
 }
 
 .btn-retry {
   margin-top: 0.5rem;
-  background: #ff7070;
+  background: #EF4444; /* 레드 버튼 */
   color: white;
   padding: 0.4rem 0.8rem;
   border: none;
@@ -93,15 +99,19 @@
   cursor: pointer;
 }
 
-/* ❓ 검색 결과 없음 */
+.btn-retry:hover {
+  background: #DC2626;
+}
+
+/* 검색 결과 없음 */
 .no-results {
   text-align: center;
   padding: 2rem;
-  color: #555;
+  color: #6B7280;
   font-size: 1rem;
 }
 
-/* 🏨 숙소 카드 그리드 */
+/* 숙소 카드 그리드 */
 .accommodation-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -109,32 +119,22 @@
   justify-content: center;
 }
 
-/* 💳 카드 wrapper (찜 버튼 포함) */
-.accommodation-card-wrapper {
-  position: relative;
-}
-
-/* 💳 숙소 카드 */
 .accommodation-card {
-  display: block;
-  border: 1px solid #eee;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #E5E7EB;
   border-radius: 10px;
   overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  background: white;
+  background: #FFFFFF;
   transition: box-shadow 0.2s ease;
-  max-width: 320px;
-  height: 100%;
 }
 
 .accommodation-card:hover {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2); /* 블루 톤 쉐도우 */
 }
 
-/* 🖼 이미지 */
+/* 이미지 */
 .image-container {
-  position: relative;
   width: 100%;
   height: 180px;
   overflow: hidden;
@@ -146,7 +146,7 @@
   object-fit: cover;
 }
 
-/* 🏷 뱃지 */
+/* 뱃지 */
 .badge {
   position: absolute;
   top: 10px;
@@ -155,104 +155,125 @@
   font-size: 0.75rem;
   border-radius: 4px;
   color: white;
-  font-weight: bold;
+  font-weight: 600;
 }
 
-.badge-domestic {
-  background-color: #4caf50;
-}
 
 .badge-overseas {
-  background-color: #2196f3;
+  background-color: #3B82F6; /* 블루 엑센트 */
 }
 
-/* ❤️ 찜 버튼 */
-.like-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: transparent;
-  border: none;
-  border-radius: 50%;
-  padding: 6px;
-  cursor: pointer;
-  z-index: 2;
-}
-
-
-.like-button .bi-heart {
-  color: #999;
-}
-
-.like-button.liked .bi-heart-fill {
-  color: #e91e63;
-}
-
-/* 📋 숙소 내용 */
+/* 숙소 내용 */
 .accommodation-content {
   padding: 1rem;
+  flex: 1;
 }
 
 .acc-name {
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0 0.5rem;
+  color: #111827;
 }
 
 .acc-location {
   font-size: 0.9rem;
-  color: #666;
+  color: #4B5563;
   margin-bottom: 0.5rem;
 }
 
 .acc-price {
   font-size: 1rem;
   margin-bottom: 0.5rem;
+  color: #111827;
 }
 
 .price-amount {
-  font-weight: bold;
-  color: #111;
+  font-weight: 700;
+  color: #111827;
 }
 
 .price-unit {
   font-size: 0.85rem;
-  color: #888;
+  color: #6B7280;
 }
 
-/* ⭐ 별점 */
+/* 별점 */
 .star-rating {
   display: flex;
   align-items: center;
   gap: 2px;
   font-size: 0.9rem;
-  color: #f5c518;
+  color: #FBBF24; /* 옐로우 골드 톤 */
 }
 
 .rating-text {
   font-size: 0.8rem;
-  color: #555;
+  color: #6B7280;
 }
 
-/* 📱 반응형 최적화 */
+/* 카드 버튼 영역 (상세보기 + 찜) */
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #E5E7EB;
+  background: #F3F4F6; /* 라이트 그레이 톤 */
+}
+
+.btn-detail {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  margin-right: 0.5rem;
+  background-color: #3B82F6; /* 블루 버튼 */
+  color: white;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-detail:hover {
+  background-color: #2563EB;
+}
+
+.favorite {
+  flex-shrink: 0;
+  padding: 0.5rem 0.75rem;
+  background: #FFFFFF;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #374151;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favorite:hover {
+  background: #E5E7EB;
+}
+
+.favorite.active {
+  border-color: #EF4444; /* 레드 강조 */
+  background: #FEF2F2;
+  color: #B91C1C;
+}
+
+.favorite.active:hover {
+  background: #FEE2E2;
+}
+
+/* 반응형 최적화 */
 @media (max-width: 1024px) {
   .accommodation-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
   }
-
-  .accommodation-card {
-    max-width: 100%;
-  }
-
   .accommodation-title {
     font-size: 1.6rem;
     margin-bottom: 1.2rem;
-  }
-
-  .search-box {
-    max-width: 90%;
-    padding: 0.4rem 0.8rem;
   }
 }
 
@@ -267,62 +288,33 @@
     gap: 1.2rem;
   }
 
-  .accommodation-card {
-    max-width: 100%;
-    font-size: 0.95rem;
-  }
-
   .accommodation-title {
     font-size: 1.4rem;
-    text-align: center;
   }
 
-  .acc-name {
-    font-size: 1rem;
+  .card-actions {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .acc-location,
-  .acc-price,
-  .rating-text {
-    font-size: 0.85rem;
-  }
-
-  .search-box {
-    font-size: 0.9rem;
-    padding: 0.3rem 0.7rem;
-  }
-
-  .like-button {
-    top: 8px;
-    right: 8px;
-    padding: 4px;
-  }
-
-  .like-button .bi-heart,
-  .like-button .bi-heart-fill {
-    font-size: 1rem;
-  }
-
-  .image-container {
-    height: 160px;
+  .btn-detail,
+  .favorite {
+    width: 100%;
+    margin: 0;
   }
 }
 
 @media (max-width: 480px) {
   .search-box {
-    flex-direction: row;
     padding: 0.3rem 0.6rem;
     gap: 0.3rem;
   }
-
   .accommodation-title {
     font-size: 1.3rem;
   }
-
   .acc-price {
     font-size: 0.85rem;
   }
-
   .star-rating {
     font-size: 0.8rem;
   }
