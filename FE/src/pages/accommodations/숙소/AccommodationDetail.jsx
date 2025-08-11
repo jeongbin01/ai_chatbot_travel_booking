@@ -4,60 +4,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../../../styles/pages/AccommodationDetail.css";
 import { AxiosClient } from "../../../api/AxiosController";
 
-/** 특정 숙소의 편의시설을 가져오되, 실패해도 빈 배열로 폴백 */
-async function fetchAmenitiesForAccommodation(accId) {
-  // 1) ?accommodationId=
-  try {
-    const res = await AxiosClient("amenities").get("", {
-      params: { accommodationId: accId },
-    });
-    const data = Array.isArray(res?.data) ? res.data : [];
-    return data
-      .map((a) => (typeof a === "string" ? a : (a?.name ?? a?.title ?? "")))
-      .filter(Boolean);
-  } catch (e1) {
-    console.warn("[amenities] ?accommodationId 실패 → accommodation_id 시도", e1);
-  }
-
-  // 2) ?accommodation_id=
-  try {
-    const res = await AxiosClient("amenities").get("", {
-      params: { accommodation_id: accId },
-    });
-    const data = Array.isArray(res?.data) ? res.data : [];
-    return data
-      .map((a) => (typeof a === "string" ? a : (a?.name ?? a?.title ?? "")))
-      .filter(Boolean);
-  } catch (e2) {
-    console.warn("[amenities] ?accommodation_id 실패 → 하위 리소스 시도", e2);
-  }
-
-  // 3) /accommodations/{id}/amenities
-  try {
-    const res = await AxiosClient(`accommodations/${accId}/amenities`).get();
-    const data = Array.isArray(res?.data) ? res.data : [];
-    return data
-      .map((a) => (typeof a === "string" ? a : (a?.name ?? a?.title ?? "")))
-      .filter(Boolean);
-  } catch (e3) {
-    console.warn("[amenities] /accommodations/{id}/amenities 실패 → 단수 리소스 시도", e3);
-  }
-
-  // 4) /accommodations/{id}/amenity (혹시 단수 매핑인 경우)
-  try {
-    const res = await AxiosClient(`accommodations/${accId}/amenity`).get();
-    const data = Array.isArray(res?.data) ? res.data : [];
-    return data
-      .map((a) => (typeof a === "string" ? a : (a?.name ?? a?.title ?? "")))
-      .filter(Boolean);
-  } catch (e4) {
-    console.warn("[amenities] 모든 시도 실패 → 빈 배열 폴백", e4);
-    return [];
-  }
-}
-
 /**
- * 숙소 상세 + 이미지 + 객실 + 가격 + 편의시설 병렬 로드
+ * 숙소 상세 + 이미지 + 객실 + 가격 병렬 로드
  */
 const fetchAccommodationById = async (id) => {
   try {
@@ -66,21 +14,16 @@ const fetchAccommodationById = async (id) => {
       AxiosClient("accommodation-images").get("", { params: { accommodationId: id } }),
       AxiosClient("room-types").get("", { params: { accommodationId: id } }),
       AxiosClient("price-policies").getAll(),
+      AxiosClient("amenities").get("", { params: { accommodationId: id } }),
+
     ]);
 
-    // 안전 파싱
     const acc = accRes?.data ?? {};
     const images = Array.isArray(imageRes?.data) ? imageRes.data : [];
     const roomTypes = Array.isArray(roomTypeRes?.data) ? roomTypeRes.data : [];
     const allPolicies = Array.isArray(priceRes?.data) ? priceRes.data : [];
+    // const amenities = Array.isArray(amenitiesRes?.data) ? amenitiesRes.data : [];
 
-    // 편의시설 (서버 호출 → 없으면 acc.amenities 폴백)
-    let amenities = await fetchAmenitiesForAccommodation(id);
-    if (amenities.length === 0 && Array.isArray(acc?.amenities)) {
-      amenities = acc.amenities
-        .map((a) => (typeof a === "string" ? a : (a?.name ?? a?.title ?? "")))
-        .filter(Boolean);
-    }
 
     // 기본 객실/가격
     const primaryRoomType = roomTypes[0] ?? null;
@@ -109,14 +52,6 @@ const fetchAccommodationById = async (id) => {
         .filter((url) => !seen.has(url) && (seen.add(url), true));
     })();
 
-    // 정책 문자열 정규화
-    const rawPolicies = acc.policies ?? acc.policyList ?? [];
-    const policyList = Array.isArray(rawPolicies)
-      ? rawPolicies.map((p) =>
-          typeof p === "string" ? p : (p?.name ?? p?.title ?? JSON.stringify(p))
-        )
-      : [];
-
     return {
       data: {
         id: acc.accommodationId ?? acc.id ?? Number(id),
@@ -129,19 +64,14 @@ const fetchAccommodationById = async (id) => {
         checkIn: acc.checkInTime ?? acc.check_in_time ?? "-",
         checkOut: acc.checkOutTime ?? acc.check_out_time ?? "-",
         contact: acc.contact ?? "000-0000-0000",
-
         capacity:
           primaryRoomType?.maxOccupancy ?? primaryRoomType?.max_occupancy ?? 1,
         price: primaryPrice?.basePrice ?? primaryPrice?.base_price ?? 0,
-
         images: imageUrls,
-        amenities,            // 문자열 배열
-        policies: policyList, // 문자열 배열
         usageInfo: Array.isArray(acc.usageInfo) ? acc.usageInfo : [],
         rooms: Array.isArray(acc.rooms) ? acc.rooms : [],
-
         liked: !!acc.liked,
-        rating: acc.ratingAvg ?? 0,
+        rating: acc.ratingAvg ?? 0
       },
     };
   } catch (err) {
@@ -168,7 +98,6 @@ export default function AccommodationDetail() {
 
   const fallbackImage = "/images/default-accommodation.jpg";
 
-  // 언마운트 가드
   useEffect(() => {
     let ignore = false;
 
@@ -198,7 +127,6 @@ export default function AccommodationDetail() {
 
   const toggleLike = useCallback(() => {
     setLiked((prev) => !prev);
-    // TODO: 서버 반영 필요 시 추가
   }, []);
 
   const handleBooking = useCallback(() => setShowPayment(true), []);
@@ -261,11 +189,7 @@ export default function AccommodationDetail() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="accommodation-detail">
-        <div className="no-data">숙소 정보를 불러오는 중...</div>
-      </div>
-    );
+    return <div className="accommodation-detail"><div className="no-data">숙소 정보를 불러오는 중...</div></div>;
   }
   if (error) {
     return (
@@ -338,18 +262,6 @@ export default function AccommodationDetail() {
         </section>
       )}
 
-      {/* 편의시설 (아이콘 없이 텍스트만) */}
-      {accommodation.amenities?.length > 0 && (
-        <section className="detail-section">
-          <h2>편의시설</h2>
-          <ul className="amenities-list">
-            {accommodation.amenities.map((am, i) => (
-              <li key={`${am}-${i}`}>{am}</li>
-            ))}
-          </ul>
-        </section>
-      )}
-
       {/* 이용 안내 */}
       <section className="detail-section">
         <h2>이용 안내</h2>
@@ -358,7 +270,6 @@ export default function AccommodationDetail() {
         <p><strong>연락처</strong> : {accommodation.contact}</p>
         {accommodation.capacity && <p><strong>최대 인원</strong> : {accommodation.capacity}명</p>}
       </section>
-
 
       {/* 이용 팁 */}
       {accommodation.usageInfo?.length > 0 && (
@@ -388,16 +299,6 @@ export default function AccommodationDetail() {
               </div>
             ))}
           </div>
-        </section>
-      )}
-
-      {/* 숙소 정책 */}
-      {accommodation.policies?.length > 0 && (
-        <section className="detail-section">
-          <h2>숙소 정책</h2>
-          <ul className="room-info-list">
-            {accommodation.policies.map((p, i) => <li key={i}>{p}</li>)}
-          </ul>
         </section>
       )}
 
