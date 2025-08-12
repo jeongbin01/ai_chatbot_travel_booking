@@ -1,7 +1,12 @@
 package com.example.TravelProject.service.Booking;
 
+import com.example.TravelProject.dto.Booking.BookingDTO;
 import com.example.TravelProject.entity.booking.Booking;
+import com.example.TravelProject.entity.room.Accommodation;
+import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.repository.Booking.BookingRepository;
+import com.example.TravelProject.repository.Room.AccommodationRepository;
+import com.example.TravelProject.repository.UserAccount.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +19,8 @@ import java.util.Optional;
 public class BookingService {
 
     private final BookingRepository bookingRepository;
+    private final UserRepository userRepository;
+    private final AccommodationRepository accommodationRepository;
 
     // 🔹 전체 예약 목록 조회
     public List<Booking> getAllBookings() {
@@ -66,7 +73,22 @@ public class BookingService {
     }
 
     // 🔹 예약 등록
-    public Booking saveBooking(Booking booking) {
+    public Booking saveBooking(BookingDTO bookingDTO) {
+        Integer userId = bookingDTO.getUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Integer accommodationId = bookingDTO.getAccommodationId();
+        Accommodation accommodation = accommodationRepository.findById(accommodationId)
+                .orElseThrow(() -> new RuntimeException("Accommodation not found"));
+
+        Booking booking = new Booking();
+        booking.setCheckInDate(bookingDTO.getCheckInDate());
+        booking.setCheckOutDate(bookingDTO.getCheckOutDate());
+        booking.setTotalAmount(bookingDTO.getTotalAmount());
+        booking.setUser(user);
+        booking.setAccommodation(accommodation);
+
         return bookingRepository.save(booking);
     }
 
