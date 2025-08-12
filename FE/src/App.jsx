@@ -27,6 +27,16 @@ import Chatbotpages from "./pages/chatbot/Chatbotpages.jsx";
 import BookingConfirmation from "./pages/booking/BookingConfirmation.jsx";
 import BookingPage from "./pages/booking/bookingPage.jsx";
 import SearchPage from "./pages/search/SearchPage.jsx";
+import JejuAccommodations from "./pages/accommodations/국내/JejuAccommodations.jsx";
+import SeoulAccommodations from "./pages/accommodations/국내/SeoulAccommodations.jsx";
+import BusanAccommodations from "./pages/accommodations/국내/BusanAccommodations.jsx";
+import GangneungAccommodations from "./pages/accommodations/국내/gangneungAccommodations.jsx";
+import IncheonAccommodations from "./pages/accommodations/국내/IncheonAccommodations.jsx";
+import FukuokaAccommodations from "./pages/accommodations/해외/FukuokaAccommodations.jsx";
+import BangkokAccommodations from "./pages/accommodations/해외/BangkokAccommodations.jsx";
+import RomeAccommodations from "./pages/accommodations/해외/RomeAccommodations.jsx";
+import ParisAccommodations from "./pages/accommodations/해외/ParisAccommodations.jsx";
+import SingaporeAccommodations from "./pages/accommodations/해외/SingaporeAccommodations.jsx";
 
 function App() {
   const location = useLocation();
@@ -108,9 +118,36 @@ function App() {
             {/* 챗봇 */}
             <Route path="/chatbot" element={<Chatbotpages />} />
 
-            {/* 홈 링크 연결*/}
+            {/* 검색 페이지 */}
             <Route path="/search" element={<SearchPage />} />
-            <Route path="/accommodations1/:id" element={<AccommodationDetail />} />
+            <Route
+              path="/accommodations1/:id"
+              element={<AccommodationDetail />}
+            />
+
+            {/* 국내 페이지 */}
+            <Route path="/accommodations/jeju" element={<JejuAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/seoul" element={<SeoulAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/busan" element={<BusanAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/gangneung" element={<GangneungAccommodations/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/incheon" element={<IncheonAccommodations/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+
+            {/* 해외 페이지 */}
+            <Route path="/accommodations/fukuoka" element={<FukuokaAccommodations/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/bangkok" element={<BangkokAccommodations/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/paris" element={<ParisAccommodations/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/rome" element={<RomeAccommodations/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/singapore" element={<SingaporeAccommodations/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
           </Routes>
 
           {/* ✅ Footer는 특정 경로에서만 제거 */}

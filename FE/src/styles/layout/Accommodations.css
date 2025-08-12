@@ -1,0 +1,154 @@
+/* ========== JejuAccommodations.css (캡처형 수평 카드) ========== */
+
+/* 공통 변수 */
+:root {
+  --jeju-primary:#2563eb;
+  --jeju-text:#111827;
+  --jeju-muted:#6b7280;
+  --jeju-border:#e5e7eb;
+  --jeju-radius:12px;
+  --jeju-shadow:0 2px 10px rgba(0,0,0,.06);
+  --jeju-card-bg:#fff;
+}
+
+/* 페이지 */
+.jeju-page{
+  max-width:1200px;
+  margin:96px auto;
+  padding:16px;
+  background:var(--jeju-bg);
+  min-height:100vh;
+  font-family:'Noto Sans KR', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* 헤더 */
+.jeju-header{ margin-bottom:18px; }
+.jeju-header-inner{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.jeju-header h1{ margin:0; font-size:1.6rem; font-weight:800; color:var(--jeju-text); }
+
+.jeju-sort select{
+  height:36px; padding:0 10px; border:1px solid var(--jeju-border);
+  border-radius:10px; background:#fff; font-size:14px; cursor:pointer;
+}
+
+/* 본문 레이아웃 */
+.srch-body{ display:grid; gap:20px; grid-template-columns:260px 1fr; }
+
+/* ========== 좌측 필터 ========== */
+.srch-filters{
+  position:sticky; top:88px; align-self:start;
+  background:#fff; border:1px solid var(--jeju-border);
+  border-radius:var(--jeju-radius); padding:16px; box-shadow:0 1px 2px rgba(0,0,0,.03);
+}
+.filter-group+.filter-group{ margin-top:16px; }
+.filter-group h3{ margin:0 0 10px; font-size:14px; font-weight:800; color:var(--jeju-text); }
+.filter-options{ display:flex; flex-wrap:wrap; gap:8px 10px; }
+.filter-option{ display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--jeju-text); }
+.filter-option input[type="radio"],
+.filter-checkbox input[type="checkbox"]{ width:16px; height:16px; accent-color:var(--jeju-primary); }
+.filter-checkbox{ display:inline-flex; align-items:center; gap:8px; font-size:13px; color:var(--jeju-text); }
+
+/* 가격 입력 */
+.price-range .price-inputs{ display:flex; align-items:center; gap:8px; }
+.price-range .price-inputs input[type="text"],
+.price-range .price-inputs input[type="number"]{
+  width:100%; height:34px; padding:0 10px; border:1px solid var(--jeju-border);
+  border-radius:8px; background:#fff;
+}
+.price-range .price-range-display{ margin-top:8px; font-size:12px; color:var(--jeju-muted); }
+
+/* ========== 우측 리스트 ========== */
+.srch-list{ min-height:300px; }
+
+/* 스켈레톤 */
+.skeleton-wrap{ display:grid; gap:16px; grid-template-columns:1fr; }
+.skeleton-card{
+  height:180px; border-radius:12px;
+  background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 37%,#f3f4f6 63%);
+  background-size:400% 100%; animation:skeleton 1.4s ease infinite;
+}
+@keyframes skeleton{ 0%{background-position:100% 50%} 100%{background-position:0 50%} }
+
+/* 상태 메시지 */
+.status{
+  padding:24px 16px; border-radius:12px;
+  background:#fff; border:1px solid var(--jeju-border);
+  color:var(--jeju-text);
+}
+.status.error{ background:#fff1f2; border-color:#fecaca; color:#991b1b; }
+.status.empty{ color:var(--jeju-muted); }
+
+/* ===== 카드 그리드: 한 줄씩(캡처처럼) ===== */
+.grid{ display:grid; gap:16px; grid-template-columns:1fr; }
+
+/* ===== 카드 (좌 이미지 280x180 + 우 정보) ===== */
+.srch-item{
+  display:grid; grid-template-columns:280px 1fr;
+  align-items:stretch;
+  border:1px solid var(--jeju-border);
+  border-radius:var(--jeju-radius);
+  background:var(--jeju-card-bg);
+  box-shadow:var(--jeju-shadow);
+  overflow:hidden; cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.srch-item:hover{ transform:translateY(-3px); }
+.srch-item.is-disabled{ opacity:.6; cursor:not-allowed; }
+
+/* 썸네일(고정 높이) */
+.srch-thumb{
+  position:relative; height:180px;
+  background:#f3f4f6 center/cover no-repeat;
+}
+
+/* 찜 버튼 */
+.fav-btn{
+  position:absolute; right:10px; top:10px;
+  width:32px; height:32px;
+  border:1px solid var(--jeju-border); border-radius:50%;
+  background:#fff; display:grid; place-items:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.12); cursor:pointer;
+}
+.fav-btn .bi{ font-size:16px; color:#ef6b82; }
+.fav-btn.is-active .bi{ color:#e11d48; }
+
+/* 메타(오른쪽) */
+.srch-meta{
+  display:flex; flex-direction:column; gap:8px;
+  padding:12px;
+}
+.srch-meta-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.srch-title{
+  font-size:16px; font-weight:800; color:var(--jeju-text);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.srch-rating{ display:inline-flex; align-items:center; gap:6px; color:var(--jeju-text); font-size:13px; }
+.srch-rating .star{ color:#f59e0b; }
+.rating-score{ font-weight:700; }
+.srch-sub{ color:var(--jeju-muted); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+/* 가격: 카드 우하단 정렬 */
+.srch-price{
+  margin-top:auto; align-self:flex-end;
+  font-size:18px; font-weight:800; color:var(--jeju-text);
+}
+.srch-price.is-missing{ color:var(--jeju-muted); font-weight:600; }
+
+/* 무한 스크롤 인디케이터 */
+.loader-trigger{ display:grid; place-items:center; }
+.loading-indicator{ color:var(--jeju-primary); font-weight:600; font-size:13px; }
+
+/* 반응형 */
+@media (max-width:1024px){
+  .srch-body{ grid-template-columns:1fr; }
+  .srch-filters{ position:static; display:grid; gap:12px 16px; grid-template-columns:repeat(2, minmax(0,1fr)); }
+}
+@media (max-width:768px){
+  .jeju-header-inner{ flex-direction:column; align-items:flex-start; gap:8px; }
+  .srch-filters{ grid-template-columns:1fr; }
+}
+@media (max-width:640px){
+  .srch-item{ grid-template-columns:1fr; }
+  .srch-thumb{ height:200px; }
+  .srch-price{ align-self:flex-start; }
+}

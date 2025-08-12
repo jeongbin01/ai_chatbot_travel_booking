@@ -8,11 +8,11 @@ import gangneung from "../../assets/images/국내 지역/강릉.jpg";
 import incheon from "../../assets/images/국내 지역/인천.jpg";
 
 const destinations = [
-  { name: "제주도", image: jeju, link: "/accommodations?region=jeju" },
-  { name: "서울", image: seoul, link: "/accommodations?region=seoul" },
-  { name: "부산", image: busan, link: "/accommodations?region=busan" },
-  { name: "강릉", image: gangneung, link: "/accommodations?region=gangneung" },
-  { name: "인천", image: incheon, link: "/accommodations?region=incheon" }
+  { name: "제주도", image: jeju, link: "/accommodations/jeju" },
+  { name: "서울", image: seoul, link: "/accommodations/seoul" },
+  { name: "부산", image: busan, link: "/accommodations/busan" },
+  { name: "강릉", image: gangneung, link: "/accommodations/gangneung" },
+  { name: "인천", image: incheon, link: "/accommodations/incheon" }
 ];
 
 function DomesticAccommodations() {
