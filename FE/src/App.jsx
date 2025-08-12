@@ -26,6 +26,7 @@ import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDeta
 import Chatbotpages from "./pages/chatbot/Chatbotpages.jsx";
 import BookingConfirmation from "./pages/booking/BookingConfirmation.jsx";
 import BookingPage from "./pages/booking/bookingPage.jsx";
+import SearchPage from "./pages/search/SearchPage.jsx";
 
 function App() {
   const location = useLocation();
@@ -94,7 +95,10 @@ function App() {
             />
             {/* ✅ 예약 페이지 */}
             <Route path="/booking/:id" element={<BookingPage />} />
-            <Route path="/booking/confirmation/:id" element={<BookingConfirmation />} />
+            <Route
+              path="/booking/confirmation/:id"
+              element={<BookingConfirmation />}
+            />
 
             {/* ✅ 마이페이지 */}
             <Route path="/mypage/profile" element={<MyPage />} />
@@ -102,7 +106,11 @@ function App() {
             <Route path="/mypage/bookings" element={<Reservations />} />
 
             {/* 챗봇 */}
-             <Route path="/chatbot" element={<Chatbotpages />} />
+            <Route path="/chatbot" element={<Chatbotpages />} />
+
+            {/* 홈 링크 연결*/}
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/accommodations1/:id" element={<AccommodationDetail />} />
           </Routes>
 
           {/* ✅ Footer는 특정 경로에서만 제거 */}

@@ -1,0 +1,192 @@
+/* ========== SearchPage.css (for SearchPage.jsx) ========== */
+
+/* 톤 & 공통 */
+:root{
+  --line:#e5e7eb;         /* gray-200 */
+  --text:#111827;         /* gray-900 */
+  --muted:#6b7280;        /* gray-500 */
+  --brand:#2563eb;        /* blue-600 */
+  --bg:#ffffff;
+  --radius:12px;
+}
+
+.srch{
+  max-width:1200px;
+  margin:24px auto;
+  padding:0 16px;
+  color:var(--text);
+  font-family:"Noto Sans KR", system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+
+/* 헤더 */
+.srch-head h1{
+  margin:0 0 6px;
+  font-size:22px;
+  font-weight:800;
+}
+.srch-conds{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--muted);
+  flex-wrap:wrap;
+}
+.srch-conds .sep{ color:#cbd5e1; }
+
+.srch-sort{
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.srch-sort label{ color:var(--muted); }
+.srch-sort select{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:6px 10px;
+  font-size:14px;
+}
+
+/* 본문 레이아웃 */
+.srch-body{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:16px;
+}
+
+/* 사이드 필터 */
+.srch-filter{
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:12px;
+  height:fit-content;
+  position:sticky;
+  top:80px;
+}
+.srch-filter .reset{
+  display:inline-block;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:6px 10px;
+  font-size:13px;
+  cursor:pointer;
+}
+.flt-group{ margin-top:14px; }
+.flt-title{ font-weight:800; margin-bottom:8px; }
+.chk{ display:inline-flex; align-items:center; gap:8px; color:var(--text); }
+
+.types{ display:flex; flex-wrap:wrap; gap:6px; }
+.pill{ cursor:pointer; }
+.pill input{ display:none; }
+.pill span{
+  display:inline-block;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:9999px;
+  padding:6px 10px;
+  font-size:13px;
+  color:var(--text);
+}
+.pill.is-active span{
+  border-color:var(--brand);
+  color:var(--brand);
+  background:#eef2ff;
+}
+
+.price-row{ display:flex; align-items:center; gap:8px; }
+.price-row input{
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:6px 10px;
+}
+.tilde{ color:#9ca3af; }
+.hint{ margin-top:6px; font-size:12px; color:#9ca3af; }
+
+/* 리스트 그리드 + 카드 */
+.srch-list .grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap:14px;
+}
+.srch-item{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+  cursor:pointer;
+  transition: box-shadow .15s ease, transform .15s ease;
+}
+.srch-item:hover{
+  box-shadow:0 8px 22px rgba(0,0,0,.06);
+  transform: translateY(-1px);
+}
+
+.srch-thumb{
+  height:170px;
+  background:#f3f4f6;
+  background-size:cover;
+  background-position:center;
+}
+.srch-meta{ padding:10px 12px; }
+.srch-title{ font-weight:800; margin-bottom:4px; color:var(--text); }
+.srch-sub{ font-size:13px; color:var(--muted); }
+.srch-sub .dot{ margin:0 6px; color:#cbd5e1; }
+.srch-price{ margin-top:8px; font-weight:800; color:var(--text); }
+
+/* 상태/스켈레톤 */
+.status{
+  padding:40px 0;
+  text-align:center;
+  color:var(--muted);
+}
+.status.error{ color:#ef4444; }
+.status.empty{ color:#9ca3af; }
+
+.skeleton-wrap{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap:14px;
+}
+.skeleton-card{
+  height:230px; border-radius:12px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 37%, #f3f4f6 63%);
+  background-size:400% 100%;
+  animation: shimmer 1.2s infinite;
+}
+@keyframes shimmer{
+  0%{ background-position: 100% 0; }
+  100%{ background-position: -100% 0; }
+}
+
+/* 페이지네이션 */
+.pager{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin:16px 0;
+}
+.pager button{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:10px;
+  padding:6px 10px;
+  cursor:pointer;
+}
+.pager button:disabled{ opacity:.5; cursor:not-allowed; }
+
+/* 반응형 */
+@media (max-width: 920px){
+  .srch-body{ grid-template-columns:1fr; }
+  .srch-filter{ position:static; }
+}
+@media (max-width: 540px){
+  .srch-head h1{ font-size:20px; }
+  .srch-thumb{ height:150px; }
+  .srch-sort select{ padding:6px 8px; }
+}
