@@ -37,8 +37,17 @@ const BookingPage = () => {
       try {
         setLoading(true);
         setError("");
-
-        const mydata = await AxiosClient("myuser").getById(auth.userId);
+        let mydata;     
+        if (auth && auth.oauthSelect == 1) {
+          mydata = await AxiosClient("mypage/user",auth.token).update(auth.userId, updatedUserData );
+        } else if (auth && auth.oauthSelect == 0) {
+          // 일반 계정이면 /MyUser 요청
+          mydata = AxiosClient("myuser",auth.token).update(auth.userId, updatedUserData);
+        }
+        const updatedUserData = {
+          ...auth,
+          phoneNumber: phone,
+        };
         // console.log(mydata)
         setPhone(mydata.data.phoneNumber)
         // 1) API 시도 (필요하다면 이미지/가격도 추가로 호출해서 채워도 됨)
