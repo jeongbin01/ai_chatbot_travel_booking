@@ -24,6 +24,8 @@ import Reservations from "./pages/user/Reservations"; // ✅ 누락된 import �
 import AccommodationList from "./pages/accommodations/숙소/AccommodationList.jsx";
 import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDetail";
 import Chatbotpages from "./pages/chatbot/Chatbotpages.jsx";
+import BookingPage from "./pages/accommodations/숙소/BookingPage.jsx";
+import BookingConfirmation from "./pages/accommodations/숙소/BookingConfirmation.jsx";
 
 function App() {
   const location = useLocation();
@@ -91,7 +93,8 @@ function App() {
               element={<AccommodationDetail />}
             />
             {/* ✅ 예약 페이지 */}
-            {/* <Route path="/booking/:id" element={<BookingPage />} /> */}
+            <Route path="/booking/:id" element={<BookingPage />} />
+            <Route path="/booking/confirmation/:id" element={<BookingConfirmation />} />
 
             {/* ✅ 마이페이지 */}
             <Route path="/mypage/profile" element={<MyPage />} />

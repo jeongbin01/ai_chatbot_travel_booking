@@ -1,5 +1,5 @@
 // src/pages/accommodations/숙소/AccommodationDetail.jsx
-import React, { useEffect, useState, useCallback, Suspense } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../../../styles/pages/AccommodationDetail.css";
 import { AxiosClient } from "../../../api/AxiosController";
@@ -14,16 +14,13 @@ const fetchAccommodationById = async (id) => {
       AxiosClient("accommodation-images").get("", { params: { accommodationId: id } }),
       AxiosClient("room-types").get("", { params: { accommodationId: id } }),
       AxiosClient("price-policies").getAll(),
-      AxiosClient("amenities").get("", { params: { accommodationId: id } }),
-
+      // ❌ 불필요 호출 제거: AxiosClient("amenities").get("", { params: { accommodationId: id } }),
     ]);
 
     const acc = accRes?.data ?? {};
     const images = Array.isArray(imageRes?.data) ? imageRes.data : [];
     const roomTypes = Array.isArray(roomTypeRes?.data) ? roomTypeRes.data : [];
     const allPolicies = Array.isArray(priceRes?.data) ? priceRes.data : [];
-    // const amenities = Array.isArray(amenitiesRes?.data) ? amenitiesRes.data : [];
-
 
     // 기본 객실/가격
     const primaryRoomType = roomTypes[0] ?? null;
@@ -71,7 +68,7 @@ const fetchAccommodationById = async (id) => {
         usageInfo: Array.isArray(acc.usageInfo) ? acc.usageInfo : [],
         rooms: Array.isArray(acc.rooms) ? acc.rooms : [],
         liked: !!acc.liked,
-        rating: acc.ratingAvg ?? 0
+        rating: acc.ratingAvg ?? 0,
       },
     };
   } catch (err) {
@@ -89,7 +86,6 @@ export default function AccommodationDetail() {
   const [error, setError] = useState(null);
 
   const [liked, setLiked] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
 
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
@@ -129,20 +125,10 @@ export default function AccommodationDetail() {
     setLiked((prev) => !prev);
   }, []);
 
-  const handleBooking = useCallback(() => setShowPayment(true), []);
-
-  const handlePaymentSuccess = (bookingData) => {
-    try {
-      const existingBookings = JSON.parse(localStorage.getItem("bookings")) || [];
-      existingBookings.push({ ...bookingData, bookedAt: new Date().toISOString() });
-      localStorage.setItem("bookings", JSON.stringify(existingBookings));
-      setShowPayment(false);
-      navigate(`/booking/confirmation/${accommodation.id}`, { state: bookingData });
-    } catch (e) {
-      console.error("예약 저장 중 오류:", e);
-      alert("예약 처리 중 오류가 발생했습니다.");
-    }
-  };
+  // ✅ 예약 페이지로 이동
+  const handleBooking = useCallback(() => {
+    navigate(`/booking/${id}`);
+  }, [navigate, id]);
 
   const handleBack = useCallback(() => navigate(-1), [navigate]);
 
@@ -366,17 +352,6 @@ export default function AccommodationDetail() {
           <button onClick={handleAddReview}>리뷰 등록</button>
         </div>
       </section>
-
-      {/* 결제 모달 */}
-      {showPayment && (
-        <Suspense fallback={<div className="no-data">결제 모달을 불러오는 중입니다…</div>}>
-          <PaymentModal
-            accommodation={accommodation}
-            onClose={() => setShowPayment(false)}
-            onPaymentSuccess={handlePaymentSuccess}
-          />
-        </Suspense>
-      )}
     </div>
   );
 }

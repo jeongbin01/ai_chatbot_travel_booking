@@ -1,0 +1,134 @@
+/* src/styles/pages/BookingPage.css */
+
+/* 전체 페이지 레이아웃 */
+.booking-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+/* 숙소 정보 카드 */
+.accommodation-card {
+  display: flex;
+  gap: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fff;
+  margin-bottom: 24px;
+}
+
+.accommodation-card img {
+  width: 160px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.accommodation-card .info {
+  flex: 1;
+}
+
+.accommodation-card h2 {
+  font-size: 20px;
+  margin: 0 0 8px;
+}
+
+.accommodation-card p {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+/* 폼 영역 */
+.form-section {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.form-section h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+.form-section input,
+.form-section label {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+}
+
+.form-section input[type="text"],
+.form-section input[type="tel"],
+.form-section input[type="date"] {
+  padding: 8px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  transition: border 0.2s ease;
+}
+
+.form-section input:focus {
+  outline: none;
+  border-color: #4e8cff;
+  box-shadow: 0 0 4px rgba(78, 140, 255, 0.3);
+}
+
+/* 가격 요약 */
+.price-summary {
+  padding: 10px;
+  margin: 12px 0;
+  background: #f8f9fa;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* 에러 메시지 */
+.error-message {
+  color: red;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* 예약 완료 버튼 */
+.bottom-actions {
+  text-align: center;
+}
+
+.booking-confirm-btn {
+  background-color: #4e8cff;
+  color: #fff;
+  padding: 12px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.booking-confirm-btn:hover {
+  background-color: #3a6fd1;
+}
+
+/* 반응형 */
+@media (max-width: 600px) {
+  .accommodation-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .accommodation-card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .accommodation-card .info {
+    width: 100%;
+  }
+}
