@@ -24,8 +24,8 @@ import Reservations from "./pages/user/Reservations"; // ✅ 누락된 import �
 import AccommodationList from "./pages/accommodations/숙소/AccommodationList.jsx";
 import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDetail";
 import Chatbotpages from "./pages/chatbot/Chatbotpages.jsx";
-import BookingPage from "./pages/accommodations/숙소/BookingPage.jsx";
-import BookingConfirmation from "./pages/accommodations/숙소/BookingConfirmation.jsx";
+import BookingConfirmation from "./pages/booking/BookingConfirmation.jsx";
+import BookingPage from "./pages/booking/bookingPage.jsx";
 
 function App() {
   const location = useLocation();

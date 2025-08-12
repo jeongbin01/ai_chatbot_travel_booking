@@ -1,7 +1,7 @@
 // src/pages/accommodations/숙소/BookingConfirmation.jsx
 import React from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import "../../../styles/pages/BookingConfirmation.css";
+import "../../styles/pages/BookingConfirmation.css";
 
 const BookingConfirmation = () => {
   const { id } = useParams();

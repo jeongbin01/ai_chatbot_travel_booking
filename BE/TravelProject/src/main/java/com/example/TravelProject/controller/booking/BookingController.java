@@ -1,5 +1,6 @@
 package com.example.TravelProject.controller.booking;
 
+import com.example.TravelProject.dto.Booking.BookingDTO;
 import com.example.TravelProject.entity.booking.Booking;
 import com.example.TravelProject.service.Booking.BookingService;
 
@@ -85,8 +86,8 @@ public class BookingController {
 
     @Operation(summary = "예약 등록", description = "새로운 예약을 등록합니다.")
     @PostMapping
-    public Booking createBooking(@RequestBody Booking booking) {
-        return bookingService.saveBooking(booking);
+    public Booking createBooking(@RequestBody BookingDTO bookingDTO) {
+        return bookingService.saveBooking(bookingDTO);
     }
 
     @Operation(summary = "예약 수정", description = "기존 예약 정보를 수정합니다.")
