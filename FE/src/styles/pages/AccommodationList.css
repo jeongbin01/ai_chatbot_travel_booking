@@ -1,3 +1,4 @@
+/* ===== 전체 래퍼 ===== */
 .accommodation-list-wrapper {
   max-width: 1200px;
   margin: 100px auto;
@@ -5,16 +6,16 @@
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-/* 제목 */
+/* ===== 제목 ===== */
 .accommodation-title {
   font-size: 1.8rem;
   font-weight: 700;
   text-align: center;
   margin-bottom: 1.5rem;
-  color: #111827; /* 다크 그레이 텍스트 */
+  color: #111827;
 }
 
-/* 검색창 */
+/* ===== 검색창 ===== */
 .search-container {
   display: flex;
   justify-content: center;
@@ -24,9 +25,9 @@
 .search-box {
   display: flex;
   align-items: center;
-  background: #FFFFFF; /* 화이트 배경 */
+  background: #FFFFFF;
   padding: 0.5rem 1rem;
-  border: 1px solid #E5E7EB; /* 라이트 그레이 경계 */
+  border: 1px solid #E5E7EB;
   border-radius: 8px;
   gap: 0.5rem;
   width: 100%;
@@ -38,23 +39,21 @@
   border: none;
   background: transparent;
   font-size: 1rem;
-  color: #374151; /* 중간 그레이 텍스트 */
+  color: #374151;
   outline: none;
 }
 
-.search-box input::placeholder {
-  color: #9CA3AF; /* 라이트 그레이 플레이스홀더 */
-}
+.search-box input::placeholder { color: #9CA3AF; }
 
 .search-clear {
   background: none;
   border: none;
   cursor: pointer;
-  color: #6B7280; /* 그레이 아이콘 */
+  color: #6B7280;
   font-size: 1.2rem;
 }
 
-/* 로딩 */
+/* ===== 로딩 ===== */
 .loading {
   text-align: center;
   padding: 2rem;
@@ -66,32 +65,28 @@
   width: 24px;
   height: 24px;
   border: 3px solid #E5E7EB;
-  border-top: 3px solid #3B82F6; /* 블루 엑센트 */
+  border-top: 3px solid #3B82F6;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 1rem;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* 에러 메시지 */
+/* ===== 에러/결과 없음 ===== */
 .error-message {
-  background: #FEF2F2; /* 라이트 레드 배경 */
-  border: 1px solid #FCA5A5; /* 레드 경계 */
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
   padding: 1rem;
   border-radius: 8px;
   text-align: center;
-  color: #B91C1C; /* 다크 레드 텍스트 */
+  color: #B91C1C;
   margin-bottom: 2rem;
 }
 
 .btn-retry {
   margin-top: 0.5rem;
-  background: #EF4444; /* 레드 버튼 */
+  background: #EF4444;
   color: white;
   padding: 0.4rem 0.8rem;
   border: none;
@@ -99,11 +94,8 @@
   cursor: pointer;
 }
 
-.btn-retry:hover {
-  background: #DC2626;
-}
+.btn-retry:hover { background: #DC2626; }
 
-/* 검색 결과 없음 */
 .no-results {
   text-align: center;
   padding: 2rem;
@@ -111,7 +103,7 @@
   font-size: 1rem;
 }
 
-/* 숙소 카드 그리드 */
+/* ===== 그리드/카드 ===== */
 .accommodation-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -123,47 +115,39 @@
   display: flex;
   flex-direction: column;
   border: 1px solid #E5E7EB;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   background: #FFFFFF;
-  transition: box-shadow 0.2s ease;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  will-change: box-shadow, transform;
 }
 
 .accommodation-card:hover {
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2); /* 블루 톤 쉐도우 */
+  box-shadow: 0 6px 18px rgba(59, 130, 246, 0.18);
+  transform: translateY(-2px);
 }
 
-/* 이미지 */
+/* 🖼️ 이미지 */
+/* 이미지 영역을 카드 가로에 딱 맞게, 높이는 고정 */
 .image-container {
   width: 100%;
-  height: 180px;
+  height: 220px;        /* 원하는 높이 */
   overflow: hidden;
+  background: #F3F4F6;
 }
 
-.accommodation-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* 전역 .accommodation-card img 규칙을 이걸로 덮어쓰기 */
+.accommodation-card .image-container .accommodation-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;         /* 꽉 채우기 (여백 없이) */
+  object-position: center;
+  display: block;
 }
 
-/* 뱃지 */
-.badge {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  padding: 4px 8px;
-  font-size: 0.75rem;
-  border-radius: 4px;
-  color: white;
-  font-weight: 600;
-}
+.badge-overseas { background-color: #3B82F6; }
 
-
-.badge-overseas {
-  background-color: #3B82F6; /* 블루 엑센트 */
-}
-
-/* 숙소 내용 */
+/* ===== 내용 ===== */
 .accommodation-content {
   padding: 1rem;
   flex: 1;
@@ -188,45 +172,35 @@
   color: #111827;
 }
 
-.price-amount {
-  font-weight: 700;
-  color: #111827;
-}
+.price-amount { font-weight: 700; color: #111827; }
+.price-unit   { font-size: 0.85rem; color: #6B7280; }
 
-.price-unit {
-  font-size: 0.85rem;
-  color: #6B7280;
-}
-
-/* 별점 */
+/* ===== 별점 ===== */
 .star-rating {
   display: flex;
   align-items: center;
   gap: 2px;
   font-size: 0.9rem;
-  color: #FBBF24; /* 옐로우 골드 톤 */
+  color: #FBBF24;
 }
 
-.rating-text {
-  font-size: 0.8rem;
-  color: #6B7280;
-}
+.rating-text { font-size: 0.8rem; color: #6B7280; }
 
-/* 카드 버튼 영역 (상세보기 + 찜) */
+/* ===== 액션 버튼 ===== */
 .card-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0.75rem 1rem;
   border-top: 1px solid #E5E7EB;
-  background: #F3F4F6; /* 라이트 그레이 톤 */
+  background: #F3F4F6;
 }
 
 .btn-detail {
   flex: 1;
   padding: 0.5rem 0.75rem;
   margin-right: 0.5rem;
-  background-color: #3B82F6; /* 블루 버튼 */
+  background-color: #3B82F6;
   color: white;
   font-size: 0.9rem;
   border: none;
@@ -235,9 +209,7 @@
   transition: background-color 0.2s ease;
 }
 
-.btn-detail:hover {
-  background-color: #2563EB;
-}
+.btn-detail:hover { background-color: #2563EB; }
 
 .favorite {
   flex-shrink: 0;
@@ -251,21 +223,17 @@
   transition: all 0.2s ease;
 }
 
-.favorite:hover {
-  background: #E5E7EB;
-}
+.favorite:hover { background: #E5E7EB; }
 
 .favorite.active {
-  border-color: #EF4444; /* 레드 강조 */
+  border-color: #EF4444;
   background: #FEF2F2;
   color: #B91C1C;
 }
 
-.favorite.active:hover {
-  background: #FEE2E2;
-}
+.favorite.active:hover { background: #FEE2E2; }
 
-/* 반응형 최적화 */
+/* ===== 반응형 ===== */
 @media (max-width: 1024px) {
   .accommodation-grid {
     grid-template-columns: repeat(2, 1fr);
@@ -282,40 +250,20 @@
     margin: 60px auto;
     padding: 1.5rem 1rem;
   }
-
   .accommodation-grid {
     grid-template-columns: 1fr;
     gap: 1.2rem;
   }
 
-  .accommodation-title {
-    font-size: 1.4rem;
-  }
-
-  .card-actions {
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .btn-detail,
-  .favorite {
-    width: 100%;
-    margin: 0;
-  }
+  /* 모바일에서 이미지 높이 살짝 줄여 균형 맞춤 */
+  .image-container { height: 250px; }
 }
 
 @media (max-width: 480px) {
-  .search-box {
-    padding: 0.3rem 0.6rem;
-    gap: 0.3rem;
-  }
-  .accommodation-title {
-    font-size: 1.3rem;
-  }
-  .acc-price {
-    font-size: 0.85rem;
-  }
-  .star-rating {
-    font-size: 0.8rem;
-  }
+  .search-box { padding: 0.3rem 0.6rem; gap: 0.3rem; }
+  .accommodation-title { font-size: 1.3rem; }
+  .acc-price { font-size: 0.85rem; }
+  .star-rating { font-size: 0.8rem; }
+
+  .image-container { height: 220px; } /* 더 컴팩트 */
 }
