@@ -409,10 +409,9 @@ export default function SearchPage() {
   return (
     <main className="srch">
       <header className="srch-head">
-        <h1>{`'${q || "전체"}' 검색 결과`}</h1>
+        <h1>{`'${q || "전체"}' 검색 결과 (${tabLabel})`}</h1>
         <div className="srch-conds">
-          <span>{tabLabel}</span>
-          <span className="sep">|</span>
+            <span> {total}개</span>
           <span>
             {checkIn && checkOut
               ? `${checkIn} ~ ${checkOut}`
@@ -420,11 +419,8 @@ export default function SearchPage() {
           </span>
           <span className="sep">|</span>
           <span>인원 {guests}명</span>
-          <span className="sep">|</span>
-          <span>총 {total}개</span>
         </div>
         <div className="srch-sort">
-          <label htmlFor="sort">정렬</label>
           <select
             id="sort"
             value={sort}
