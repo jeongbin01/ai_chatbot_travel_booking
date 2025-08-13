@@ -1,32 +1,36 @@
 // src/pages/accommodations/숙소/BookingConfirmation.jsx
 import React from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useContext } from "react";
 import "../../styles/pages/BookingConfirmation.css";
+import { AxiosClient } from "../../api/AxiosController";
+import { AuthContext } from "../../context/AuthContext";
 
 const BookingConfirmation = () => {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-
+  const { auth } = useContext(AuthContext);
   /**
    * 1. location.state로 예약 데이터가 전달되었는지 확인
    * 2. 없다면 localStorage에서 해당 숙소 ID의 최근 예약 정보 검색
    */
+
   let bookingData = location.state;
-
   if (!bookingData) {
-    const storedBookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    bookingData = storedBookings
-      .filter((b) => String(b.accommodation.id) === String(id))
-      .sort((a, b) => new Date(b.bookedAt) - new Date(a.bookedAt))[0]; // 가장 최근 예약
+    bookingData = AxiosClient("bookings", auth.token).getById(id);
   }
-
-  if (!bookingData) {
+  console.log(bookingData.accommodationId)
+  const accomodationData = AxiosClient("accommodations").getById(bookingData.accommodationId);
+  console.log("Accomodation : " ,accomodationData)
+  if (!bookingData && !accomodationData) {
     return <div className="no-data">❌ 예약 정보를 찾을 수 없습니다.</div>;
   }
 
+  
+  // console.log(bookingData)
   const {
-    accommodation,
+    accommodation=accomodationData,
     name,
     phone,
     checkIn,

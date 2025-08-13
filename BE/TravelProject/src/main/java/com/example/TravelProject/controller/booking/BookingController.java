@@ -16,7 +16,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/app/bookings")
 @RequiredArgsConstructor
-public class BookingController {
+public class
+BookingController {
 
     private final BookingService bookingService;
 
