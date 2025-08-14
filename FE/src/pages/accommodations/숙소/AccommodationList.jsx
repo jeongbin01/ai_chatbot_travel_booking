@@ -5,44 +5,66 @@ import { AxiosClient } from "../../../api/AxiosController";
 
 const fetchAccommodations = async ({ isDomestic }) => {
   try {
-    const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
+    // 모든 API 호출을 Promise.all로 병렬 처리
+    const [accRes, imageRes, roomTypeRes, priceRes, accroomData] = await Promise.all([
       AxiosClient("accommodations/filter").get("", {
         params: { isDomestic: isDomestic ? "Y" : "N" },
       }),
       AxiosClient("accommodation-images").getAll(),
       AxiosClient("room-types").getAll(),
       AxiosClient("price-policies").getAll(),
+      AxiosClient("accommodations-rooms").get("", {
+        params: { isDomestic: isDomestic ? "Y" : "N" },
+      })
     ]);
 
-    const accommodations = accRes.data;
-    const images = imageRes.data;
-    const roomTypes = roomTypeRes.data;
-    const prices = priceRes.data;
+    console.log(accroomData);
+    
+    const acc_room_data = accroomData.data;
+    
+    // 데이터가 없는 경우 처리
+    if (!acc_room_data || !Array.isArray(acc_room_data)) {
+      return { data: [] };
+    }
+
+    // 중복 제거 및 최저가 선택 로직
+    const uniqueAccRooms = [];
+    const seen = {};
+
+    acc_room_data.forEach(acc_room => {
+      const key = acc_room[0]; // accommodationId 기준
+      if (!seen[key]) {
+        seen[key] = acc_room;
+      } else {
+        // 이미 존재하면 가격(acc_room[22]) 값 비교하여 더 저렴한 것 선택
+        if (acc_room[22] < seen[key][22]) {
+          seen[key] = acc_room;
+        }
+      }
+    });
+
+    // 객체를 배열로 변환
+    const result = Object.values(seen);
+
+    // 배열 인덱스를 상수로 정의 (가독성 향상)
+    const INDEX = {
+      ACCOMMODATION_ID: 0,
+      ADDRESS: 1,
+      NAME: 10,
+      RATING_AVG: 11,
+      IMAGE_URL: 16,
+      BASE_PRICE: 22
+    };
 
     return {
-      data: accommodations.map((acc) => {
-        const relatedRoomTypes = roomTypes.filter(
-          (rt) => rt.accommodation_id === acc.accommodationId
-        );
-        const primaryRoomType = relatedRoomTypes[0];
-        const relatedPrice = prices.find(
-          (p) => p.roomType_id === primaryRoomType?.roomType_id
-        );
-        const mainImage = images.find(
-          (img) =>
-            img?.accommodation?.accommodationId === acc.accommodationId &&
-            img?.orderNum === 1 &&
-            img?.imageUrl
-        );
-
+      data: result.map((result_acc) => {
         return {
-          id: acc.accommodationId,
-          name: acc.name,
-          location: acc.address,
-          price: relatedPrice?.basePrice ?? 0,
-          capacity: primaryRoomType?.max_occupancy ?? 0,
-          rating: acc.ratingAvg ?? 0,
-          image: mainImage?.imageUrl ?? null,
+          id: result_acc[INDEX.ACCOMMODATION_ID],
+          name: result_acc[INDEX.NAME],
+          location: result_acc[INDEX.ADDRESS],
+          price: parseFloat(result_acc[INDEX.BASE_PRICE]) || 0, // 숫자로 변환
+          rating: parseFloat(result_acc[INDEX.RATING_AVG]) || 0, // 숫자로 변환
+          image: result_acc[INDEX.IMAGE_URL],
         };
       }),
     };
