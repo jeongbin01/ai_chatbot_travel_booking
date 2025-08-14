@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Response, APIRouter, Query
-import crud
 from DB import database
 from sqlalchemy.orm import Session
-import travelProject_ai_part.app.LangChain.QA_Chain as qac
+import LangChain.QA_Chain as qac
 
 app = FastAPI()
 
