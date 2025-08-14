@@ -1,20 +1,20 @@
 import React from "react";
 import "../../styles/components/TopTravelProducts.css";
 
-import jeju from "../../assets/images/국내 지역/제주도.jpg";
-import seoul from "../../assets/images/국내 지역/서울.jpg";
-import busan from "../../assets/images/국내 지역/부산.jpg";
-import gangneung from "../../assets/images/국내 지역/강릉.jpg";
-import incheon from "../../assets/images/국내 지역/인천.jpg";
-
+import gimhae from "../../assets/images/domestic/김해 호텔.jpg";
+import rome from "../../assets/images/overseas/로마 호텔.jpg";
+import busan from "../../assets/images/domestic/강릉 호텔.jpg";
+import paris from "../../assets/images/overseas/파리 호텔.jpg";
+import incheon from "../../assets/images/domestic/순천 한옥 호텔.jpg";
 
 const destinations = [
-  { name: "제주도", image: jeju, link: "/accommodations?region=jeju" },
-  { name: "서울", image: seoul, link: "/accommodations?region=seoul" },
-  { name: "부산", image: busan, link: "/accommodations?region=busan" },
-  { name: "강릉", image: gangneung, link: "/accommodations?region=gangneung" },
-  { name: "인천", image: incheon, link: "/accommodations?region=incheon" }
+  { name: "김해 역사 호텔", image: gimhae , link: "/booking/gimhae" },
+  { name: "로마 부티크 호텔", image: rome, link: "/booking/rome" },
+  { name: "강릉 경포 호텔", image: busan, link: "/booking/busan" },
+  { name: "파리 센강 호텔", image: paris, link: "/booking/paris" },
+  { name: "순천 한옥 호텔", image: incheon, link: "/booking/incheon" }
 ];
+
 
 function TopTravelProducts() {
   return (

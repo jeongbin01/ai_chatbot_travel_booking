@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/layout/HeroBanner.css";
 
 import bg1 from "../../assets/images/Main/나이아가라강.jpg";
@@ -7,161 +8,275 @@ import bg3 from "../../assets/images/Main/제주도.jpg";
 import bg4 from "../../assets/images/Main/두바이.jpg";
 
 const BANNER_DATA = [
-  { id: 1, image: bg1, text: "나이아가라의 물안개 속으로", subtitle: "자연의 웅장함을 느껴보세요", alt: "나이아가라 폭포" },
-  { id: 2, image: bg2, text: "몽블랑의 설경 속에서", subtitle: "알프스의 순백을 만나다", alt: "몽블랑 설경" },
-  { id: 3, image: bg3, text: "제주의 푸른 바다", subtitle: "청명한 제주 해안", alt: "제주 해안" },
-  { id: 4, image: bg4, text: "두바이의 사막 위에", subtitle: "이국적인 도심의 야경", alt: "두바이 도시" },
+  { id: 1, image: bg1, text: "제주도 캠핑부터 두바이 호텔까지,", subtitle: "여행할 때 여기어때", alt: "캠핑 트레일러" },
+  { id: 2, image: bg2, text: "알프스 설경 속에서", subtitle: "당신의 휴식, 지금 예약", alt: "알프스" },
+  { id: 3, image: bg3, text: "제주의 푸른 바다", subtitle: "바다를 품은 숙소", alt: "제주" },
+  { id: 4, image: bg4, text: "사막의 도시 두바이", subtitle: "이국적인 야경", alt: "두바이" },
+];
+
+const TABS = [
+  { key: "domestic", label: "국내 숙소", placeholder: "여행지나 숙소를 검색해보세요." },
+  { key: "overseas", label: "해외 숙소", placeholder: "도시/국가를 검색해보세요." },
+  { key: "package", label: "액티비티", placeholder: "도시/테마를 검색해보세요." },
 ];
 
 const GUEST_LIMITS = { MIN: 1, MAX: 10 };
 const SLIDE_INTERVAL = 6000;
 
 export default function HeroBanner() {
+  const navigate = useNavigate(); // ✅ 라우팅 훅
+
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [tab, setTab] = useState(TABS[0].key);
+
   const [destination, setDestination] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
   const [isSearching, setIsSearching] = useState(false);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [isComposing, setIsComposing] = useState(false);
 
   const today = useMemo(() => new Date().toISOString().split("T")[0], []);
 
+  // 자동 슬라이드
   useEffect(() => {
-    if (!isAutoPlaying) return;
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
+    const t = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) {
           setCurrentIndex((c) => (c + 1) % BANNER_DATA.length);
           return 0;
         }
-        return prev + 100 / (SLIDE_INTERVAL / 100);
+        return p + 100 / (SLIDE_INTERVAL / 100);
       });
     }, 100);
-    return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+    return () => clearInterval(t);
+  }, []);
 
-  const validateSearch = useCallback(() => {
-    if (!destination.trim()) return { isValid: false, message: "여행지를 입력해주세요." };
-    if (!checkIn) return { isValid: false, message: "체크인 날짜를 선택해주세요." };
-    if (!checkOut) return { isValid: false, message: "체크아웃 날짜를 선택해주세요." };
-    const t = new Date(today), ci = new Date(checkIn), co = new Date(checkOut);
-    if (ci < t) return { isValid: false, message: "체크인은 오늘 이후여야 합니다." };
-    if (co <= ci) return { isValid: false, message: "체크아웃 날짜는 체크인 이후여야 합니다." };
-    return { isValid: true };
+  const nights = useMemo(() => {
+    if (!checkIn || !checkOut) return "";
+    const ci = new Date(checkIn), co = new Date(checkOut);
+    const diff = Math.max(0, Math.round((co - ci) / (1000 * 60 * 60 * 24)));
+    return diff > 0 ? ` (${diff}박)` : "";
+  }, [checkIn, checkOut]);
+
+  const fmt = (d) => {
+    if (!d) return "";
+    const dt = new Date(d);
+    const w = ["일","월","화","수","목","금","토"][dt.getDay()];
+    const mm = String(dt.getMonth()+1).padStart(2,"0");
+    const dd = String(dt.getDate()).padStart(2,"0");
+    return `${mm}.${dd} ${w}`;
+  };
+
+  const validate = useCallback(() => {
+    if (!destination.trim()) return "여행지/숙소를 입력해주세요.";
+    if (!checkIn) return "체크인 날짜를 선택해주세요.";
+    if (!checkOut) return "체크아웃 날짜를 선택해주세요.";
+    const ci = new Date(checkIn), co = new Date(checkOut), t = new Date(today);
+    if (ci < new Date(t.toDateString())) return "체크인은 오늘 이후여야 합니다.";
+    if (co <= ci) return "체크아웃은 체크인 이후여야 합니다.";
+    return null;
   }, [destination, checkIn, checkOut, today]);
 
-  const handleSearch = useCallback(async () => {
-    const v = validateSearch();
-    if (!v.isValid) return alert(v.message);
+  // ✅ 검색 → 링크 이동
+  const search = async (e) => {
+    if (e) e.preventDefault(); // 폼 submit 기본동작 방지
+    const err = validate();
+    if (err) return alert(err);
     setIsSearching(true);
     try {
-      await new Promise((r) => setTimeout(r, 1500));
-      alert(`검색 완료!\n여행지: ${destination}\n체크인: ${checkIn}\n체크아웃: ${checkOut}\n인원: ${guests}명`);
-    } catch {
-      alert("검색 중 오류 발생");
+      const params = new URLSearchParams({
+        tab,
+        q: destination.trim(),
+        checkIn,
+        checkOut,
+        guests: String(guests),
+      });
+      // 예시: /search?tab=domestic&q=제주&checkIn=2025-08-15&checkOut=2025-08-17&guests=2
+      navigate(`/search?${params.toString()}`);
     } finally {
       setIsSearching(false);
     }
-  }, [validateSearch, destination, checkIn, checkOut, guests]);
+  };
 
-  const handleGuestChange = useCallback((diff) => {
-    setGuests((p) => Math.max(GUEST_LIMITS.MIN, Math.min(GUEST_LIMITS.MAX, p + diff)));
-  }, []);
+  const handlePrev = () => { setCurrentIndex((i)=>(i-1+BANNER_DATA.length)%BANNER_DATA.length); setProgress(0); };
+  const handleNext = () => { setCurrentIndex((i)=>(i+1)%BANNER_DATA.length); setProgress(0); };
 
-  const handleSlideChange = useCallback((index) => {
-    setCurrentIndex(index);
-    setProgress(0);
-    setIsAutoPlaying(false);
-    setTimeout(() => setIsAutoPlaying(true), 10000);
-  }, []);
-
-  const handleKeyPress = useCallback((e) => {
-    if (e.key === "Enter" && !isSearching) handleSearch();
-  }, [handleSearch, isSearching]);
-
-  const nextSlide = () => handleSlideChange((currentIndex + 1) % BANNER_DATA.length);
-  const prevSlide = () => handleSlideChange((currentIndex - 1 + BANNER_DATA.length) % BANNER_DATA.length);
   const currentBanner = BANNER_DATA[currentIndex];
+  const placeholder = TABS.find(t=>t.key===tab)?.placeholder ?? "검색어를 입력하세요.";
+
+  const openPicker = (id) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.showPicker) el.showPicker();
+    else el.focus();
+  };
+
+  const onClickDateField = () => {
+    if (!checkIn) openPicker("ci");
+    else openPicker("co");
+  };
+
+  const onChangeCheckIn = (v) => {
+    setCheckIn(v);
+    const vDate = new Date(v);
+    const coDate = checkOut ? new Date(checkOut) : null;
+    if (!coDate || coDate <= vDate) {
+      const next = new Date(vDate);
+      next.setDate(next.getDate() + 1);
+      const yyyy = next.getFullYear();
+      const mm = String(next.getMonth() + 1).padStart(2,"0");
+      const dd = String(next.getDate()).padStart(2,"0");
+      setCheckOut(`${yyyy}-${mm}-${dd}`);
+    }
+    setTimeout(() => openPicker("co"), 0);
+  };
+
+  const dateLabel = checkIn && checkOut
+    ? `${fmt(checkIn)} - ${fmt(checkOut)}${nights}`
+    : "체크인 - 체크아웃";
+
+  const handleTextKeyDown = (e) => {
+    if (e.key === "Enter" && !isComposing && !isSearching) {
+      e.preventDefault();
+      search();
+    }
+  };
 
   return (
-    <section className="hero-banner">
-      {BANNER_DATA.map((banner, index) => (
+    <section className="hero hero--cover">
+      {/* 배경 이미지 */}
+      {BANNER_DATA.map((b, i) => (
         <div
-          key={banner.id}
-          className={`hero-banner__background ${index === currentIndex ? "hero-banner__background--active" : ""}`}
-          style={{ backgroundImage: `url(${banner.image})` }}
+          key={b.id}
+          className={`hero__bg ${i===currentIndex ? "is-active" : ""}`}
+          style={{ backgroundImage: `url(${b.image})` }}
           role="img"
-          aria-label={banner.alt}
+          aria-label={b.alt}
         />
       ))}
-      <button className="hero-banner__nav hero-banner__nav--prev" onClick={prevSlide} aria-label="이전 이미지">
+
+      {/* 좌우 화살표 */}
+      <button className="hero__arrow hero__arrow--left" onClick={handlePrev} aria-label="이전 슬라이드">
         <i className="bi bi-chevron-left" />
       </button>
-      <button className="hero-banner__nav hero-banner__nav--next" onClick={nextSlide} aria-label="다음 이미지">
+      <button className="hero__arrow hero__arrow--right" onClick={handleNext} aria-label="다음 슬라이드">
         <i className="bi bi-chevron-right" />
       </button>
-      <div className="hero-banner__overlay">
-        <div className="hero-banner__text">
-          <h1 className="hero-banner__title">{currentBanner.text}</h1>
-          <p className="hero-banner__subtitle">{currentBanner.subtitle}</p>
-          <p className="hero-banner__description">특별한 여행을 시작하세요</p>
-        </div>
 
-        {/* ✅ 검색 필드 */}
-        <div className="hero-banner__search hero-banner__search--glass" onKeyDown={handleKeyPress}>
-          <input
-            type="text"
-            placeholder="여행지를 입력하세요"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-          />
-          <input
-            type="date"
-            value={checkIn}
-            min={today}
-            onChange={(e) => setCheckIn(e.target.value)}
-          />
-          <input
-            type="date"
-            value={checkOut}
-            min={checkIn || today}
-            onChange={(e) => setCheckOut(e.target.value)}
-          />
-          <div className="guest-count">
-            <button onClick={() => handleGuestChange(-1)} disabled={guests <= GUEST_LIMITS.MIN}>–</button>
-            <span>{guests}명</span>
-            <button onClick={() => handleGuestChange(1)} disabled={guests >= GUEST_LIMITS.MAX}>＋</button>
+      {/* 텍스트/검색 카드 */}
+      <div className="hero__inner">
+        <h1 className="hero__title">{currentBanner.text}</h1>
+        <p className="hero__subtitle">{currentBanner.subtitle}</p>
+
+        {/* ✅ form 으로 감싸서 Enter/버튼 둘 다 submit */}
+        <form className="search-card" onSubmit={search}>
+          {/* 탭 */}
+          <div className="search-card__tabs" role="tablist">
+            {TABS.map((t)=>(
+              <button
+                key={t.key}
+                type="button"
+                role="tab"
+                aria-selected={tab===t.key}
+                className={`tab ${tab===t.key ? "is-active":""}`}
+                onClick={()=>setTab(t.key)}
+              >
+                {t.label}
+              </button>
+            ))}
           </div>
-          <button onClick={handleSearch} disabled={isSearching}>
-            {isSearching ? "검색 중..." : "검색"}
-          </button>
-        </div>
 
-        {/* 슬라이드 인디케이터 */}
-        <div className="hero-banner__indicators">
-          {BANNER_DATA.map((_, idx) => (
-            <button
-              key={idx}
-              className={`hero-banner__indicator ${idx === currentIndex ? "hero-banner__indicator--active" : ""}`}
-              onClick={() => handleSlideChange(idx)}
-              aria-label={`${BANNER_DATA[idx].text} 배너로 이동`}
-            >
-              <div
-                className="hero-banner__indicator-progress"
-                style={{ width: idx === currentIndex ? `${progress}%` : "0%" }}
+          {/* 입력 */}
+          <div className="search-card__fields">
+            {/* 목적지 */}
+            <div className="field field--text">
+              <i className="bi bi-search" aria-hidden="true"></i>
+              <input
+                type="text"
+                inputMode="search"
+                placeholder={placeholder}
+                value={destination}
+                onChange={(e)=> setDestination(e.target.value)}
+                onKeyDown={handleTextKeyDown}
+                onCompositionStart={()=> setIsComposing(true)}
+                onCompositionEnd={()=> setIsComposing(false)}
+                aria-label="여행지 또는 숙소 검색"
               />
-            </button>
-          ))}
-        </div>
-      </div>
+              {destination && (
+                <button
+                  type="button"
+                  className="field__clear"
+                  aria-label="입력 지우기"
+                  onClick={()=> setDestination("")}
+                >
+                  <i className="bi bi-x-lg" />
+                </button>
+              )}
+            </div>
 
-      <div className="hero-banner__progress-bar">
-        <div
-          className="hero-banner__progress-fill"
-          style={{ width: `${(currentIndex * 100 + progress) / BANNER_DATA.length}%` }}
-        />
+            {/* 날짜 */}
+            <div
+              className="field field--date field--clickable"
+              onClick={onClickDateField}
+              aria-label="체크인과 체크아웃 날짜 선택"
+            >
+              <i className="bi bi-calendar2"></i>
+              <span className={`field__display ${(!checkIn||!checkOut) ? "is-placeholder" : ""}`}>
+                {dateLabel}
+              </span>
+              <input
+                id="ci"
+                type="date"
+                value={checkIn}
+                min={today}
+                onChange={(e)=> onChangeCheckIn(e.target.value)}
+              />
+              <input
+                id="co"
+                type="date"
+                value={checkOut}
+                min={checkIn || today}
+                onChange={(e)=> setCheckOut(e.target.value)}
+              />
+            </div>
+
+            {/* 인원 */}
+            <div className="field field--clickable">
+              <i className="bi bi-person"></i>
+              <span className="field__display">{`인원 ${guests}`}</span>
+              <div className="field__counter">
+                <button
+                  type="button"
+                  onClick={()=>setGuests((v)=>Math.max(GUEST_LIMITS.MIN, v-1))}
+                  disabled={guests<=GUEST_LIMITS.MIN}
+                  aria-label="인원 줄이기"
+                >
+                  <i className="bi bi-dash"></i>
+                </button>
+                <button
+                  type="button"
+                  onClick={()=>setGuests((v)=>Math.min(GUEST_LIMITS.MAX, v+1))}
+                  disabled={guests>=GUEST_LIMITS.MAX}
+                  aria-label="인원 늘리기"
+                >
+                  <i className="bi bi-plus"></i>
+                </button>
+              </div>
+            </div>
+
+            {/* 버튼 */}
+            <button className="search-btn" type="submit" disabled={isSearching}>
+              {isSearching ? "검색 중..." : "검색"}
+            </button>
+          </div>
+        </form>
+
+        {/* 하단 진행바 */}
+        <div className="hero__progress">
+          <div style={{ width: `${(currentIndex*100 + progress) / BANNER_DATA.length}%` }} />
+        </div>
       </div>
     </section>
   );

@@ -54,13 +54,6 @@
 }
 
 /* 콘텐츠 영역 */
-/* 전체 레이아웃 */
-.page-wrapper {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f9f9f9;
-}
-
 .page-content {
   flex: 1;
   max-width: 900px;

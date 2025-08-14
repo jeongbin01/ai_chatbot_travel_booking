@@ -9,11 +9,11 @@ import rome from "../../assets/images/해외 지역/로마.jpg";
 import singapore from "../../assets/images/해외 지역/싱카프로.jpg";
 
 const destinations = [
-  { name: "후쿠오카", image: fukuoka, link: "/accommodations?region=fukuoka" },
-  { name: "방콕", image: bangkok, link: "/accommodations?region=bangkok" },
-  { name: "파리", image: paris, link: "/accommodations?region=paris" },
-  { name: "로마", image: rome, link: "/accommodations?region=rome" },
-  { name: "싱가포르", image: singapore, link: "/accommodations?region=singapore"}
+  { name: "후쿠오카", image: fukuoka, link: "/accommodations/fukuoka" },
+  { name: "방콕", image: bangkok, link: "/accommodations/bangkok" },
+  { name: "파리", image: paris, link: "/accommodations/paris" },
+  { name: "로마", image: rome, link: "/accommodations/rome" },
+  { name: "싱가포르", image: singapore, link: "/accommodations/singapore"}
 ];
 
 function OverseasAccommodations() {

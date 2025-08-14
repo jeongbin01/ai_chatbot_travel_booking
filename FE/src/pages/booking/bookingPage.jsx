@@ -30,15 +30,19 @@ const BookingPage = () => {
     if(!auth){
       navigate("/login")
     }
-    setName(auth.nickname)
+    setName(auth.nickname?auth.nickname:auth.username)
     setPhone(auth.phone)
     let ignore = false;
     (async () => {
       try {
         setLoading(true);
         setError("");
-
-        const mydata = await AxiosClient("myuser").getById(auth.userId);
+        let mydata;
+        if (auth && auth.oauthSelect == 1) {
+          mydata = await AxiosClient("mypage",auth.token).getById(auth.userId);
+        } else if (auth && auth.oauthSelect == 0) {
+          mydata = await AxiosClient("myuser",auth.token).getById(auth.userId);
+        }
         // console.log(mydata)
         setPhone(mydata.data.phoneNumber)
         // 1) API 시도 (필요하다면 이미지/가격도 추가로 호출해서 채워도 됨)
@@ -150,9 +154,9 @@ const BookingPage = () => {
       "userId":auth.userId,
     };
     console.log(newBooking)
-    const stored = JSON.parse(localStorage.getItem("bookings")) || [];
-    stored.push(newBooking);
-    localStorage.setItem("bookings", JSON.stringify(stored));
+    // const stored = JSON.parse(localStorage.getItem("bookings")) || [];
+    // stored.push(newBooking);
+    // localStorage.setItem("bookings", JSON.stringify(stored));
     AxiosClient("bookings", auth.token).create(newBooking)
     navigate(`/booking/confirmation/${accommodation.id}`, {
       state: newBooking,
@@ -167,7 +171,6 @@ const BookingPage = () => {
 
   return (
     <div className="booking-page">
-      {/* 숙소 정보 카드 */}
       <div className="accommodation-card">
         <img src={accommodation.image} alt={accommodation.name} />
         <div className="info">
