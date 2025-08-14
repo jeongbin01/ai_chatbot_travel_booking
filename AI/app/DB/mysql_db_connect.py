@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from sqlalchemy.orm import sessionmaker
 import os
 
-class DBConnector:
+class MysqlDBConnector:
     def __init__(self):
         load_dotenv()
 
