@@ -147,7 +147,12 @@ function App() {
             <Route path="/accommodations/rome" element={<RomeAccommodations/>} />
             <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
             <Route path="/accommodations/singapore" element={<SingaporeAccommodations/>} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            
+            
+            {/* 예약 페이지 */}
+            {/* <Route path="/booking/gimhae/1" element={<AccommodationDetail/>} /> */}
+
+
           </Routes>
 
           {/* ✅ Footer는 특정 경로에서만 제거 */}

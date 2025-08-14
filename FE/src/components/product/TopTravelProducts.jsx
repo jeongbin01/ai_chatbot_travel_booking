@@ -8,11 +8,11 @@ import paris from "../../assets/images/overseas/파리 호텔.jpg";
 import incheon from "../../assets/images/domestic/순천 한옥 호텔.jpg";
 
 const destinations = [
-  { name: "김해 역사 호텔", image: gimhae , link: "/booking/gimhae" },
-  { name: "로마 부티크 호텔", image: rome, link: "/booking/rome" },
-  { name: "강릉 경포 호텔", image: busan, link: "/booking/busan" },
-  { name: "파리 센강 호텔", image: paris, link: "/booking/paris" },
-  { name: "순천 한옥 호텔", image: incheon, link: "/booking/incheon" }
+  { name: "김해 역사 호텔", image: gimhae , link: "/booking/gimhae/1" },
+  { name: "로마 부티크 호텔", image: rome, link: "/booking/rome/2" },
+  { name: "강릉 경포 호텔", image: busan, link: "/booking/busan/3" },
+  { name: "파리 센강 호텔", image: paris, link: "/booking/paris/4" },
+  { name: "순천 한옥 호텔", image: incheon, link: "/booking/incheon/5" }
 ];
 
 
