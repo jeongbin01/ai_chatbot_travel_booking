@@ -25,19 +25,17 @@ const BookingPage = () => {
       return;
     }
     setName(auth?.nickname || auth?.username || "");
-    setPhone(auth?.phone || "");
 
     (async () => {
       try {
         let mydata;
-        if (auth?.oauthSelect === 1) {
+        if (auth?.oauthSelect == "1") {
           mydata = await AxiosClient("mypage", auth.token).getById(auth.userId);
-        } else if (auth?.oauthSelect === 0) {
+        } else if (auth?.oauthSelect == "0") {
           mydata = await AxiosClient("myuser", auth.token).getById(auth.userId);
         }
-        if (mydata?.data?.phoneNumber) {
-          setPhone(mydata.data.phoneNumber);
-        }
+        // console.log(auth, mydata);
+        setPhone(mydata.data.phoneNumber);
       } catch (e) {
         console.warn("프로필 불러오기 실패:", e?.message ?? e);
       }
@@ -49,12 +47,25 @@ const BookingPage = () => {
     if (!id) return;
     (async () => {
       try {
-        const res = await AxiosClient("room-types").get("", {
-          params: { accommodationId: id },
-        });
-        const list = Array.isArray(res?.data) ? res.data : [];
-        setRoomTypes(list);
-        setSelectedRoomType(list.length > 0 ? String(list[0].roomTypeId ?? list[0].id) : "");
+        const res = await AxiosClient("accommodations-rooms").getById(id)
+        const INDEX = {
+          ROOM_TYPE_ID: 17,
+          BED_TYPE: 18,
+          ROOM_DESCRIPTION: 19,
+          MAX_OCCUPANCY: 20,
+          ROOM_NAME: 21,
+          BASE_PRICE: 22
+        };
+        const rooms = res.data.map(accroom => ({
+          roomTypeId: accroom[INDEX.ROOM_TYPE_ID] ?? null,
+          roomName: accroom[INDEX.ROOM_NAME] ?? "",
+          bedType: accroom[INDEX.BED_TYPE] ?? "",
+          description: accroom[INDEX.ROOM_DESCRIPTION] ?? "",
+          maxOccupancy: accroom[INDEX.MAX_OCCUPANCY] ?? 1,
+          basePrice: accroom[INDEX.BASE_PRICE] ?? 0,
+        }));
+        setRoomTypes(rooms);
+        setSelectedRoomType(rooms.length > 0 ? String(rooms.roomName) : "");
       } catch (err) {
         console.error("방 타입 불러오기 실패", err);
       }
@@ -84,6 +95,14 @@ const BookingPage = () => {
     return Math.max(0, diff);
   }, [checkIn, checkOut]);
 
+  const totalPrice = useMemo(() => {
+    // console.log(selectedRoomType)
+    const selectedRoom = roomTypes.find(r => r.roomTypeId == selectedRoomType);
+    const unit = Number(selectedRoom?.basePrice ?? 0);
+    // console.log(unit, selectedRoom, roomTypes)
+    return nights * unit;
+  }, [nights, selectedRoomType]);
+
   const todayStr = useMemo(() => new Date().toISOString().split("T")[0], []);
 
   const handleBooking = async () => {
@@ -97,14 +116,17 @@ const BookingPage = () => {
     }
     try {
       const newBooking = {
+        booking_data:(new Date().toISOString()),
         accommodationId: id,
-        roomTypeId: selectedRoomType,
+        roomTypeId: Number(selectedRoomType) || 0,
         checkInDate: checkIn,
         checkOutDate: checkOut,
         userId: auth.userId,
+        totalAmount: Number(totalPrice) || 0,
       };
+      console.log(newBooking)
       await AxiosClient("bookings", auth.token).create(newBooking);
-      navigate(`/booking/confirmation/${id}`, { state: newBooking });
+      navigate(`/booking/confirmation`, { state: newBooking });
     } catch (e) {
       setError(
         e?.response?.data?.message || e?.message || "예약 중 오류가 발생했습니다."
@@ -152,6 +174,7 @@ const BookingPage = () => {
           onChange={(e) => setSelectedRoomType(e.target.value)}
           disabled={roomTypes.length === 0}
         >
+          <option value="">선택하세요.</option>
           {roomTypes.length === 0 && (
             <option value="">선택 가능한 방 타입이 없습니다</option>
           )}
@@ -167,7 +190,15 @@ const BookingPage = () => {
         </select>
 
         {nights > 0 && (
-          <div className="price-summary">숙박 일수: <strong>{nights}</strong>박</div>
+          <>
+            <div className="price-summary">숙박 일수: <strong>{nights}</strong>박</div>
+            <div>
+                총 금액:{" "}
+                <strong>
+                  {Number(totalPrice).toLocaleString("ko-KR")}원
+                </strong>
+            </div>
+          </>
         )}
 
         {error && <p className="error-message">{error}</p>}

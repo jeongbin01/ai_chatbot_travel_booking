@@ -1,7 +1,6 @@
 // src/pages/accommodations/숙소/BookingConfirmation.jsx
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useContext } from "react";
 import "../../styles/pages/BookingConfirmation.css";
 import { AxiosClient } from "../../api/AxiosController";
 import { AuthContext } from "../../context/AuthContext";
@@ -11,32 +10,60 @@ const BookingConfirmation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { auth } = useContext(AuthContext);
-  /**
-   * 1. location.state로 예약 데이터가 전달되었는지 확인
-   * 2. 없다면 localStorage에서 해당 숙소 ID의 최근 예약 정보 검색
-   */
 
-  let bookingData = location.state;
-  if (!bookingData) {
-    bookingData = AxiosClient("bookings", auth.token).getById(id);
-  }
-  console.log(bookingData.accommodationId)
-  const accomodationData = AxiosClient("accommodations").getById(bookingData.accommodationId);
-  console.log("Accomodation : " ,accomodationData)
-  if (!bookingData && !accomodationData) {
+  const [bookingData, setBookingData] = useState(null);
+  const [accommodationData, setAccommodationData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let data = location.state;
+      if (data?.bookingId) {
+        setBookingData(data);
+      } else {
+        setBookingData(null);
+        navigate("/")
+        return;
+      }
+    };
+
+    fetchData();
+  }, [location.state, auth]);
+
+  // accommodation 정보 불러오기
+  useEffect(() => {
+    const fetchAccommodation = async () => {
+      if (bookingData?.accommodationId) {
+        const res = await AxiosClient("accommodations-rooms").get(`/acc${bookingData.accommodationId}/roomtype${bookingData.roomTypeId}`);
+        const INDEX = {
+          NAME: 10,
+          ADDRESS: 1,
+          BASE_PRICE: 22,
+          RTI_IMG: 23
+        };
+
+        const accommodationData = {
+          name: accroom[INDEX.NAME] ?? "이름 없음",
+          location: accroom[INDEX.ADDRESS] ?? "-",
+          price: accroom[INDEX.BASE_PRICE] ?? 0,
+          image: accroom[INDEX.RTI_IMG] ?? "",
+        };
+        setAccommodationData(accommodationData);
+      }
+    };
+    fetchAccommodation();
+  }, [bookingData]);
+
+  if (!bookingData || !accommodationData) {
     return <div className="no-data">❌ 예약 정보를 찾을 수 없습니다.</div>;
   }
 
-  
-  // console.log(bookingData)
   const {
-    accommodation=accomodationData,
     name,
     phone,
-    checkIn,
-    checkOut,
+    checkInDate: checkIn,
+    checkOutDate: checkOut,
     paymentMethod,
-    bookedAt,
+    booking_data: bookedAt,
   } = bookingData;
 
   return (
@@ -46,14 +73,14 @@ const BookingConfirmation = () => {
       {/* 숙소 정보 */}
       <div className="accommodation-summary">
         <img
-          src={accommodation.image}
-          alt={accommodation.name}
+          src={accommodationData.image}
+          alt={accommodationData.name}
           className="summary-image"
         />
         <div className="summary-text">
-          <h3>{accommodation.name}</h3>
-          <p>📍 {accommodation.location}</p>
-          <p>💰 {accommodation.price.toLocaleString()}원</p>
+          <h3>{accommodationData.name}</h3>
+          <p>📍 {accommodationData.location}</p>
+          <p>💰 {accommodationData.price.toLocaleString()}원</p>
         </div>
       </div>
 
@@ -69,7 +96,7 @@ const BookingConfirmation = () => {
 
       {/* 버튼 */}
       <div className="actions">
-        <button onClick={() => navigate("/bookings")}>
+        <button onClick={() => navigate("/mypage/bookings")}>
           📋 내 예약 목록 보기
         </button>
         <button onClick={() => navigate("/")}>
