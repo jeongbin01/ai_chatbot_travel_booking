@@ -73,7 +73,8 @@ public interface AccommodationRoomRepository extends JpaRepository<Accommodation
          rt.description AS room_description,
          rt.max_occupancy,
          rt.name AS room_name,
-         pp.base_price
+         pp.base_price,
+         rti.image_url AS rti_img
         FROM accommodation acc
         JOIN accommodation_image acc_img
             ON acc.accommodation_id = acc_img.accommodation_id
@@ -81,6 +82,8 @@ public interface AccommodationRoomRepository extends JpaRepository<Accommodation
             ON acc.accommodation_id = rt.accommodation_id
         JOIN price_policy pp
             ON rt.room_type_id = pp.room_type_id
+        JOIN room_type_image rti
+            ON rt.room_type_id = rti.room_type_id
         WHERE acc.accommodation_id = :accommodationId
         """, nativeQuery = true
     )

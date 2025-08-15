@@ -6,19 +6,13 @@ import { AxiosClient } from "../../../api/AxiosController";
 const fetchAccommodations = async ({ isDomestic }) => {
   try {
     // 모든 API 호출을 Promise.all로 병렬 처리
-    const [accRes, imageRes, roomTypeRes, priceRes, accroomData] = await Promise.all([
-      AxiosClient("accommodations/filter").get("", {
-        params: { isDomestic: isDomestic ? "Y" : "N" },
-      }),
-      AxiosClient("accommodation-images").getAll(),
-      AxiosClient("room-types").getAll(),
-      AxiosClient("price-policies").getAll(),
+    const [accroomData] = await Promise.all([
       AxiosClient("accommodations-rooms").get("", {
         params: { isDomestic: isDomestic ? "Y" : "N" },
       })
     ]);
 
-    console.log(accroomData);
+    // console.log(accroomData);
     
     const acc_room_data = accroomData.data;
     
