@@ -9,67 +9,68 @@ import { AxiosClient } from "../../../api/AxiosController";
  */
 const fetchAccommodationById = async (id) => {
   try {
-    const [accRes, imageRes, roomTypeRes, priceRes] = await Promise.all([
-      AxiosClient("accommodations").getById(id),
-      AxiosClient("accommodation-images").get("", { params: { accommodationId: id } }),
-      AxiosClient("room-types").get("", { params: { accommodationId: id } }),
-      AxiosClient("price-policies").getAll(),
-      // ❌ 불필요 호출 제거: AxiosClient("amenities").get("", { params: { accommodationId: id } }),
+    const [accroomData] = await Promise.all([
+      AxiosClient("accommodations-rooms").getById(id)
     ]);
-
-    const acc = accRes?.data ?? {};
-    const images = Array.isArray(imageRes?.data) ? imageRes.data : [];
-    const roomTypes = Array.isArray(roomTypeRes?.data) ? roomTypeRes.data : [];
-    const allPolicies = Array.isArray(priceRes?.data) ? priceRes.data : [];
-
-    // 기본 객실/가격
-    const primaryRoomType = roomTypes[0] ?? null;
-    const policiesForPrimary = primaryRoomType
-      ? allPolicies.filter((p) => {
-          const pRtId = p.roomTypeId ?? p.room_type_id ?? p.roomType?.id;
-          const rtId =
-            primaryRoomType.id ??
-            primaryRoomType.roomTypeId ??
-            primaryRoomType.room_type_id;
-          return pRtId === rtId;
-        })
-      : [];
-    const primaryPrice = policiesForPrimary[0] ?? null;
-
-    // 이미지 정렬 + 중복 제거 + fallback
-    const imageUrls = (() => {
-      const seen = new Set();
-      return images
-        .slice()
-        .sort(
-          (a, b) =>
-            (a.orderNum ?? a.order_num ?? 0) - (b.orderNum ?? b.order_num ?? 0)
-        )
-        .map((img) => (img.imageUrl ?? img.url ?? "").trim() || "/images/default-accommodation.jpg")
-        .filter((url) => !seen.has(url) && (seen.add(url), true));
-    })();
-
+    const accroomData0 = accroomData.data[0]
+    console.log(accroomData)
+    const INDEX = {
+      ACCOMMODATION_ID: 0,
+      ADDRESS: 1,
+      CHECK_IN_TIME: 2,
+      CHECK_OUT_TIME: 3,
+      CONTACT: 4,
+      DESCRIPTION: 5,
+      IS_ACTIVE: 6,
+      IS_DOMESTIC: 7,
+      LATITUDE: 8,
+      LONGITUDE: 9,
+      NAME: 10,
+      RATING_AVG: 11,
+      REGISTRATION_DATE: 12,
+      TOTAL_REVIEWS: 13,
+      TYPE: 14,
+      OWNER_USER_ID: 15,
+      IMAGE_URL: 16,
+      ROOM_TYPE_ID: 17,
+      BED_TYPE: 18,
+      ROOM_DESCRIPTION: 19,
+      MAX_OCCUPANCY: 20,
+      ROOM_NAME: 21,
+      BASE_PRICE: 22,
+      RTI_IMG : 23
+    };
+    const rooms = accroomData.data.map(accroom => ({
+      roomTypeId: accroom[INDEX.ROOM_TYPE_ID] ?? null,
+      roomName: accroom[INDEX.ROOM_NAME] ?? "",
+      bedType: accroom[INDEX.BED_TYPE] ?? "",
+      description: accroom[INDEX.ROOM_DESCRIPTION] ?? "",
+      maxOccupancy: accroom[INDEX.MAX_OCCUPANCY] ?? 1,
+      basePrice: accroom[INDEX.BASE_PRICE] ?? 0,
+      imageUrl: (accroom[INDEX.RTI_IMG] ?? accroom[INDEX.IMAGE_URL]) ?? ""
+    }));
+    console.log(rooms);
     return {
       data: {
-        id: acc.accommodationId ?? acc.id ?? Number(id),
-        name: acc.name ?? "",
-        location: acc.address ?? "",
-        address: acc.address ?? "",
-        description: acc.description ?? "",
-        ratingAvg: acc.ratingAvg ?? 0,
-        totalReviews: acc.totalReviews ?? 0,
-        checkIn: acc.checkInTime ?? acc.check_in_time ?? "-",
-        checkOut: acc.checkOutTime ?? acc.check_out_time ?? "-",
-        contact: acc.contact ?? "000-0000-0000",
-        capacity:
-          primaryRoomType?.maxOccupancy ?? primaryRoomType?.max_occupancy ?? 1,
-        price: primaryPrice?.basePrice ?? primaryPrice?.base_price ?? 0,
-        images: imageUrls,
-        usageInfo: Array.isArray(acc.usageInfo) ? acc.usageInfo : [],
-        rooms: Array.isArray(acc.rooms) ? acc.rooms : [],
-        liked: !!acc.liked,
-        rating: acc.ratingAvg ?? 0,
-      },
+        id: accroomData0[INDEX.ACCOMMODATION_ID],
+        name: accroomData0[INDEX.NAME],
+        latitude: accroomData0[INDEX.LATITUDE],
+        longitude: accroomData0[INDEX.LONGITUDE],
+        address: accroomData0[INDEX.ADDRESS],
+        description: accroomData0[INDEX.DESCRIPTION] ?? "",
+        ratingAvg: accroomData0[INDEX.RATING_AVG] ?? 0,
+        totalReviews: accroomData0[INDEX.TOTAL_REVIEWS] ?? 0,
+        checkIn: accroomData0[INDEX.CHECK_IN_TIME] ?? "-",
+        checkOut: accroomData0[INDEX.CHECK_OUT_TIME] ?? "-",
+        contact: accroomData0[INDEX.CONTACT] ?? "000-0000-0000",
+        capacity: accroomData0[INDEX.MAX_OCCUPANCY] ?? 1,
+        price: accroomData0[INDEX.BASE_PRICE] ?? 0,
+        images: [accroomData0[INDEX.IMAGE_URL] ?? ""],
+        usageInfo: [],
+        rooms: rooms,
+        liked:0, // 이건 DB에서 가져오려면 SELECT에 추가 필요
+        rating: accroomData0[INDEX.RATING_AVG] ?? 0,
+        },
     };
   } catch (err) {
     console.error("fetchAccommodationById error:", err);
@@ -125,7 +126,6 @@ export default function AccommodationDetail() {
     setLiked((prev) => !prev);
   }, []);
 
-  // ✅ 예약 페이지로 이동
   const handleBooking = useCallback(() => {
     navigate(`/booking/${id}`);
   }, [navigate, id]);
@@ -254,7 +254,7 @@ export default function AccommodationDetail() {
         <p><strong>체크인</strong> : {accommodation.checkIn || "-"}</p>
         <p><strong>체크아웃</strong> : {accommodation.checkOut || "-"}</p>
         <p><strong>연락처</strong> : {accommodation.contact}</p>
-        {accommodation.capacity && <p><strong>최대 인원</strong> : {accommodation.capacity}명</p>}
+        {accommodation.rooms.map(room => room.maxOccupancy).join("/")}명
       </section>
 
       {/* 이용 팁 */}
@@ -272,16 +272,19 @@ export default function AccommodationDetail() {
           <div className="rooms-container">
             {accommodation.rooms.map((room, i) => (
               <div className="room-card" key={i}>
-                <img src={room.imageUrl || fallbackImage} alt={`${room.name} 이미지`} />
-                <div className="room-info-card">
-                  <h3>{room.name}</h3>
-                  {room.capacity && <div>최대 인원: {room.capacity}명</div>}
-                  {room.price && (
-                    <div className="room-price">
-                      {Number(room.price).toLocaleString("ko-KR")}원/박
-                    </div>
-                  )}
-                </div>
+                <img 
+                  src={room.imageUrl || fallbackImage} 
+                  alt={`${room.roomName || "객실"} 이미지`} 
+                />
+                <h3>{room.roomName || "객실 이름 없음"}</h3>
+
+                {room.maxOccupancy && (
+                  <div>최대 인원: {room.maxOccupancy}명</div>
+                )}
+
+                {room.basePrice !== undefined && (
+                  <div>{Number(room.basePrice).toLocaleString("ko-KR")}원/박</div>
+                )}
               </div>
             ))}
           </div>
