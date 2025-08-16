@@ -163,9 +163,11 @@ public interface AccommodationRoomRepository extends JpaRepository<Accommodation
                 ON acc.accommodation_id = rt.accommodation_id
             JOIN price_policy pp
                 ON rt.room_type_id = pp.room_type_id
+            JOIN room_type_image rti
+                ON rt.room_type_id = rti.room_type_id
             WHERE acc.accommodation_id = :accommodationId
             AND rt.room_type_id = :roomTypeId;
             """, nativeQuery = true
     )
-    Object[] findAccommodationRoomDetail(@Param("accommodationId") Integer accommodationId, @Param("roomTypeId")Integer roomTypeId);
+    List<Object[]> findAccommodationRoomDetail(@Param("accommodationId") Integer accommodationId, @Param("roomTypeId")Integer roomTypeId);
 }

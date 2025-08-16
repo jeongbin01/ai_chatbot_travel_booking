@@ -105,9 +105,9 @@ function App() {
             />
             {/* ✅ 예약 페이지 */}
             <Route path="/booking/:id" element={<BookingPage />} />
-            <Route
-              path="/booking/confirmation/:id"
-              element={<BookingConfirmation />}
+            <Route 
+              path="/booking/confirmation/:accommodationId/:roomTypeId" 
+              element={<BookingConfirmation />} 
             />
 
             {/* ✅ 마이페이지 */}

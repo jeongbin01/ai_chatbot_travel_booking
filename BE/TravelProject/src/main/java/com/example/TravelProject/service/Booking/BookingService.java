@@ -3,9 +3,11 @@ package com.example.TravelProject.service.Booking;
 import com.example.TravelProject.dto.Booking.BookingDTO;
 import com.example.TravelProject.entity.booking.Booking;
 import com.example.TravelProject.entity.room.Accommodation;
+import com.example.TravelProject.entity.room.RoomType;
 import com.example.TravelProject.entity.useraccount.User;
 import com.example.TravelProject.repository.Booking.BookingRepository;
 import com.example.TravelProject.repository.Room.AccommodationRepository;
+import com.example.TravelProject.repository.Room.RoomTypeRepository;
 import com.example.TravelProject.repository.UserAccount.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
     private final AccommodationRepository accommodationRepository;
-
+    private final RoomTypeRepository roomTypeRepository;
     // 🔹 전체 예약 목록 조회
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
@@ -82,13 +84,17 @@ public class BookingService {
         Accommodation accommodation = accommodationRepository.findById(accommodationId)
                 .orElseThrow(() -> new RuntimeException("Accommodation not found"));
 
+        Integer roomTypeId = bookingDTO.getRoomTypeId();
+        RoomType roomType = roomTypeRepository.findById(roomTypeId)
+                .orElseThrow(() -> new RuntimeException("RoomType not found"));
+
         Booking booking = new Booking();
         booking.setCheckInDate(bookingDTO.getCheckInDate());
         booking.setCheckOutDate(bookingDTO.getCheckOutDate());
         booking.setTotalAmount(bookingDTO.getTotalAmount());
         booking.setUser(user);
         booking.setAccommodation(accommodation);
-
+        booking.setRoomType(roomType);
         return bookingRepository.save(booking);
     }
 
