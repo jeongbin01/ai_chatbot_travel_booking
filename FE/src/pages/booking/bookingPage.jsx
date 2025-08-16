@@ -118,7 +118,7 @@ const BookingPage = () => {
       const newBooking = {
         booking_data:(new Date().toISOString()),
         accommodationId: id,
-        roomTypeId: Number(selectedRoomType) || 0,
+        roomTypeId: selectedRoomType || "",
         checkInDate: checkIn,
         checkOutDate: checkOut,
         userId: auth.userId,
@@ -126,7 +126,7 @@ const BookingPage = () => {
       };
       console.log(newBooking)
       await AxiosClient("bookings", auth.token).create(newBooking);
-      navigate(`/booking/confirmation`, { state: newBooking });
+      navigate(`/booking/confirmation/${newBooking.accommodationId}/${newBooking.roomTypeId}`, { state: newBooking });
     } catch (e) {
       setError(
         e?.response?.data?.message || e?.message || "예약 중 오류가 발생했습니다."

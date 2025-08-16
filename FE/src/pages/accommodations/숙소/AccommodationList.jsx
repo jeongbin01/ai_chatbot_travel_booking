@@ -6,16 +6,18 @@ import { AxiosClient } from "../../../api/AxiosController";
 const fetchAccommodations = async ({ isDomestic }) => {
   try {
     // 모든 API 호출을 Promise.all로 병렬 처리
+    console.log(isDomestic)
+    console.log({isDomestic: isDomestic ? "Y" : "N"})
     const [accroomData] = await Promise.all([
       AxiosClient("accommodations-rooms").get("", {
         params: { isDomestic: isDomestic ? "Y" : "N" },
       })
     ]);
 
-    // console.log(accroomData);
+    console.log(accroomData);
     
     const acc_room_data = accroomData.data;
-    
+    // console.log(acc_room_data)
     // 데이터가 없는 경우 처리
     if (!acc_room_data || !Array.isArray(acc_room_data)) {
       return { data: [] };
@@ -37,14 +39,12 @@ const fetchAccommodations = async ({ isDomestic }) => {
       }
     });
 
-    // 객체를 배열로 변환
     const result = Object.values(seen);
-
-    // 배열 인덱스를 상수로 정의 (가독성 향상)
     const INDEX = {
       ACCOMMODATION_ID: 0,
       ADDRESS: 1,
       NAME: 10,
+      IS_DOMESTIC: 7,
       RATING_AVG: 11,
       IMAGE_URL: 16,
       BASE_PRICE: 22
@@ -56,6 +56,7 @@ const fetchAccommodations = async ({ isDomestic }) => {
           id: result_acc[INDEX.ACCOMMODATION_ID],
           name: result_acc[INDEX.NAME],
           location: result_acc[INDEX.ADDRESS],
+          isDomestic:result_acc[INDEX.IS_DOMESTIC],
           price: parseFloat(result_acc[INDEX.BASE_PRICE]) || 0, // 숫자로 변환
           rating: parseFloat(result_acc[INDEX.RATING_AVG]) || 0, // 숫자로 변환
           image: result_acc[INDEX.IMAGE_URL],

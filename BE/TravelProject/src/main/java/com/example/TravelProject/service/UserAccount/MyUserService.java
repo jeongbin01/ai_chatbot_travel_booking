@@ -30,6 +30,7 @@ public class MyUserService {
             user.setNickname(updatedUser.getNickname());
             user.setUserRole(updatedUser.getUserRole());
             user.setUsername(updatedUser.getUsername());
+            user.setPhoneNumber(updatedUser.getPhoneNumber());
             return MyUserDTO.fromEntity(userRepository.save(user));
         });
     }

@@ -24,7 +24,7 @@ public class AccommodationRoomService {
     public List<Object[]> getAccommodationRoomsByDomestic(String isDomestic) {
         return accommodationRoomRepository.findByDomesticFlag(isDomestic);
     }
-    public Object[] getAccommodationRoomDetail(Integer accommodationId, Integer roomTypeId) {
+    public List<Object[]> getAccommodationRoomDetail(Integer accommodationId, Integer roomTypeId) {
         return accommodationRoomRepository.findAccommodationRoomDetail(accommodationId, roomTypeId);
     }
 }
