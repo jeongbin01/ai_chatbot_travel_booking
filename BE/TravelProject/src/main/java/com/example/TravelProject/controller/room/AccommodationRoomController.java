@@ -28,8 +28,8 @@ public class AccommodationRoomController {
     public List<Object[]> getAccommodationRoomsByDomestic(@RequestParam("isDomestic") String isDomestic) {
         return accommodationRoomService.getAccommodationRoomsByDomestic(isDomestic);
     }
-    @GetMapping("/acc{accommodationId}/roomtype{roomTypeId}")
-    public Object[] getAccommodationRoomDetail(
+    @GetMapping("/acc/{accommodationId}/roomType/{roomTypeId}")
+    public List<Object[]> getAccommodationRoomDetail(
             @PathVariable("accommodationId") Integer accommodationId,
             @PathVariable("roomTypeId") Integer roomTypeId
     ){
