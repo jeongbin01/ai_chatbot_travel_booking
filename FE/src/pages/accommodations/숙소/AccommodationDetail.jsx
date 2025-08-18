@@ -4,6 +4,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../../../styles/pages/AccommodationDetail.css";
 import { AxiosClient } from "../../../api/AxiosController";
 
+// ✅ 찜 훅만 유지
+import useWishlistClient from "../../../hooks/useWishlistClient";
+
 /**
  * 숙소 상세 + 이미지 + 객실 + 가격 병렬 로드
  */
@@ -101,7 +104,9 @@ export default function AccommodationDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [liked, setLiked] = useState(false);
+  // ✅ 찜 훅 사용
+  const { isWished, toggleWish } = useWishlistClient();
+  const isFavorite = isWished(id);
 
   const [reviews, setReviews] = useState([]);
   const [newReview, setNewReview] = useState("");
@@ -121,7 +126,6 @@ export default function AccommodationDetail() {
         if (ignore) return;
 
         setAccommodation(res.data);
-        setLiked(!!res.data?.liked);
 
         const saved = localStorage.getItem(`reviews_${id}`);
         setReviews(saved ? JSON.parse(saved) : []);
@@ -138,9 +142,17 @@ export default function AccommodationDetail() {
     };
   }, [id]);
 
-  const toggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
-  }, []);
+  // ✅ 찜 토글
+  const handleToggleWish = useCallback(() => {
+    if (!accommodation) return;
+    toggleWish({
+      id: accommodation.id,
+      name: accommodation.name,
+      image: accommodation.images?.[0] || fallbackImage,
+      location: accommodation.address || "",
+      price: accommodation.price ?? (accommodation.rooms?.[0]?.basePrice ?? 0),
+    });
+  }, [accommodation, toggleWish]);
 
   const handleBooking = useCallback(() => {
     navigate(`/booking/${id}`);
@@ -177,10 +189,7 @@ export default function AccommodationDetail() {
     const empty = 5 - full - (half ? 1 : 0);
 
     return (
-      <div
-        className="star-rating"
-        aria-label={`${rating}점 만점에 ${rating}점`}
-      >
+      <div className="star-rating" aria-label={`${rating}점 만점에 ${rating}점`}>
         {Array(full)
           .fill()
           .map((_, i) => (
@@ -210,8 +219,7 @@ export default function AccommodationDetail() {
   const mapQuery = useMemo(() => {
     if (!accommodation) return "";
     if (hasAddress) return accommodation.address;
-    if (hasCoords)
-      return `${accommodation.latitude},${accommodation.longitude}`;
+    if (hasCoords) return `${accommodation.latitude},${accommodation.longitude}`;
     return "";
   }, [accommodation, hasAddress, hasCoords]);
 
@@ -263,7 +271,6 @@ export default function AccommodationDetail() {
     <div className="accommodation-detail">
       {/* 상단 대표 이미지 + 기본 정보 */}
       <div className="detail-main-card">
-        {/* ⬇️ 이미지 래퍼 추가 (flex-wrap 문제 방지) */}
         <div className="detail-media">
           <img
             src={mainImage}
@@ -292,14 +299,17 @@ export default function AccommodationDetail() {
             <button className="main-book-button" onClick={handleBooking}>
               예약하기
             </button>
+
+            {/* ✅ 찜 버튼 */}
             <button
               className="book-button"
               style={{ padding: "10px 16px" }}
-              onClick={toggleLike}
-              aria-pressed={liked}
-              aria-label={liked ? "찜 해제" : "찜하기"}
+              onClick={handleToggleWish}
+              aria-pressed={isFavorite}
+              aria-label={isFavorite ? "찜 해제" : "찜하기"}
+              type="button"
             >
-              <i className={`bi ${liked ? "bi-heart-fill" : "bi-heart"}`} /> 찜
+              <i className={`bi ${isFavorite ? "bi-heart-fill" : "bi-heart"}`} /> 찜
             </button>
           </div>
         </div>
@@ -364,14 +374,10 @@ export default function AccommodationDetail() {
                 />
                 <h3>{room.roomName || "객실 이름 없음"}</h3>
 
-                {room.maxOccupancy && (
-                  <div>최대 인원: {room.maxOccupancy}명</div>
-                )}
+                {room.maxOccupancy && <div>최대 인원: {room.maxOccupancy}명</div>}
 
                 {room.basePrice !== undefined && room.basePrice !== null && (
-                  <div>
-                    {Number(room.basePrice).toLocaleString("ko-KR")}원/박
-                  </div>
+                  <div>{Number(room.basePrice).toLocaleString("ko-KR")}원/박</div>
                 )}
               </div>
             ))}
@@ -454,9 +460,7 @@ export default function AccommodationDetail() {
               <i
                 key={star}
                 className={`bi ${
-                  star <= newRating
-                    ? "bi-star-fill text-warning"
-                    : "bi-star text-muted"
+                  star <= newRating ? "bi-star-fill text-warning" : "bi-star text-muted"
                 }`}
                 style={{ cursor: "pointer", fontSize: "1.3rem" }}
                 onClick={() => setNewRating(star)}

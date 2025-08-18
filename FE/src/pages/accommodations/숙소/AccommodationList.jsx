@@ -1,97 +1,116 @@
+// src/pages/accommodations/AccommodationList.jsx
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../../styles/pages/AccommodationList.css";
 import { AxiosClient } from "../../../api/AxiosController";
+import useWishlistClient from "../../../hooks/useWishlistClient";
 
+// ---- 안전한 DEV 플래그 (Vite/CRA/Node 모두 대응) ----
+const isDev =
+  (typeof import.meta !== "undefined" && import.meta.env && !!import.meta.env.DEV) ||
+  (typeof globalThis !== "undefined" &&
+    globalThis.process &&
+    globalThis.process.env &&
+    globalThis.process.env.NODE_ENV !== "production");
+
+// API 호출 + 결과 가공
 const fetchAccommodations = async ({ isDomestic }) => {
   try {
-    // 모든 API 호출을 Promise.all로 병렬 처리
-    console.log(isDomestic)
-    console.log({isDomestic: isDomestic ? "Y" : "N"})
+    if (isDev) {
+      // eslint-disable-next-line no-console
+      console.log("[AccommodationList] isDomestic:", isDomestic);
+    }
+
     const [accroomData] = await Promise.all([
       AxiosClient("accommodations-rooms").get("", {
         params: { isDomestic: isDomestic ? "Y" : "N" },
-      })
+      }),
     ]);
 
-    console.log(accroomData);
-    
+    if (isDev) {
+      // eslint-disable-next-line no-console
+      console.log("[AccommodationList] raw:", accroomData);
+    }
+
     const acc_room_data = accroomData.data;
-    // console.log(acc_room_data)
-    // 데이터가 없는 경우 처리
+
+    // 데이터가 없는 경우
     if (!acc_room_data || !Array.isArray(acc_room_data)) {
       return { data: [] };
     }
 
-    // 중복 제거 및 최저가 선택 로직
-    const uniqueAccRooms = [];
+    // 같은 숙소의 여러 룸 중 "최저가"만 남기기
     const seen = {};
-
-    acc_room_data.forEach(acc_room => {
-      const key = acc_room[0]; // accommodationId 기준
+    acc_room_data.forEach((acc_room) => {
+      const key = acc_room[0]; // accommodationId
       if (!seen[key]) {
         seen[key] = acc_room;
       } else {
-        // 이미 존재하면 가격(acc_room[22]) 값 비교하여 더 저렴한 것 선택
-        if (acc_room[22] < seen[key][22]) {
+        // 가격 인덱스(22) 비교해 더 저렴한 레코드 선택
+        if (Number(acc_room[22]) < Number(seen[key][22])) {
           seen[key] = acc_room;
         }
       }
     });
 
     const result = Object.values(seen);
+
+    // 백엔드 결과 인덱스 맵
     const INDEX = {
       ACCOMMODATION_ID: 0,
       ADDRESS: 1,
-      NAME: 10,
       IS_DOMESTIC: 7,
+      NAME: 10,
       RATING_AVG: 11,
       IMAGE_URL: 16,
-      BASE_PRICE: 22
+      BASE_PRICE: 22,
     };
 
     return {
-      data: result.map((result_acc) => {
-        return {
-          id: result_acc[INDEX.ACCOMMODATION_ID],
-          name: result_acc[INDEX.NAME],
-          location: result_acc[INDEX.ADDRESS],
-          isDomestic:result_acc[INDEX.IS_DOMESTIC],
-          price: parseFloat(result_acc[INDEX.BASE_PRICE]) || 0, // 숫자로 변환
-          rating: parseFloat(result_acc[INDEX.RATING_AVG]) || 0, // 숫자로 변환
-          image: result_acc[INDEX.IMAGE_URL],
-        };
-      }),
+      data: result.map((row) => ({
+        id: row[INDEX.ACCOMMODATION_ID],
+        name: row[INDEX.NAME],
+        location: row[INDEX.ADDRESS],
+        isDomestic: row[INDEX.IS_DOMESTIC],
+        price: parseFloat(row[INDEX.BASE_PRICE]) || 0,
+        rating: parseFloat(row[INDEX.RATING_AVG]) || 0,
+        image: row[INDEX.IMAGE_URL] || "/images/no-image.png",
+        // capacity는 응답에 없으면 표시 생략
+        capacity: undefined,
+      })),
     };
   } catch (err) {
-    console.error("fetchAccommodations error:", err);
+    if (isDev) {
+      // eslint-disable-next-line no-console
+      console.error("fetchAccommodations error:", err);
+    }
     throw err;
   }
 };
 
 export default function AccommodationList({ isDomestic }) {
   const navigate = useNavigate();
+
+  // 찜 훅 연동
+  const { isWished, toggleWish } = useWishlistClient();
+  const isFavorite = useCallback((id) => isWished(id), [isWished]);
+  const toggleFavorite = useCallback(
+    (acc) => {
+      toggleWish({
+        id: acc.id,
+        name: acc.name,
+        image: acc.image,
+        location: acc.location,
+        price: acc.price,
+      });
+    },
+    [toggleWish]
+  );
+
   const [accommodations, setAccommodations] = useState([]);
-  const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-
-  const isFavorite = useCallback(
-    (id) => favorites.includes(id),
-    [favorites]
-  );
-
-  const toggleFavorite = useCallback(
-    (item) => {
-      setFavorites((prev) =>
-        isFavorite(item.id)
-          ? prev.filter((fid) => fid !== item.id)
-          : [...prev, item.id]
-      );
-    },
-    [isFavorite]
-  );
 
   useEffect(() => {
     const loadAccommodations = async () => {
@@ -102,7 +121,10 @@ export default function AccommodationList({ isDomestic }) {
         setAccommodations(res.data);
       } catch (err) {
         setError("숙소 정보를 불러오는데 실패했습니다.");
-        console.error("Failed to fetch accommodations:", err);
+        if (isDev) {
+          // eslint-disable-next-line no-console
+          console.error("Failed to fetch accommodations:", err);
+        }
       } finally {
         setLoading(false);
       }
@@ -112,10 +134,11 @@ export default function AccommodationList({ isDomestic }) {
 
   const filteredAccommodations = useMemo(() => {
     if (!search.trim()) return accommodations;
+    const q = search.toLowerCase();
     return accommodations.filter(
       (acc) =>
-        acc.name.toLowerCase().includes(search.toLowerCase()) ||
-        acc.location.toLowerCase().includes(search.toLowerCase())
+        (acc.name || "").toLowerCase().includes(q) ||
+        (acc.location || "").toLowerCase().includes(q)
     );
   }, [accommodations, search]);
 
@@ -211,29 +234,28 @@ export default function AccommodationList({ isDomestic }) {
             >
               <div className="image-container">
                 <img
-                  src={acc.image}
+                  src={acc.image || "/images/no-image.png"}
                   alt={`${acc.name} 숙소 이미지`}
                   className="accommodation-image"
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = "/images/no-image.png";
+                  }}
                 />
               </div>
 
               <div className="accommodation-content">
-                <h3 className="acc-name">
-                  {acc.name}
-                </h3>
+                <h3 className="acc-name">{acc.name}</h3>
                 <p className="acc-location">
                   <i className="bi bi-geo-alt-fill me-1"></i>
                   {acc.location}
                 </p>
                 <p className="acc-price">
-
                   <span className="price-amount">
-                    {acc.price.toLocaleString()}원
+                    {Number(acc.price).toLocaleString()}원
                   </span>
                   <span className="price-unit">
-                    {" "}
-                    / 1박 {acc.capacity}인
+                    {acc.capacity ? ` / 1박 ${acc.capacity}인` : " / 1박"}
                   </span>
                 </p>
                 <div className="acc-rating">{renderStars(acc.rating)}</div>
@@ -244,17 +266,23 @@ export default function AccommodationList({ isDomestic }) {
                   className="btn-detail"
                   onClick={() =>
                     navigate(
-                      `/${isDomestic ? "domesticpages" : "overseaspages"}/${
-                        acc.id
-                      }`
+                      `/${isDomestic ? "domesticpages" : "overseaspages"}/${acc.id}`
                     )
                   }
                 >
                   <span>상세보기</span>
                 </button>
+
+                {/* 찜 버튼 - useWishlistClient 연동 */}
                 <button
                   className={isFavorite(acc.id) ? "favorite active" : "favorite"}
-                  onClick={() => toggleFavorite(acc)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleFavorite(acc);
+                  }}
+                  aria-pressed={isFavorite(acc.id)}
+                  aria-label={isFavorite(acc.id) ? "찜 해제" : "찜하기"}
+                  type="button"
                 >
                   <i
                     className={`bi ${

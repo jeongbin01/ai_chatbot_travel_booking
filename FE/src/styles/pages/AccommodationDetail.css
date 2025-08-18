@@ -1,4 +1,15 @@
-/* ===== AccommodationDetail.css (옵션 B: 인셋 카드 버튼 적용, 전체 교체용) ===== */
+:root{
+  /* primary theme */
+  --primary: #2e6bff;
+
+  /* book-button (찜) */
+  --btn-border: #e5e7eb;        /* gray-200 */
+  --btn-neutral: #111111;       /* 기본 글자색: 검정 */
+  --btn-accent: #ef4444;        /* 활성/토글 시: 빨강 */
+  --btn-bg-hover: #f5f5f5;      /* hover 배경(연한 회색) */
+  --btn-bg-active: #fee2e2;     /* active 순간 배경(연한 빨강) */
+  --btn-ring: 0 0 0 4px rgba(17,17,17,.15);
+}
 
 /* 페이지 컨테이너 */
 .accommodation-detail {
@@ -26,8 +37,6 @@
   box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   padding: 16px;
 }
-
-/* (중요) 과거의 .detail-main-card img { flex:1 1 55%; ... } 규칙은 제거하세요 */
 
 /* 좌측 이미지 래퍼(고정폭) */
 .detail-media {
@@ -89,7 +98,7 @@
 .main-book-button {
   appearance: none;
   border: 0;
-  background: #2e6bff;
+  background: var(--primary);
   color: #fff;
   font-weight: 700;
   padding: 10px 18px;
@@ -101,19 +110,63 @@
 .main-book-button:hover { transform: translateY(-1px); }
 .main-book-button:active { transform: translateY(0); opacity: .9; }
 
-.book-button {
+/* ===== 찜 버튼: 기본 검정, 토글/활성 빨강 ===== */
+.book-button{
   appearance: none;
-  border: 1px solid #dcdcdc;
+  border: 1px solid var(--btn-border);
   background: #fff;
-  color: #333;
+  color: var(--btn-neutral);    /* 기본은 검정 */
   font-weight: 600;
   padding: 10px 16px;
   border-radius: 12px;
   cursor: pointer;
-  transition: background .15s ease, border-color .15s ease;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  line-height: 1;
+
+  transition:
+    background-color .15s ease,
+    border-color .15s ease,
+    color .15s ease,
+    box-shadow .15s ease,
+    transform .04s ease;
 }
-.book-button:hover { background: #f6f7fb; border-color: #cfd5ff; }
-.book-button i { margin-right: 6px; }
+.book-button .bi{ font-size: 1rem; line-height: 1; color: currentColor; }
+
+.book-button:hover{
+  background: var(--btn-bg-hover);
+}
+
+.book-button:active{
+  transform: translateY(1px);
+  background: var(--btn-bg-active);
+  border-color: var(--btn-accent);
+}
+
+.book-button:focus-visible{
+  outline: 0;
+  box-shadow: var(--btn-ring);
+}
+
+.book-button:disabled{
+  opacity: .55;
+  cursor: not-allowed;
+  filter: saturate(.6);
+}
+
+/* 토글/활성 상태 표시 (aria-pressed=true 또는 .active) */
+.book-button[aria-pressed="true"],
+.book-button.active{
+  background: var(--btn-accent);
+  border-color: var(--btn-accent);
+  color: #fff;
+}
+.book-button[aria-pressed="true"] .bi,
+.book-button.active .bi{
+  color: #fff;
+}
 
 /* ===== 옵션 B: 인셋(유리 카드) 느낌의 액션 그룹 ===== */
 .action-row.action-chip {
@@ -149,7 +202,7 @@
   font-weight: 800;
   margin: 2px 0 14px;
   padding-left: 10px;
-  border-left: 4px solid #2e6bff;
+  border-left: 4px solid var(--primary);
 }
 
 /* ===== 객실 카드 그리드 ===== */
