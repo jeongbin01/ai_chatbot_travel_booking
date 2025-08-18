@@ -148,10 +148,8 @@ function App() {
             <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
             <Route path="/accommodations/singapore" element={<SingaporeAccommodations/>} />
             
+            {/* 찜 목록 */}
             
-            {/* 예약 페이지 */}
-            {/* <Route path="/booking/gimhae/1" element={<AccommodationDetail/>} /> */}
-
 
           </Routes>
 

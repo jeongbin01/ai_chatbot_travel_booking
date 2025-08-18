@@ -263,7 +263,15 @@ export default function AccommodationDetail() {
     <div className="accommodation-detail">
       {/* 상단 대표 이미지 + 기본 정보 */}
       <div className="detail-main-card">
-        <img src={mainImage} alt={`${accommodation.name} 대표 이미지`} />
+        {/* ⬇️ 이미지 래퍼 추가 (flex-wrap 문제 방지) */}
+        <div className="detail-media">
+          <img
+            src={mainImage}
+            alt={`${accommodation.name} 대표 이미지`}
+            loading="lazy"
+          />
+        </div>
+
         <div className="detail-main-info">
           <h1>{accommodation.name}</h1>
           <div className="detail-location">
@@ -352,6 +360,7 @@ export default function AccommodationDetail() {
                 <img
                   src={room.imageUrl || fallbackImage}
                   alt={`${room.roomName || "객실"} 이미지`}
+                  loading="lazy"
                 />
                 <h3>{room.roomName || "객실 이름 없음"}</h3>
 

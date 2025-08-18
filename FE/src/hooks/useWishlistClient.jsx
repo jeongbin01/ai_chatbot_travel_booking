@@ -1,9 +1,12 @@
-// src/hooks/useWishlistClient.js
 import { useCallback, useEffect, useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-import { getWishlistKey } from "./wishlistKey";
+// Helper to generate a unique wishlist key for each user
+function getWishlistKey(userId) {
+  return `wishlist_${userId}`;
+}
+
 
 export default function useWishlistClient() {
   const { auth } = useContext(AuthContext); // { userId, token ... }
