@@ -4,7 +4,7 @@ import { useParams, useLocation, useNavigate } from "react-router-dom"
 import React, { useState, useContext, useEffect } from "react";
 import { AxiosClient } from "../../api/AxiosController";
 import { AuthContext } from "../../context/AuthContext";
-import { ssrExportNameKey } from "vite/module-runner";
+// import { ssrExportNameKey } from "vite/module-runner";
 
 const BookingConfirmation = () => {
   const { accommodationId, roomTypeId } = useParams();
