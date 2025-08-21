@@ -3,6 +3,18 @@
         {
             "contentTypeId": "12",
             "cat1": "A01",
+            "cat1Nm": "자연"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A01",
+            "cat2": "A0101",
+            "cat1Nm": "자연",
+            "cat2Nm": "자연관광지"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A01",
             "cat2": "A0101",
             "cat3": "A01010100",
             "cat1Nm": "자연",
@@ -166,6 +178,13 @@
             "contentTypeId": "12",
             "cat1": "A01",
             "cat2": "A0102",
+            "cat1Nm": "자연",
+            "cat2Nm": "관광자원"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A01",
+            "cat2": "A0102",
             "cat3": "A01020100",
             "cat1Nm": "자연",
             "cat2Nm": "관광자원",
@@ -179,6 +198,18 @@
             "cat1Nm": "자연",
             "cat2Nm": "관광자원",
             "cat3Nm": "기암괴석"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A02",
+            "cat1Nm": "인문(문화/예술/역사)"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A02",
+            "cat2": "A0201",
+            "cat1Nm": "인문(문화/예술/역사)",
+            "cat2Nm": "역사관광지"
         },
         {
             "contentTypeId": "12",
@@ -274,6 +305,13 @@
             "contentTypeId": "12",
             "cat1": "A02",
             "cat2": "A0202",
+            "cat1Nm": "인문(문화/예술/역사)",
+            "cat2Nm": "휴양관광지"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A02",
+            "cat2": "A0202",
             "cat3": "A02020200",
             "cat1Nm": "인문(문화/예술/역사)",
             "cat2Nm": "휴양관광지",
@@ -337,6 +375,13 @@
             "contentTypeId": "12",
             "cat1": "A02",
             "cat2": "A0203",
+            "cat1Nm": "인문(문화/예술/역사)",
+            "cat2Nm": "체험관광지"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A02",
+            "cat2": "A0203",
             "cat3": "A02030100",
             "cat1Nm": "인문(문화/예술/역사)",
             "cat2Nm": "체험관광지",
@@ -382,6 +427,13 @@
             "contentTypeId": "12",
             "cat1": "A02",
             "cat2": "A0204",
+            "cat1Nm": "인문(문화/예술/역사)",
+            "cat2Nm": "산업관광지"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A02",
+            "cat2": "A0204",
             "cat3": "A02040400",
             "cat1Nm": "인문(문화/예술/역사)",
             "cat2Nm": "산업관광지",
@@ -422,6 +474,13 @@
             "cat1Nm": "인문(문화/예술/역사)",
             "cat2Nm": "산업관광지",
             "cat3Nm": "자동차"
+        },
+        {
+            "contentTypeId": "12",
+            "cat1": "A02",
+            "cat2": "A0205",
+            "cat1Nm": "인문(문화/예술/역사)",
+            "cat2Nm": "건축/조형물"
         },
         {
             "contentTypeId": "12",
@@ -476,6 +535,13 @@
             "cat1Nm": "인문(문화/예술/역사)",
             "cat2Nm": "건축/조형물",
             "cat3Nm": "유명건물"
+        },
+        {
+            "contentTypeId": "14",
+            "cat1": "A02",
+            "cat2": "A0206",
+            "cat1Nm": "인문(문화/예술/역사)",
+            "cat2Nm": "문화시설"
         },
         {
             "contentTypeId": "14",
