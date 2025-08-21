@@ -64,6 +64,10 @@ const fetchAccommodationById = async (id) => {
     const latitude = head[INDEX.LATITUDE];
     const longitude = head[INDEX.LONGITUDE];
 
+    // ✅ 숫자 강제 변환(백엔드 문자열/NULL 대비)
+    const ratingAvgNum = Number(head[INDEX.RATING_AVG] ?? 0);
+    const totalReviewsNum = Number(head[INDEX.TOTAL_REVIEWS] ?? 0);
+
     return {
       data: {
         id: head[INDEX.ACCOMMODATION_ID],
@@ -76,8 +80,8 @@ const fetchAccommodationById = async (id) => {
             : parseFloat(longitude ?? ""),
         address: head[INDEX.ADDRESS],
         description: head[INDEX.DESCRIPTION] ?? "",
-        ratingAvg: head[INDEX.RATING_AVG] ?? 0,
-        totalReviews: head[INDEX.TOTAL_REVIEWS] ?? 0,
+        ratingAvg: Number.isFinite(ratingAvgNum) ? ratingAvgNum : 0,
+        totalReviews: Number.isFinite(totalReviewsNum) ? totalReviewsNum : 0,
         checkIn: head[INDEX.CHECK_IN_TIME] ?? "-",
         checkOut: head[INDEX.CHECK_OUT_TIME] ?? "-",
         contact: head[INDEX.CONTACT] ?? "000-0000-0000",
@@ -87,7 +91,7 @@ const fetchAccommodationById = async (id) => {
         usageInfo: [],
         rooms,
         liked: 0,
-        rating: head[INDEX.RATING_AVG] ?? 0,
+        rating: Number.isFinite(ratingAvgNum) ? ratingAvgNum : 0,
       },
     };
   } catch (err) {
@@ -112,6 +116,12 @@ export default function AccommodationDetail() {
   const [newReview, setNewReview] = useState("");
   const [newRating, setNewRating] = useState(5);
   const [reviewUser, setReviewUser] = useState("");
+
+  // ✏️ 수정 모드 상태
+  const [editIndex, setEditIndex] = useState(-1);
+  const [editUser, setEditUser] = useState("");
+  const [editRating, setEditRating] = useState(5);
+  const [editComment, setEditComment] = useState("");
 
   const fallbackImage = "/images/default-accommodation.jpg";
 
@@ -142,6 +152,22 @@ export default function AccommodationDetail() {
     };
   }, [id]);
 
+  // ✅ 헤더 요약: **로컬 리뷰만 기준** (항상 리스트와 일치)
+  const headerReviewCount = reviews.length;
+  const headerAvg = useMemo(() => {
+    if (reviews.length === 0) return 0;
+    const sum = reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0);
+    return sum / reviews.length;
+  }, [reviews]);
+
+  // ✅ 리뷰 섹션 요약(로컬 리뷰 기준)
+  const summaryTotal = reviews.length;
+  const summaryAvgText = useMemo(() => {
+    if (reviews.length === 0) return "0.0";
+    const sum = reviews.reduce((s, r) => s + (Number(r.rating) || 0), 0);
+    return (sum / reviews.length).toFixed(1);
+  }, [reviews]);
+
   // ✅ 찜 토글
   const handleToggleWish = useCallback(() => {
     if (!accommodation) return;
@@ -165,31 +191,99 @@ export default function AccommodationDetail() {
     localStorage.setItem(`reviews_${id}`, JSON.stringify(updated));
   };
 
+  // ✅ 등록
   const handleAddReview = () => {
-    if (!reviewUser.trim()) return alert("이름을 입력해주세요.");
-    if (!newReview.trim()) return alert("리뷰 내용을 입력해주세요.");
-    const updated = [
-      ...reviews,
-      { user: reviewUser.trim(), rating: newRating, comment: newReview.trim() },
-    ];
+    const name = reviewUser.trim();
+    const comment = newReview.trim();
+    if (!name) return alert("이름을 입력해주세요.");
+    if (!comment) return alert("리뷰 내용을 입력해주세요.");
+
+    const newItem = {
+      id: globalThis.crypto?.randomUUID?.() ?? String(Date.now()),
+      user: name,
+      rating: Number(newRating) || 0,
+      comment,
+      createdAt: new Date().toISOString(),
+      helpful: 0,
+    };
+
+    const updated = [newItem, ...reviews]; // 최신이 위로
     saveReviews(updated);
+
     setReviewUser("");
     setNewReview("");
     setNewRating(5);
   };
 
+  // 🗑 삭제(확인)
   const handleDeleteReview = (index) => {
+    const target = reviews[index];
+    if (!target) return;
+    const ok = window.confirm(
+      `이 리뷰를 삭제할까요?\n- 작성자: ${target.user}\n- 내용: ${target.comment}`
+    );
+    if (!ok) return;
     const updated = reviews.filter((_, i) => i !== index);
     saveReviews(updated);
+    if (editIndex === index) cancelEdit(); // 수정 중이면 초기화
   };
 
+  // ✏️ 수정 시작
+  const startEdit = (index) => {
+    const r = reviews[index];
+    if (!r) return;
+    setEditIndex(index);
+    setEditUser(r.user);
+    setEditRating(Number(r.rating) || 0);
+    setEditComment(r.comment);
+  };
+
+  // 💾 수정 저장
+  const saveEdit = () => {
+    if (editIndex < 0) return;
+    const name = editUser.trim();
+    const comment = editComment.trim();
+    if (!name) return alert("이름을 입력해주세요.");
+    if (!comment) return alert("리뷰 내용을 입력해주세요.");
+
+    const updated = reviews.map((r, i) =>
+      i === editIndex
+        ? {
+            ...r,
+            user: name,
+            rating: Number(editRating) || 0,
+            comment,
+            updatedAt: new Date().toISOString(),
+          }
+        : r
+    );
+    saveReviews(updated);
+    cancelEdit();
+  };
+
+  // ❌ 수정 취소
+  const cancelEdit = () => {
+    setEditIndex(-1);
+    setEditUser("");
+    setEditRating(5);
+    setEditComment("");
+  };
+
+  // ✅ 제출 가능 여부(버튼 활성/비활성)
+  const canSubmit = useMemo(
+    () => reviewUser.trim().length > 0 && newReview.trim().length > 0,
+    [reviewUser, newReview]
+  );
+
+  // ✅ 숫자 강제 렌더링 (평점)
   const renderStars = useCallback((rating = 0) => {
-    const full = Math.floor(rating);
-    const half = rating % 1 >= 0.5;
+    const r = Number(rating) || 0;
+    const full = Math.floor(r);
+    const half = r % 1 >= 0.5;
     const empty = 5 - full - (half ? 1 : 0);
 
     return (
-      <div className="star-rating" aria-label={`${rating}점 만점에 ${rating}점`}>
+      <div className="star-rating" aria-label={`${r}점 만점에 ${r}점`}>
         {Array(full)
           .fill()
           .map((_, i) => (
@@ -201,7 +295,7 @@ export default function AccommodationDetail() {
           .map((_, i) => (
             <i key={`empty-${i}`} className="bi bi-star text-muted" />
           ))}
-        <span className="rating-text ms-1">({rating})</span>
+        <span className="rating-text ms-1">({r})</span>
       </div>
     );
   }, []);
@@ -285,17 +379,19 @@ export default function AccommodationDetail() {
             <i className="bi bi-geo-alt-fill me-1" /> {accommodation.address}
           </div>
           <div className="detail-rating">
-            {renderStars(accommodation.ratingAvg)}{" "}
-            <span className="review-count">
-              ({accommodation.totalReviews}개 리뷰)
-            </span>
+            {renderStars(headerAvg)}{" "}
+            {headerReviewCount > 0 ? (
+              <span className="review-count">({headerReviewCount}개 리뷰)</span>
+            ) : (
+              <span className="review-count text-muted">(리뷰 없음)</span>
+            )}
           </div>
           {accommodation.price > 0 && (
             <div className="detail-price">
               1박 {Number(accommodation.price).toLocaleString("ko-KR")}원
             </div>
           )}
-          <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
+          <div className="action-row">
             <button className="main-book-button" onClick={handleBooking}>
               예약하기
             </button>
@@ -374,10 +470,14 @@ export default function AccommodationDetail() {
                 />
                 <h3>{room.roomName || "객실 이름 없음"}</h3>
 
-                {room.maxOccupancy && <div>최대 인원: {room.maxOccupancy}명</div>}
+                {room.maxOccupancy && (
+                  <div>최대 인원: {room.maxOccupancy}명</div>
+                )}
 
                 {room.basePrice !== undefined && room.basePrice !== null && (
-                  <div>{Number(room.basePrice).toLocaleString("ko-KR")}원/박</div>
+                  <div>
+                    {Number(room.basePrice).toLocaleString("ko-KR")}원/박
+                  </div>
                 )}
               </div>
             ))}
@@ -406,6 +506,17 @@ export default function AccommodationDetail() {
       <section className="detail-section">
         <h2>리뷰</h2>
 
+        {/* 리뷰 섹션 요약: 로컬 리뷰 기준 */}
+        <div className="d-flex align-items-center gap-2 mb-2">
+          <i className="bi bi-star-fill text-warning" />
+          <strong className="me-1">{summaryAvgText}</strong>
+          <span className="text-muted">/ 5</span>
+          <span className="vr mx-2" />
+          <i className="bi bi-chat-square-text text-muted" />
+          <span className="text-muted">{summaryTotal}개 리뷰</span>
+        </div>
+
+        {/* 리뷰 없음 */}
         {reviews.length === 0 && (
           <div className="no-data" style={{ padding: 16 }}>
             <i className="bi bi-info-circle me-2 text-muted" />
@@ -413,35 +524,141 @@ export default function AccommodationDetail() {
           </div>
         )}
 
-        {reviews.map((review, idx) => (
-          <div className="review-card" key={`${idx}-${review.user}`}>
-            <div className="review-header">
-              <span className="review-user">
-                <i className="bi bi-person-circle me-1 text-primary" />
-                {review.user}
-              </span>
-              <span className="review-stars">
-                {Array(review.rating)
-                  .fill()
-                  .map((_, i) => (
-                    <i key={i} className="bi bi-star-fill text-warning" />
-                  ))}
-                <small className="ms-1">({review.rating}점)</small>
-              </span>
-              <button
-                className="review-delete"
-                onClick={() => handleDeleteReview(idx)}
-                aria-label="리뷰 삭제"
-              >
-                <i className="bi bi-trash3 text-danger" />
-              </button>
-            </div>
-            <p className="review-comment">{review.comment}</p>
-          </div>
-        ))}
+        {/* 리뷰 목록 (최신순) */}
+        {reviews.map((review, idx) => {
+          const isEditing = editIndex === idx;
 
-        {/* 리뷰 작성 폼 */}
+          if (isEditing) {
+            return (
+              <div className="review-card" key={review.id ?? `${idx}-edit`}>
+                <div className="review-header">
+                  <span className="review-user">
+                    <i className="bi bi-pencil-square me-1 text-primary" />
+                    리뷰 수정
+                  </span>
+
+                  <span className="review-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <i
+                        key={star}
+                        className={`bi ${
+                          star <= editRating
+                            ? "bi-star-fill text-warning"
+                            : "bi-star text-muted"
+                        }`}
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setEditRating(star)}
+                        role="button"
+                        aria-label={`${star}점 선택`}
+                      />
+                    ))}
+                    <small className="ms-1">({editRating}점)</small>
+                  </span>
+
+                  <div className="d-flex gap-1">
+                    <button
+                      className="btn btn-sm btn-success"
+                      onClick={saveEdit}
+                      title="저장"
+                    >
+                      <i className="bi bi-check-lg" /> 저장
+                    </button>
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={cancelEdit}
+                      title="취소"
+                    >
+                      <i className="bi bi-x-lg" /> 취소
+                    </button>
+                  </div>
+                </div>
+
+                <div className="input-group mb-2">
+                  <span className="input-group-text">
+                    <i className="bi bi-person" />
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="이름"
+                    value={editUser}
+                    onChange={(e) => setEditUser(e.target.value)}
+                  />
+                </div>
+
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-chat-dots" />
+                  </span>
+                  <textarea
+                    className="form-control"
+                    placeholder="리뷰 내용을 수정하세요."
+                    value={editComment}
+                    onChange={(e) => setEditComment(e.target.value)}
+                    maxLength={500}
+                  />
+                </div>
+                <div className="text-end text-muted small mt-1">
+                  {editComment.length}/500
+                </div>
+              </div>
+            );
+          }
+
+          // 일반 표시 모드
+          return (
+            <div className="review-card" key={review.id ?? `${idx}-${review.user}`}>
+              <div className="review-header">
+                {/* 작성자 */}
+                <span className="review-user">
+                  <i
+                    className="bi bi-person-circle me-1 text-primary"
+                    aria-hidden="true"
+                  />
+                  {review.user}
+                </span>
+
+                {/* 평점 */}
+                <span
+                  className="review-stars"
+                  aria-label={`평점 ${review.rating}점`}
+                >
+                  {Array(Number(review.rating) || 0)
+                    .fill()
+                    .map((_, i) => (
+                      <i key={i} className="bi bi-star-fill text-warning" />
+                    ))}
+                  <small className="ms-1">({review.rating}점)</small>
+                </span>
+
+                {/* 액션 */}
+                <div className="d-flex gap-1">
+                  <button
+                    className="btn btn-sm btn-outline-primary"
+                    onClick={() => startEdit(idx)}
+                    title="수정"
+                  >
+                    <i className="bi bi-pencil-square" /> 수정
+                  </button>
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    onClick={() => handleDeleteReview(idx)}
+                    title="삭제"
+                  >
+                    <i className="bi bi-trash3" /> 삭제
+                  </button>
+                </div>
+              </div>
+
+              {/* 내용 */}
+              <p className="review-comment">{review.comment}</p>
+            </div>
+          );
+        })}
+
+        {/* 작성 폼 */}
         <div className="review-form">
+          {/* 이름 */}
           <div className="input-group mb-2">
             <span className="input-group-text">
               <i className="bi bi-person" />
@@ -452,33 +669,57 @@ export default function AccommodationDetail() {
               placeholder="이름"
               value={reviewUser}
               onChange={(e) => setReviewUser(e.target.value)}
+              aria-label="이름"
             />
           </div>
 
-          <div className="star-rating mb-2">
+          {/* 별점 */}
+          <div className="star-rating mb-2 d-flex align-items-center">
             {[1, 2, 3, 4, 5].map((star) => (
               <i
                 key={star}
                 className={`bi ${
-                  star <= newRating ? "bi-star-fill text-warning" : "bi-star text-muted"
+                  star <= newRating
+                    ? "bi-star-fill text-warning"
+                    : "bi-star text-muted"
                 }`}
                 style={{ cursor: "pointer", fontSize: "1.3rem" }}
                 onClick={() => setNewRating(star)}
+                role="button"
+                aria-label={`${star}점 선택`}
               />
             ))}
             <span className="ms-2">{newRating}점</span>
           </div>
 
+          {/* 코멘트 */}
           <div className="mb-2">
-            <textarea
-              className="form-control"
-              placeholder="리뷰를 작성하세요..."
-              value={newReview}
-              onChange={(e) => setNewReview(e.target.value)}
-            />
+            <div className="input-group">
+              <span className="input-group-text">
+                <i className="bi bi-chat-dots" />
+              </span>
+              <textarea
+                className="form-control"
+                placeholder="리뷰를 작성하세요."
+                value={newReview}
+                onChange={(e) => setNewReview(e.target.value)}
+                maxLength={500}
+                aria-label="리뷰 내용"
+              />
+            </div>
+            <div className="text-end text-muted small mt-1">
+              {newReview.length}/500
+            </div>
           </div>
 
-          <button className="btn btn-primary" onClick={handleAddReview}>
+          {/* 등록 버튼 (조건 충족 시만 활성화) */}
+          <button
+            className="btn btn-primary"
+            onClick={handleAddReview}
+            disabled={!canSubmit}
+            aria-disabled={!canSubmit}
+            title={canSubmit ? "리뷰 등록" : "이름과 내용을 입력하세요"}
+          >
             <i className="bi bi-pencil-square me-1" /> 리뷰 등록
           </button>
         </div>
