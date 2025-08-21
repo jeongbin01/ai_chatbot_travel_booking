@@ -79,7 +79,7 @@ class TourApiDomain:
                     service_data.append(service)
                     
                 return {
-                    "data": service_data
+                    "data": data
                 }
             except requests.exceptions.JSONDecodeError:
                 return {"status": "error", "message": "API 응답을 JSON으로 파싱할 수 없습니다."}
