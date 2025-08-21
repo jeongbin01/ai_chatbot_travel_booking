@@ -7,7 +7,11 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { AxiosClient } from "../../../api/AxiosController";
-import "../../../styles/layout/Accommodations.css"; // 기존 CSS 재사용
+import "../../../styles/layout/Accommodations.css";
+
+// ✅ 로컬 폴백 이미지 2장 (경로 깊이: ../../../assets/...)
+import IMG_GWANGAN_HOTEL from "../../../assets/images/domestic/부산 광안대교 호텔.jpg";
+import IMG_HAEUNDAE_RESORT from "../../../assets/images/domestic/부산 해운대 리조트.jpg";
 
 // ===== 상수/유틸 =====
 const PAGE_SIZE = 10;
@@ -18,7 +22,7 @@ const SORTS = [
   { key: "priceDesc", label: "높은 가격순" },
   { key: "ratingDesc", label: "평점순" },
 ];
-const NO_IMAGE = "/images/no-image.png";
+const NO_IMAGE = "/images/no-image.png"; // public/images/no-image.png 반드시 존재
 
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const toMoney = (n) => `₩${(Number(n) || 0).toLocaleString()}`;
@@ -43,6 +47,19 @@ const getInitialFavorites = () => {
   }
 };
 
+// ✅ 이름 → 슬러그(공백/특수문자 제거, 소문자) 변환 (유니코드 호환 폭 넓게)
+const toSlug = (s) =>
+  String(s || "")
+    .replace(/[^가-힣a-zA-Z0-9]+/g, "")
+    .toLowerCase();
+
+// ✅ 로컬 폴백 매핑 (두 개 이미지 모두 등록)
+const LOCAL_FALLBACKS = {
+  [toSlug("부산 해운대 리조트")]: IMG_HAEUNDAE_RESORT,
+  [toSlug("부산 광안대교 호텔")]: IMG_GWANGAN_HOTEL,
+  [toSlug("부산 광안대교 뷰 호텔")]: IMG_GWANGAN_HOTEL, // 이름 변형 대비
+};
+
 export default function BusanAccommodations() {
   const navigate = useNavigate();
   const loaderRef = useRef(null);
@@ -61,7 +78,7 @@ export default function BusanAccommodations() {
   const [minRating, setMinRating] = useState(0);
   const [sort, setSort] = useState("reco");
 
-  // 표시용 문자열(콤마 포함)
+  // 표시용 문자열
   const [minPriceStr, setMinPriceStr] = useState("0");
   const [maxPriceStr, setMaxPriceStr] = useState("500000");
 
@@ -146,7 +163,7 @@ export default function BusanAccommodations() {
     setPage(1);
   }, [type, excludeSoldout, minPrice, maxPrice, minRating, sort]);
 
-  // ===== 가격 입력 핸들러(콤마 포함) =====
+  // ===== 가격 입력 핸들러 =====
   const onChangeMinPrice = (e) => {
     const raw = e.target.value;
     let next = unformatNumber(raw);
@@ -167,7 +184,6 @@ export default function BusanAccommodations() {
   const processed = useMemo(() => {
     let list = [...items];
 
-    // 타입
     if (type !== "전체") {
       list = list.filter((i) => {
         const itemType = i.accommodationType || i.type || "";
@@ -175,10 +191,8 @@ export default function BusanAccommodations() {
       });
     }
 
-    // 품절 제외
     if (excludeSoldout) list = list.filter((i) => !i.soldout);
 
-    // 가격/평점
     list = list.filter((i) => {
       const price = Number(i.basePrice ?? i.price ?? i.minPrice ?? 0) || 0;
       return price >= minPrice && price <= maxPrice;
@@ -188,7 +202,6 @@ export default function BusanAccommodations() {
       return rating >= minRating;
     });
 
-    // 정렬
     const getPrice = (x) => Number(x?.basePrice ?? x?.price ?? x?.minPrice ?? 0) || 0;
     const getRating = (x) => Number(x?.averageRating ?? x?.rating ?? 0) || 0;
 
@@ -234,9 +247,7 @@ export default function BusanAccommodations() {
   const total = processed.length;
 
   // ===== 무한 스크롤 페이지 아이템 =====
-  const pageItems = useMemo(() => {
-    return processed.slice(0, PAGE_SIZE * page);
-  }, [processed, page]);
+  const pageItems = useMemo(() => processed.slice(0, PAGE_SIZE * page), [processed, page]);
 
   // ===== 무한 스크롤 옵저버 =====
   useEffect(() => {
@@ -271,7 +282,7 @@ export default function BusanAccommodations() {
 
       try {
         localStorage.setItem("favorites", JSON.stringify(next));
-      } catch {/* ignore */ }
+      } catch {}
       return next;
     });
   }, []);
@@ -284,22 +295,30 @@ export default function BusanAccommodations() {
       const disabled = !id || isNaN(idNum);
 
       const name = item.name || "이름 미정";
-      const location = item.location || "";
+      const location = item.location || item.address || "";
 
-      const ratingNum = Number(item.averageRating ?? item.rating);
-      const priceNum = Number(item.basePrice ?? item.price ?? item.minPrice);
+      const ratingNum = Number(item.averageRating ?? item.rating ?? item.ratingAvg);
+      const priceNum = Number(item.basePrice ?? item.price ?? item.minPrice ?? item.lowestPrice);
 
       const displayRating =
         Number.isFinite(ratingNum) && ratingNum > 0 ? ratingNum.toFixed(1) : "신규";
       const displayPrice =
         Number.isFinite(priceNum) && priceNum > 0 ? toMoney(priceNum) : "가격 문의";
 
+      // ✅ 로컬 폴백: 숙소명 슬러그로 찾기 (해운대 리조트/광안대교 호텔 지원)
+      const slug = toSlug(name);
+      const localFallback = LOCAL_FALLBACKS[slug];
+
+      // DB/응답 키들 → 로컬 폴백 → NO_IMAGE 순
       const imageUrl =
-        item.thumbnailUrl ||
         item.image ||
-        (Array.isArray(item.images) && item.images.length > 0
-          ? item.images[0]
-          : NO_IMAGE);
+        item.thumbnailUrl ||
+        item.imageUrl ||
+        item.mainImageUrl ||
+        item.firstImageUrl ||
+        (Array.isArray(item.images) && item.images.length > 0 ? item.images[0] : "") ||
+        localFallback ||
+        "";
 
       const isFavorite = favorites.includes(idNum);
 
@@ -326,8 +345,26 @@ export default function BusanAccommodations() {
           {/* 썸네일 */}
           <div
             className="srch-thumb"
-            style={{ backgroundImage: `url(${imageUrl})` }}
+            style={{
+              position: "relative",
+              aspectRatio: "3 / 2",
+              overflow: "hidden",
+              borderRadius: 12,
+              background: "#f3f4f6",
+            }}
           >
+            <img
+              src={imageUrl || NO_IMAGE}
+              alt={`${name} 이미지`}
+              loading="lazy"
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              onError={(e) => {
+                if (!e.currentTarget.src.endsWith(NO_IMAGE)) {
+                  e.currentTarget.src = NO_IMAGE;
+                }
+              }}
+            />
+
             {/* 찜 버튼 */}
             <button
               className={`fav-btn ${isFavorite ? "is-active" : ""}`}
@@ -336,6 +373,7 @@ export default function BusanAccommodations() {
               aria-label={isFavorite ? "찜 해제하기" : "찜하기"}
               aria-pressed={isFavorite}
               type="button"
+              style={{ position: "absolute", right: 8, top: 8 }}
             >
               <i className={`bi ${isFavorite ? "bi-heart-fill" : "bi-heart"}`} />
             </button>
@@ -381,7 +419,7 @@ export default function BusanAccommodations() {
             <span>{total.toLocaleString()}개</span>
           </h1>
 
-          <div className="jeju-sort">
+        <div className="jeju-sort">
             <select
               value={sort}
               onChange={(e) => setSort(e.target.value)}
@@ -487,7 +525,7 @@ export default function BusanAccommodations() {
               </div>
             )}
 
-            {!loading && !errMsg && pageItems.length === 0 && (
+            {!loading && pageItems.length === 0 && !errMsg && (
               <div className="status empty">조건에 맞는 결과가 없어요.</div>
             )}
 
