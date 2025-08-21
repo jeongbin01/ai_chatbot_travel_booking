@@ -10,11 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Answer(BaseModel):
-    title_en: str = Field(description="")
-    title_ko: str = Field(description="")
     contents: str = Field(default="")
-    detail_contents: str = Field(description="")
-    urls: str = Field(description="")
 
 class QandAChain:
     def __init__(self):        
