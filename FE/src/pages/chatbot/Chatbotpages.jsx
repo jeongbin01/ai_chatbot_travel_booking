@@ -14,27 +14,37 @@ export default function ChatGPTClone() {
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // 메시지 전송
-  const send = () => {
+  const send = async () => {
     const txt = input.trim();
     if (!txt) return;
 
-    // 사용자 메시지 추가
+    // 유저 메시지 추가
     setMessages(prev => [...prev, { sender: 'user', text: txt }]);
     setInput('');
 
-    // 봇 응답 시뮬레이션
-    setTimeout(() => {
+    try {
+      // FastAPI로 GET 요청 보내기
+      const res = await axios.get(
+        `http://127.0.0.1:7000/qa/${encodeURIComponent(txt)}`
+      );
+
+      // 봇 응답 추가
       setMessages(prev => [
         ...prev,
-        { sender: 'bot', avatar: botAvatar, text: '여기에 봇의 답장 텍스트를 넣으세요' }
+        { sender: 'bot', avatar: botAvatar, text: res.data.reply.contents }
       ]);
-    }, 600);
+    } catch (err) {
+      console.error(err);
+
+      setMessages(prev => [
+        ...prev,
+        { sender: 'bot', avatar: botAvatar, text: "서버 연결 실패 😢" }
+      ]);
+    }
   };
 
-  // 엔터키로 전송
-  const onKeyDown = e => {
+  // 엔터키 전송
+  const onKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       send();
@@ -45,7 +55,7 @@ export default function ChatGPTClone() {
     <div className="chatgpt-container">
       <header className="chatgpt-header">ChatGPT Clone</header>
 
-      <ul className="chatgpt-messages">
+      <ul className="chatgpt-messageschatgpt-messages">
         {messages.map((m, i) => (
           <li key={i} className={`message ${m.sender}`}>
             {/* 아바타 */}

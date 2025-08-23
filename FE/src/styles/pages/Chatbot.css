@@ -24,6 +24,8 @@
 
 /* 메시지 리스트 */
 .chatgpt-messages {
+  white-space: pre-wrap;
+  word-wrap: break-word;
   flex: 1;
   padding: 16px;
   overflow-y: auto;
