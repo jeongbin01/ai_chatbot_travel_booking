@@ -13,10 +13,11 @@ class Answer(BaseModel):
     contents: str = Field(default="")
 
 class QandAChain:
-    def __init__(self):        
+    def __init__(self): 
         base_path = os.path.dirname(os.path.abspath(__file__))  # 현재 파일의 경로
         file_path = os.path.join(base_path, 'prompt', 'QandAPrompt.yaml')
         self.__openaiApiKey = os.environ["OPENAI_API_KEY"]
+                
         with open(file_path, 'r') as f:
             self.__prompt_template = yaml.load(f, Loader=yaml.SafeLoader)['template']
         
@@ -31,7 +32,7 @@ class QandAChain:
 
     def main_chain_invoke(self, question):
         prompt = PromptTemplate.from_template(self.__prompt_template)
-        tourapiData = self.__tourapi.question_to_param(question)
+        tourapiData = self.__tourapi.call_response(question)
         
         prompt = prompt.partial(format_instructions=self.__parser.get_format_instructions())
 

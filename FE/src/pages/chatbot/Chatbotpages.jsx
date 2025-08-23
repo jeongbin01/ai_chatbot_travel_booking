@@ -30,45 +30,8 @@ export default function ChatGPTClone() {
 
   // ✅ iOS 키보드 열릴 때 입력창 가려짐/튀는 현상 완화 (visualViewport 사용)
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    const root = containerRef.current;
-
-    // 초기 동기화
-    const syncHeight = () => {
-      if (!root) return;
-      if ('visualViewport' in window && window.visualViewport?.height) {
-        root.style.height = `${window.visualViewport.height}px`;
-      } else {
-        // fallback
-        root.style.height = '100dvh';
-      }
-    };
-
-    syncHeight();
-
-    const onResize = () => {
-      syncHeight();
-      // 키보드 열릴 때 스크롤 하단 유지
-      requestAnimationFrame(scrollToBottom);
-    };
-
-    if ('visualViewport' in window) {
-      window.visualViewport.addEventListener('resize', onResize);
-      window.addEventListener('orientationchange', onResize);
-    }
-
-    return () => {
-      // 정리
-      if ('visualViewport' in window) {
-        window.visualViewport.removeEventListener('resize', onResize);
-        window.removeEventListener('orientationchange', onResize);
-      }
-      if (root) {
-        root.style.height = ''; // 원복
-      }
-    };
-  }, []);
-
+    endRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
   const send = async () => {
     const txt = input.trim();
     if (!txt || loading) return; // ✅ 로딩 중엔 보내지 않기
@@ -79,40 +42,27 @@ export default function ChatGPTClone() {
     setLoading(true);
 
     try {
-      // FastAPI: GET /qa/{query} 응답 스키마 예) { reply: { contents: "..." } }
-      const res = await axios.get(`${BASE_URL}/qa/${encodeURIComponent(txt)}`);
+      // FastAPI로 GET 요청 보내기
+      const res = await axios.get(
+        `http://127.0.0.1:7000/qa/${encodeURIComponent(txt)}`
+      );
 
-      const reply =
-        res?.data?.reply?.contents ??
-        res?.data?.reply ??
-        res?.data?.answer ??
-        '응답 형식이 예상과 달라요. 서버 응답 스키마를 확인해주세요.';
-
+      // 봇 응답 추가
       setMessages(prev => [
         ...prev,
-        { sender: 'bot', avatar: botAvatar, text: String(reply) }
+        { sender: 'bot', avatar: botAvatar, text: res.data.reply.contents }
       ]);
     } catch (err) {
       console.error(err);
+
       setMessages(prev => [
         ...prev,
-        {
-          sender: 'bot',
-          avatar: botAvatar,
-          text: (
-            <>
-              <i className="bi bi-exclamation-triangle-fill text-danger" />
-              <span style={{ marginLeft: 8 }}>서버 연결 실패</span>
-            </>
-          )
-        }
+        { sender: 'bot', avatar: botAvatar, text: "서버 연결 실패 😢" }
       ]);
-    } finally {
-      setLoading(false);
     }
   };
 
-  // 엔터키 전송 (Shift+Enter는 줄바꿈)
+  // 엔터키 전송
   const onKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -124,7 +74,7 @@ export default function ChatGPTClone() {
     <div className="chatgpt-container" ref={containerRef}>
       <header className="chatgpt-header">ChatGPT Clone</header>
 
-      <ul className="chatgpt-messages" ref={listRef}>
+      <ul className="chatgpt-messageschatgpt-messages">
         {messages.map((m, i) => (
           <li key={i} className={`message ${m.sender}`}>
             {m.avatar && (

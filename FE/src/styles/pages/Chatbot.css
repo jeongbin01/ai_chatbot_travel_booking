@@ -71,6 +71,10 @@ html, body {
 
 /* =============== Message List =============== */
 .chatgpt-messages {
+
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  flex: 1;
   padding: var(--space-4);
   overflow-y: auto;
   background: linear-gradient(180deg,#fbfbfd 0%, #f6f7fa 100%);
