@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function EmailSignupForm() {
   const navigate = useNavigate();
-  
+
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -13,21 +13,38 @@ export default function EmailSignupForm() {
     nickname: "",
   });
 
+  // 숫자만 추출
+  const onlyDigits = (s) => s.replace(/\D/g, "");
+
+  // 010-1234-5678 형태로 포맷 (모바일 기준 3-4-4)
+  const formatPhone = (v) => {
+    const d = onlyDigits(v).slice(0, 11); // 최대 11자리(010포맷)
+    if (d.length < 4) return d;
+    if (d.length < 8) return `${d.slice(0, 3)}-${d.slice(3)}`;
+    return `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`;
+  };
+
+  // 공통 변경 핸들러 (전화번호는 별도 처리)
   const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    if (name === "phoneNumber") {
+      setForm((prev) => ({ ...prev, phoneNumber: formatPhone(value) }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 서버엔 숫자만 전달 (백엔드가 하이픈 허용하면 form.phoneNumber 써도 됨)
+    const normalizedPhone = onlyDigits(form.phoneNumber);
+
     const requestBody = {
       username: form.username,
       email: form.email,
       password: form.password,
-      phoneNumber: form.phoneNumber,
+      phoneNumber: normalizedPhone,
       nickname: form.nickname,
     };
 
@@ -65,6 +82,7 @@ export default function EmailSignupForm() {
       alert("오류 발생");
     }
   };
+
   return (
     <div className={styles.container}>
       <div className={styles.signupBox}>
@@ -126,6 +144,9 @@ export default function EmailSignupForm() {
               value={form.phoneNumber}
               onChange={handleChange}
               placeholder="010-1234-5678"
+              inputMode="numeric"
+              autoComplete="tel"
+              maxLength={13} // 000-0000-0000
             />
           </div>
 

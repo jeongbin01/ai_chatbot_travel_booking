@@ -1,4 +1,4 @@
-import re
+`import re
 import os
 import requests
 from dotenv import load_dotenv
@@ -114,6 +114,7 @@ class TourApiDomain:
 
         if isinstance(items_container, dict):
             items = items_container.get("item", [])
+
         else:
             items = []
 
