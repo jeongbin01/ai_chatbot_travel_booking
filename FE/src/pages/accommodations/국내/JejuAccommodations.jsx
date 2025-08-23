@@ -1,15 +1,15 @@
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-  useRef,
-  useCallback,
-} from "react";
+// src/pages/accommodations/JejuAccommodations.jsx
+import React, { useEffect, useMemo, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { AxiosClient } from "../../../api/AxiosController";
-import "../../../styles/layout/Accommodations.css"; // CSS 그대로 사용
+import "../../../styles/layout/Accommodations.css";
+import useWishlistClient from "../../../hooks/useWishlistClient";
 
-// ===== 상수/유틸 =====
+// ✅ 로컬 폴백 이미지
+import IMG_SEOGWIPO_RESORT from "../../../assets/images/domestic/제주 서귀포 리조트.jpg";
+import IMG_JEJU_HOTEL from "../../../assets/images/domestic/제주 호텔.jpg";
+
+/* ====================== 상수/유틸 ====================== */
 const PAGE_SIZE = 10;
 const TYPES = ["전체", "모텔", "호텔·리조트", "펜션", "홈&빌라", "캠핑", "게하·한옥"];
 const SORTS = [
@@ -18,91 +18,156 @@ const SORTS = [
   { key: "priceDesc", label: "높은 가격순" },
   { key: "ratingDesc", label: "평점순" },
 ];
-const NO_IMAGE = "/images/no-image.png";
+const NO_IMAGE = "/images/no-image.png"; // public/images/no-image.png
 
-// 숫자 유틸
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
-const toMoney = (n) => `₩${(Number(n) || 0).toLocaleString()}`;
+const toMoney = (n) => `${(Number(n) || 0).toLocaleString()}원`;
 const unformatNumber = (s) => {
   const num = Number(String(s).replace(/[^0-9]/g, ""));
   return Number.isFinite(num) ? num : 0;
 };
 
-// '제주' 포함 여부
+// '제주' 영역만 필터 (서브 지역 포함)
 const onlyJeju = (a) => {
   const text = `${a?.name ?? ""} ${a?.location ?? ""} ${a?.address ?? ""}`.toLowerCase();
-  return text.includes("제주");
+  const keywords = ["제주", "서귀포", "애월", "함덕", "중문", "한림", "성산", "표선", "협재"];
+  return keywords.some((k) => text.includes(k));
 };
 
-// localStorage favorites
-const getInitialFavorites = () => {
-  try {
-    const favorites = localStorage.getItem("favorites");
-    return favorites ? JSON.parse(favorites) : [];
-  } catch {
-    return [];
-  }
+// 이름 → 슬러그
+const toSlug = (s) => String(s || "").replace(/[^가-힣a-zA-Z0-9]+/g, "").toLowerCase();
+
+// 가격 추출/검사
+const getPrice = (x = {}) => {
+  const toNum = (v) => {
+    if (v == null || v === "") return NaN;
+    const str = String(v).replace(/[^0-9.]/g, "");
+    const n = Number(str);
+    return Number.isFinite(n) && n > 0 ? n : NaN;
+  };
+  const fields = [
+    x.basePrice, x.price, x.minPrice, x.lowestPrice,
+    x.roomPrice, x.nightPrice, x.defaultPrice,
+    x.standardPrice, x.regularPrice, x.currentPrice,
+    x.pricePerNight, x.cost, x.fee, x.amount,
+  ];
+  const valid = fields.map(toNum).filter((n) => Number.isFinite(n) && n > 0);
+  return valid.length ? Math.min(...valid) : NaN;
+};
+const hasValidPrice = (x = {}) => {
+  const fields = [
+    x.basePrice, x.price, x.minPrice, x.lowestPrice,
+    x.roomPrice, x.nightPrice, x.defaultPrice,
+    x.standardPrice, x.regularPrice, x.currentPrice,
+    x.pricePerNight, x.cost, x.fee, x.amount,
+  ];
+  return fields.some((v) => {
+    if (v == null || v === "") return false;
+    const n = Number(String(v).replace(/[^0-9.]/g, ""));
+    return Number.isFinite(n) && n > 0;
+  });
 };
 
+// ✅ 로컬 폴백 매핑(데이터 name과 정확히 일치해야 적용)
+const LOCAL_FALLBACKS = {
+  [toSlug("제주 서귀포 리조트")]: IMG_SEOGWIPO_RESORT,
+  [toSlug("제주 호텔")]: IMG_JEJU_HOTEL,
+};
+
+// ✅ 썸네일 포커스(없으면 중앙)
+const FOCUS_MAP = {
+  [toSlug("제주 서귀포 리조트")]: { x: "50%", y: "45%" },
+  [toSlug("제주 호텔")]: { x: "50%", y: "55%" },
+};
+
+/* ====================== 컴포넌트 ====================== */
 export default function JejuAccommodations() {
   const navigate = useNavigate();
   const loaderRef = useRef(null);
 
-  // 데이터/상태
+  // 찜 훅
+  const { isWished, toggleWish } = useWishlistClient();
+  const isFavorite = useCallback((id) => isWished(id), [isWished]);
+
+  // 상태
   const [loading, setLoading] = useState(true);
   const [errMsg, setErrMsg] = useState("");
-  const [items, setItems] = useState([]); // 제주만
-  const [favorites, setFavorites] = useState(getInitialFavorites);
+  const [items, setItems] = useState([]);
 
-  // 필터 상태
   const [type, setType] = useState("전체");
   const [excludeSoldout, setExcludeSoldout] = useState(false);
-  const [minPrice, setMinPrice] = useState(0);          // 실제 숫자 값
-  const [maxPrice, setMaxPrice] = useState(500000);     // 실제 숫자 값
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(500000);
   const [minRating, setMinRating] = useState(0);
   const [sort, setSort] = useState("reco");
 
-  // 표시용 문자열(콤마 포함)
   const [minPriceStr, setMinPriceStr] = useState("0");
   const [maxPriceStr, setMaxPriceStr] = useState("500000");
 
-  // 무한 스크롤 페이지
   const [page, setPage] = useState(1);
 
-  // ===== 데이터 로드 (제주만) =====
+  // ===== 데이터 로드 (제주 + 최저가 병합) =====
   const fetchJeju = useCallback(async () => {
     setLoading(true);
     setErrMsg("");
     setPage(1);
-
     try {
-      // 1) 서버에서 제주 필터 시도
+      // 1) 제주 숙소 목록
       const res = await AxiosClient("accommodations").get("", {
-        params: { region: "제주도", location: "제주", keyword: "제주" },
+        params: { region: "제주", location: "제주", keyword: "제주" },
       });
 
       const raw = Array.isArray(res?.data)
         ? res.data
         : Array.isArray(res?.data?.content)
-        ? res.data.content
-        : [];
+          ? res.data.content
+          : [];
 
       let data = raw;
-
-      // 2) 없으면 전체 조회 후 제주 필터
-      if (!data.length) {
+      if (!data.length && typeof AxiosClient("accommodations").getAll === "function") {
         const all = await AxiosClient("accommodations").getAll();
         data = Array.isArray(all?.data) ? all.data : [];
       }
-
-      // ✅ 최종 제주만 강제
       data = data.filter(onlyJeju);
 
-      // id 정규화
-      const normalized = data.map((i) => ({
-        ...i,
-        id: i.id ?? i.accommodationId ?? i.accommodation_id,
-      }));
+      // 2) 국내 rooms에서 숙소별 최저가/첫 이미지 맵
+      const roomsRes = await AxiosClient("accommodations-rooms").get("", {
+        params: { isDomestic: "Y" },
+      });
+      const rooms = Array.isArray(roomsRes?.data) ? roomsRes.data : [];
+      const PRICE_IDX = 22, ID_IDX = 0, IMG_IDX = 16;
+
+      const minPriceMap = new Map();
+      const firstImgMap = new Map();
+
+      for (const row of rooms) {
+        const accId = row?.[ID_IDX];
+        const basePrice = Number(row?.[PRICE_IDX]);
+        const img = row?.[IMG_IDX];
+
+        if (accId == null) continue;
+        if (Number.isFinite(basePrice)) {
+          const prev = minPriceMap.get(accId);
+          if (!Number.isFinite(prev) || basePrice < prev) minPriceMap.set(accId, basePrice);
+        }
+        if (img && !firstImgMap.has(accId)) firstImgMap.set(accId, img);
+      }
+
+      // 3) 병합
+      const normalized = data.map((i) => {
+        const id = i.id ?? i.accommodationId ?? i.accommodation_id;
+        const merged = { ...i, id };
+
+        if (!hasValidPrice(merged)) {
+          const p = minPriceMap.get(id);
+          if (Number.isFinite(p)) merged.basePrice = p;
+        }
+        if (!merged.image && !merged.thumbnailUrl && !merged.imageUrl) {
+          const img = firstImgMap.get(id);
+          if (img) merged.image = img;
+        }
+        return merged;
+      });
 
       setItems(normalized);
     } catch (e) {
@@ -118,114 +183,99 @@ export default function JejuAccommodations() {
     fetchJeju();
   }, [fetchJeju]);
 
-  // 가격 범위 자동 세팅
+  // 가격 범위 자동 설정
   const priceRange = useMemo(() => {
     const prices = (items || [])
-      .map((i) => i.basePrice ?? i.price ?? i.minPrice)
-      .filter((p) => typeof p === "number" && p > 0);
-
-    if (prices.length === 0) return { lo: 0, hi: 500000 };
+      .filter(hasValidPrice)
+      .map(getPrice)
+      .filter((p) => Number.isFinite(p) && p > 0);
+    if (!prices.length) return { lo: 0, hi: 500000 };
     return { lo: Math.min(...prices), hi: Math.max(...prices) };
   }, [items]);
 
-  // 서버 가격 범위 → 숫자 상태 갱신
   useEffect(() => {
     if (priceRange.lo !== minPrice || priceRange.hi !== maxPrice) {
       setMinPrice(priceRange.lo);
       setMaxPrice(priceRange.hi);
     }
-  }, [priceRange.lo, priceRange.hi]);
+  }, [priceRange.lo, priceRange.hi]); // eslint-disable-line
 
-  // 숫자 상태 → 표시용 문자열 동기화
   useEffect(() => {
     setMinPriceStr(String(minPrice.toLocaleString()));
     setMaxPriceStr(String(maxPrice.toLocaleString()));
   }, [minPrice, maxPrice]);
 
-  // 필터/정렬 바뀌면 페이지 리셋
   useEffect(() => {
     setPage(1);
   }, [type, excludeSoldout, minPrice, maxPrice, minRating, sort]);
 
-  // ===== 가격 입력 핸들러(콤마 포함) =====
+  // 가격 입력 핸들러
   const onChangeMinPrice = (e) => {
-    const raw = e.target.value;
-    let next = unformatNumber(raw);
-    next = clamp(next, 0, maxPrice);
+    const next = clamp(unformatNumber(e.target.value), 0, maxPrice);
     setMinPrice(next);
     setMinPriceStr(next.toLocaleString());
   };
-
   const onChangeMaxPrice = (e) => {
-    const raw = e.target.value;
-    let next = unformatNumber(raw);
-    next = Math.max(next, minPrice);
+    const next = Math.max(unformatNumber(e.target.value), minPrice);
     setMaxPrice(next);
     setMaxPriceStr(next.toLocaleString());
   };
 
-  // ===== 필터 + 정렬 =====
+  // 필터 + 정렬
   const processed = useMemo(() => {
     let list = [...items];
 
-    // 타입
     if (type !== "전체") {
-      list = list.filter((i) => {
-        const itemType = i.accommodationType || i.type || "";
-        return itemType.includes(type);
-      });
+      list = list.filter((i) => (i.accommodationType || i.type || "").includes(type));
     }
-
-    // 품절 제외
     if (excludeSoldout) list = list.filter((i) => !i.soldout);
 
-    // 가격/평점
     list = list.filter((i) => {
-      const price = Number(i.basePrice ?? i.price ?? i.minPrice ?? 0) || 0;
-      return price >= minPrice && price <= maxPrice;
+      if (!hasValidPrice(i)) return true;
+      const p = getPrice(i);
+      return p >= minPrice && p <= maxPrice;
     });
+
     list = list.filter((i) => {
-      const rating = Number(i.averageRating ?? i.rating ?? 0) || 0;
+      const rating = Number(i?.averageRating ?? i?.rating ?? 0) || 0;
       return rating >= minRating;
     });
 
-    // 정렬
-    const getPrice = (x) => Number(x?.basePrice ?? x?.price ?? x?.minPrice ?? 0) || 0;
-    const getRating = (x) => Number(x?.averageRating ?? x?.rating ?? 0) || 0;
+    const priceOf = (x) => getPrice(x);
+    const ratingOf = (x) => Number(x?.averageRating ?? x?.rating ?? 0) || 0;
 
     list.sort((a, b) => {
-      const priceA = getPrice(a);
-      const priceB = getPrice(b);
-      const ratingA = getRating(a);
-      const ratingB = getRating(b);
+      const pa = priceOf(a), pb = priceOf(b);
+      const ra = ratingOf(a), rb = ratingOf(b);
 
       switch (sort) {
         case "priceAsc": {
-          const aMissing = priceA <= 0, bMissing = priceB <= 0;
-          if (aMissing && !bMissing) return 1;
-          if (!aMissing && bMissing) return -1;
-          return priceA - priceB;
+          const aHas = hasValidPrice(a), bHas = hasValidPrice(b);
+          if (!aHas && bHas) return 1;
+          if (aHas && !bHas) return -1;
+          if (!aHas && !bHas) return 0;
+          return pa - pb;
         }
         case "priceDesc": {
-          const aMissing = priceA <= 0, bMissing = priceB <= 0;
-          if (aMissing && !bMissing) return 1;
-          if (!aMissing && bMissing) return -1;
-          return priceB - priceA;
+          const aHas = hasValidPrice(a), bHas = hasValidPrice(b);
+          if (!aHas && bHas) return 1;
+          if (aHas && !bHas) return -1;
+          if (!aHas && !bHas) return 0;
+          return pb - pa;
         }
         case "ratingDesc": {
-          const aMissing = ratingA <= 0, bMissing = ratingB <= 0;
-          if (aMissing && !bMissing) return 1;
-          if (!aMissing && bMissing) return -1;
-          return ratingB - ratingA;
+          const aMiss = ra <= 0, bMiss = rb <= 0;
+          if (aMiss && !bMiss) return 1;
+          if (!aMiss && bMiss) return -1;
+          return rb - ra;
         }
         case "reco":
         default: {
-          // 평점 가중 + 가격 보정(없으면 약감점)
-          const priceScoreA = priceA > 0 ? -priceA * 0.01 : -500;
-          const priceScoreB = priceB > 0 ? -priceB * 0.01 : -500;
-          const scoreA = ratingA * 1000 + priceScoreA;
-          const scoreB = ratingB * 1000 + priceScoreB;
-          return scoreB - scoreA;
+          const psA = hasValidPrice(a) ? -pa * 0.01 : 0;
+          const psB = hasValidPrice(b) ? -pb * 0.01 : 0;
+          const sa = ra * 1000 + psA;
+          const sb = rb * 1000 + psB;
+          return sb - sa;
         }
       }
     });
@@ -234,18 +284,13 @@ export default function JejuAccommodations() {
   }, [items, type, excludeSoldout, minPrice, maxPrice, minRating, sort]);
 
   const total = processed.length;
+  const pageItems = useMemo(() => processed.slice(0, PAGE_SIZE * page), [processed, page]);
 
-  // ===== 무한 스크롤 페이지 아이템 =====
-  const pageItems = useMemo(() => {
-    return processed.slice(0, PAGE_SIZE * page);
-  }, [processed, page]);
-
-  // ===== 무한 스크롤 옵저버 =====
+  // 무한 스크롤
   useEffect(() => {
-    const current = loaderRef.current;
-    if (!current) return;
-
-    const observer = new IntersectionObserver(
+    const el = loaderRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !loading) {
           setPage((prev) => {
@@ -256,29 +301,11 @@ export default function JejuAccommodations() {
       },
       { threshold: 0.1, rootMargin: "50px" }
     );
-
-    observer.observe(current);
-    return () => observer.disconnect();
+    io.observe(el);
+    return () => io.disconnect();
   }, [total, loading]);
 
-  // ===== 찜 토글 =====
-  const toggleFavorite = useCallback((id) => {
-    if (!id || isNaN(Number(id))) return;
-
-    setFavorites((prev) => {
-      const numId = Number(id);
-      const next = prev.includes(numId)
-        ? prev.filter((f) => f !== numId)
-        : [...prev, numId];
-
-      try {
-        localStorage.setItem("favorites", JSON.stringify(next));
-      } catch {/* ignore */}
-      return next;
-    });
-  }, []);
-
-  // ===== 카드 렌더 =====
+  // 카드 렌더
   const renderCard = useCallback(
     (item) => {
       const id = item.id ?? item.accommodationId ?? item.accommodation_id;
@@ -286,32 +313,44 @@ export default function JejuAccommodations() {
       const disabled = !id || isNaN(idNum);
 
       const name = item.name || "이름 미정";
-      const location = item.location || "";
+      const location = item.location || item.address || "";
 
-      const ratingNum = Number(item.averageRating ?? item.rating);
-      const priceNum = Number(item.basePrice ?? item.price ?? item.minPrice);
+      const ratingRaw = item.averageRating ?? item.rating ?? item.ratingAvg;
+      const ratingNum = Number.parseFloat(String(ratingRaw));
+      const hasRatingVal = Number.isFinite(ratingNum) && ratingNum > 0;
+      const displayRating = hasRatingVal ? ratingNum.toFixed(1) : null;
 
-      const displayRating =
-        Number.isFinite(ratingNum) && ratingNum > 0 ? ratingNum.toFixed(1) : "신규";
-      const displayPrice =
-        Number.isFinite(priceNum) && priceNum > 0 ? toMoney(priceNum) : "가격 문의";
+      const itemHasPrice = hasValidPrice(item);
+      const priceNum = getPrice(item);
 
+      const slug = toSlug(name);
+      const localFallback = LOCAL_FALLBACKS[slug];
       const imageUrl =
-        item.thumbnailUrl ||
         item.image ||
-        (Array.isArray(item.images) && item.images.length > 0
-          ? item.images[0]
-          : NO_IMAGE);
+        item.thumbnailUrl ||
+        item.imageUrl ||
+        item.mainImageUrl ||
+        item.firstImageUrl ||
+        (Array.isArray(item.images) && item.images[0]) ||
+        localFallback ||
+        "";
 
-      const isFavorite = favorites.includes(idNum);
+      const focus = FOCUS_MAP[slug] || { x: "50%", y: "50%" };
+      const wished = isFavorite(idNum);
 
       const handleCardClick = () => {
         if (!disabled) navigate(`/accommodations/detail/${idNum}`);
       };
-
       const handleFavoriteClick = (e) => {
         e.stopPropagation();
-        if (!disabled) toggleFavorite(idNum);
+        if (disabled) return;
+        toggleWish({
+          id: idNum,
+          name,
+          image: imageUrl || NO_IMAGE,
+          location,
+          price: Number.isFinite(priceNum) ? priceNum : 0,
+        });
       };
 
       return (
@@ -325,88 +364,94 @@ export default function JejuAccommodations() {
             if ((e.key === "Enter" || e.key === " ") && !disabled) handleCardClick();
           }}
         >
-          {/* 썸네일 */}
-          <div
-            className="srch-thumb"
-            style={{ backgroundImage: `url(${imageUrl})` }}
-          >
-            {/* 찜 버튼 */}
+          <div className="srch-thumb" style={{ "--obj-x": focus.x, "--obj-y": focus.y }}>
+            <img
+              src={imageUrl || NO_IMAGE}
+              alt={`${name} 이미지`}
+              loading="lazy"
+              onError={(e) => {
+                if (!e.currentTarget.src.endsWith(NO_IMAGE)) e.currentTarget.src = NO_IMAGE;
+              }}
+            />
             <button
-              className={`fav-btn ${isFavorite ? "is-active" : ""}`}
+              className={`fav-btn ${wished ? "is-active" : ""}`}
               onClick={handleFavoriteClick}
               disabled={disabled}
-              aria-label={isFavorite ? "찜 해제하기" : "찜하기"}
-              aria-pressed={isFavorite}
+              aria-label={wished ? "찜 해제하기" : "찜하기"}
+              aria-pressed={wished}
               type="button"
+              title={wished ? "찜 해제" : "찜하기"}
+              style={{
+                position: "absolute",
+                right: 8,
+                top: 8,
+                background: "transparent",
+                boxShadow: "none",
+                width: 32,
+                height: 32,
+                border: "none",
+                padding: 0,
+                display: "grid",
+                placeItems: "center",
+                cursor: "pointer",
+                filter: "drop-shadow(0 1px 2px rgba(0,0,0,.25))",
+              }}
             >
-              <i className={`bi ${isFavorite ? "bi-heart-fill" : "bi-heart"}`} />
+              <i
+                className={`bi ${wished ? "bi-heart-fill" : "bi-heart"}`}
+                style={{ fontSize: 20, color: wished ? "var(--heart-color)" : "#ffffff" }}
+              />
             </button>
           </div>
 
-          {/* 메타 */}
-          <div className="srch-meta">
-            <div className="srch-meta-top">
-              <div className="srch-title" title={name}>
-                {name}
-              </div>
-              <div className="srch-rating">
-                {displayRating === "신규" ? (
-                  <>신규</>
-                ) : (
-                  <>
-                    <i className="bi bi-star-fill star" />
-                    <span className="rating-score">{displayRating}</span>
-                  </>
-                )}
-              </div>
+          <div className="srch-meta srch-meta--split">
+            <div className="srch-info">
+              <div className="srch-title" title={name}>{name}</div>
+              {location && <div className="srch-loc" title={location}>{location}</div>}
+              {hasRatingVal && (
+                <div className="srch-rating">
+                  <i className="bi bi-star-fill star" />
+                  <span className="rating-score">{displayRating}</span>
+                </div>
+              )}
             </div>
-
-            <div className="srch-sub">{location && <span>{location}</span>}</div>
-
-            <div className={`srch-price ${displayPrice === "가격 문의" ? "is-missing" : ""}`}>
-              {displayPrice}
+            <div className="srch-pricebox">
+              {itemHasPrice ? (
+                <div className="srch-price">{toMoney(priceNum)}</div>
+              ) : (
+                <div className="srch-price" style={{ color: "#999", fontSize: "0.9em" }}>
+                  가격 문의
+                </div>
+              )}
             </div>
           </div>
         </article>
       );
     },
-    [favorites, navigate, toggleFavorite]
+    [isFavorite, navigate, toggleWish]
   );
 
   return (
     <div className="jeju-page">
-      {/* 헤더 */}
       <div className="jeju-header">
         <div className="jeju-header-inner">
           <h1>
-            ‘제주도’ 숙소 검색 결과
-            <span>
-              {total.toLocaleString()}개
-            </span>
+            '제주' 숙소 검색 결과
+            <span>{total.toLocaleString()}개</span>
           </h1>
-
           <div className="jeju-sort">
-            <select
-              value={sort}
-              onChange={(e) => setSort(e.target.value)}
-              aria-label="정렬 기준"
-            >
+            <select value={sort} onChange={(e) => setSort(e.target.value)} aria-label="정렬 기준">
               {SORTS.map((s) => (
-                <option key={s.key} value={s.key}>
-                  {s.label}
-                </option>
+                <option key={s.key} value={s.key}>{s.label}</option>
               ))}
             </select>
           </div>
         </div>
       </div>
 
-      {/* 본문 */}
       <main className="jeju-main">
         <div className="srch-body">
-          {/* 좌측 필터 */}
           <aside className="srch-filters">
-            {/* 숙소 타입 */}
             <div className="filter-group">
               <h3>숙소 타입</h3>
               <div className="filter-options">
@@ -425,26 +470,13 @@ export default function JejuAccommodations() {
               </div>
             </div>
 
-            {/* 가격 범위 */}
             <div className="filter-group">
               <h3>가격 범위</h3>
               <div className="price-range">
                 <div className="price-inputs">
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9,]*"
-                    value={minPriceStr}
-                    onChange={onChangeMinPrice}
-                  />
+                  <input type="text" inputMode="numeric" pattern="[0-9,]*" value={minPriceStr} onChange={onChangeMinPrice} />
                   <span>~</span>
-                  <input
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9,]*"
-                    value={maxPriceStr}
-                    onChange={onChangeMaxPrice}
-                  />
+                  <input type="text" inputMode="numeric" pattern="[0-9,]*" value={maxPriceStr} onChange={onChangeMaxPrice} />
                 </div>
                 <div className="price-range-display">
                   {toMoney(minPrice)} ~ {toMoney(maxPrice)}
@@ -452,13 +484,9 @@ export default function JejuAccommodations() {
               </div>
             </div>
 
-            {/* 평점 */}
             <div className="filter-group">
               <h3>최소 평점</h3>
-              <select
-                value={minRating}
-                onChange={(e) => setMinRating(Number(e.target.value))}
-              >
+              <select value={minRating} onChange={(e) => setMinRating(Number(e.target.value))}>
                 <option value={0}>전체</option>
                 <option value={3}>3점 이상</option>
                 <option value={4}>4점 이상</option>
@@ -466,20 +494,14 @@ export default function JejuAccommodations() {
               </select>
             </div>
 
-            {/* 품절 제외 */}
             <div className="filter-group">
               <label className="filter-checkbox">
-                <input
-                  type="checkbox"
-                  checked={excludeSoldout}
-                  onChange={(e) => setExcludeSoldout(e.target.checked)}
-                />
+                <input type="checkbox" checked={excludeSoldout} onChange={(e) => setExcludeSoldout(e.target.checked)} />
                 <span>품절 제외</span>
               </label>
             </div>
           </aside>
 
-          {/* 우측 리스트 */}
           <section className="srch-list">
             {loading && (
               <div className="skeleton-wrap">
@@ -489,30 +511,18 @@ export default function JejuAccommodations() {
               </div>
             )}
 
-            {!loading && errMsg && (
-              <div className="status error" role="alert">
-                {errMsg}
-              </div>
-            )}
+            {!loading && errMsg && <div className="status error" role="alert">{errMsg}</div>}
 
-            {!loading && !errMsg && pageItems.length === 0 && (
+            {!loading && pageItems.length === 0 && !errMsg && (
               <div className="status empty">조건에 맞는 결과가 없어요.</div>
             )}
 
             {!loading && !errMsg && pageItems.length > 0 && (
               <>
                 <div className="grid">{pageItems.map(renderCard)}</div>
-
-                {/* 무한 스크롤 트리거 */}
                 {pageItems.length < total && (
-                  <div
-                    ref={loaderRef}
-                    className="loader-trigger"
-                    style={{ height: 50 }}
-                  >
-                    <div className="loading-indicator">
-                      더 많은 결과를 불러오는 중...
-                    </div>
+                  <div ref={loaderRef} className="loader-trigger" style={{ height: 50 }}>
+                    <div className="loading-indicator">더 많은 결과를 불러오는 중...</div>
                   </div>
                 )}
               </>
