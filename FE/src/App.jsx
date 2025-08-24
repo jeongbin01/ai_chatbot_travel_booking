@@ -1,6 +1,6 @@
 // src/App.jsx
 import React from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
 import Header from "./components/common/Header";
 import HeroBanner from "./components/main/HeroBanner";
@@ -18,20 +18,27 @@ import GoogleForm from "./pages/login/GoogleForm";
 import SignupForm from "./pages/login/SignupForm";
 import HttpHeadersProvider from "./context/HttpHeader";
 import AuthProvider from "./context/AuthProvider";
+
 import MyPage from "./pages/user/MyPage";
 import Favorites from "./pages/user/Favorites";
-import Reservations from "./pages/user/Reservations"; // ✅ 누락된 import 추가
+import Reservations from "./pages/user/Reservations"; // 예약 내역(리스트)
+
 import AccommodationList from "./pages/accommodations/숙소/AccommodationList.jsx";
 import AccommodationDetail from "./pages/accommodations/숙소/AccommodationDetail";
+
 import Chatbotpages from "./pages/chatbot/Chatbotpages.jsx";
+
 import BookingConfirmation from "./pages/booking/BookingConfirmation.jsx";
 import BookingPage from "./pages/booking/bookingPage.jsx";
+
 import SearchPage from "./pages/search/SearchPage.jsx";
+
 import JejuAccommodations from "./pages/accommodations/국내/JejuAccommodations.jsx";
 import SeoulAccommodations from "./pages/accommodations/국내/SeoulAccommodations.jsx";
 import BusanAccommodations from "./pages/accommodations/국내/BusanAccommodations.jsx";
 import GangneungAccommodations from "./pages/accommodations/국내/gangneungAccommodations.jsx";
 import IncheonAccommodations from "./pages/accommodations/국내/IncheonAccommodations.jsx";
+
 import FukuokaAccommodations from "./pages/accommodations/해외/FukuokaAccommodations.jsx";
 import BangkokAccommodations from "./pages/accommodations/해외/BangkokAccommodations.jsx";
 import RomeAccommodations from "./pages/accommodations/해외/RomeAccommodations.jsx";
@@ -41,7 +48,7 @@ import SingaporeAccommodations from "./pages/accommodations/해외/SingaporeAcco
 function App() {
   const location = useLocation();
 
-  // 로그인, 회원가입 등 Footer 제거 페이지
+  // 로그인/회원가입 등 Footer 제거 페이지
   const hideFooterRoutes = ["/login", "/login/email", "/signup/email"];
 
   return (
@@ -51,7 +58,7 @@ function App() {
           <Header />
 
           <Routes>
-            {/* ✅ 메인 페이지 */}
+            {/* 메인 */}
             <Route
               path="/"
               element={
@@ -68,7 +75,7 @@ function App() {
               }
             />
 
-            {/* ✅ 로그인 */}
+            {/* 로그인/회원가입 */}
             <Route
               path="/login"
               element={
@@ -78,11 +85,9 @@ function App() {
                 </>
               }
             />
-
-            {/* ✅ 회원가입 */}
             <Route path="/signup/email" element={<SignupForm />} />
 
-            {/* ✅ 숙소 목록 (isDomestic prop 명시) */}
+            {/* 숙소 목록 */}
             <Route
               path="/domesticpages"
               element={<AccommodationList isDomestic={true} />}
@@ -92,37 +97,41 @@ function App() {
               element={<AccommodationList isDomestic={false} />}
             />
 
-            {/* 국내 숙소 상세 */}
-            <Route
-              path="/domesticpages/:id"
-              element={<AccommodationDetail />}
-            />
+            {/* 숙소 상세 */}
+            <Route path="/domesticpages/:id" element={<AccommodationDetail />} />
+            <Route path="/overseaspages/:id" element={<AccommodationDetail />} />
 
-            {/* 해외 숙소 상세 */}
-            <Route
-              path="/overseaspages/:id"
-              element={<AccommodationDetail />}
-            />
-            {/* ✅ 예약 페이지 */}
+            {/* 예약 페이지/예약 완료 */}
             <Route path="/booking/:id" element={<BookingPage />} />
-            <Route path="/booking/confirmation/:id/:roomTypeId" element={<BookingConfirmation />} />
+            {/* 쿼리 ?bid= 로도 쓰므로 파라미터 없는 라우트 추가 */}
+            <Route path="/booking/confirmation" element={<BookingConfirmation />} />
+            <Route
+              path="/booking/confirmation/:id/:roomTypeId"
+              element={<BookingConfirmation />}
+            />
 
-            {/* ✅ 마이페이지 */}
+            {/* 마이페이지: 프로필/찜 */}
             <Route path="/mypage/profile" element={<MyPage />} />
             <Route path="/mypage/wishlist" element={<Favorites />} />
+
+            {/* 마이페이지: 예약 내역
+                - /mypage/reservations: 실제 경로
+                - /mypage/bookings   : alias (기존 링크 호환)
+                - /mypage            : 기본 진입은 reservations로 리다이렉트 */}
+            <Route path="/mypage" element={<Navigate to="/mypage/reservations" replace />} />
+            <Route path="/mypage/reservations" element={<Reservations />} />
             <Route path="/mypage/bookings" element={<Reservations />} />
 
             {/* 챗봇 */}
             <Route path="/chatbot" element={<Chatbotpages />} />
 
-            {/* 검색 페이지 */}
+            {/* 검색 */}
             <Route path="/search" element={<SearchPage />} />
-            <Route
-              path="/accommodations1/:id"
-              element={<AccommodationDetail />}
-            />
 
-            {/* 국내 페이지 */}
+            {/* 기타 상세 (중복 경로가 많아 보이는데, 현재 로직 유지) */}
+            <Route path="/accommodations1/:id" element={<AccommodationDetail />} />
+
+            {/* 국내 카테고리 */}
             <Route path="/accommodations/jeju" element={<JejuAccommodations />} />
             <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
             <Route path="/accommodations/seoul" element={<SeoulAccommodations />} />
@@ -134,7 +143,7 @@ function App() {
             <Route path="/accommodations/incheon" element={<IncheonAccommodations />} />
             <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
 
-            {/* 해외 페이지 */}
+            {/* 해외 카테고리 */}
             <Route path="/accommodations/fukuoka" element={<FukuokaAccommodations />} />
             <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
             <Route path="/accommodations/bangkok" element={<BangkokAccommodations />} />
@@ -144,13 +153,9 @@ function App() {
             <Route path="/accommodations/rome" element={<RomeAccommodations />} />
             <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
             <Route path="/accommodations/singapore" element={<SingaporeAccommodations />} />
-
-            {/* 찜 목록 */}
-
-
           </Routes>
 
-          {/* ✅ Footer는 특정 경로에서만 제거 */}
+          {/* Footer는 특정 경로에서만 제거 */}
           {!hideFooterRoutes.includes(location.pathname) && <Footer />}
         </HttpHeadersProvider>
       </AuthProvider>
