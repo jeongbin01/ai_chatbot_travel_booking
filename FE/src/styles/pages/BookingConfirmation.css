@@ -1,149 +1,176 @@
-/* src/styles/pages/BookingConfirmation.css */
+/* ============================
+   BookingConfirmation.css
+   ============================ */
 
-/* 컨테이너 */
+:root {
+  --primary: #2563eb;
+  /* 파랑 */
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --gray: #6b7280;
+  --line: #e5e7eb;
+  --bg-light: #f9fafb;
+  --radius: 12px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
 .booking-confirmation {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 24px;
+  max-width: 800px;
+  margin: 100px auto;
+  padding: 32px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  font-family: "Noto Sans KR", sans-serif;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.booking-confirmation h2 {
+  font-size: 1.8rem;
+  margin-bottom: 24px;
   text-align: center;
 }
 
-/* 예약 완료 제목 */
-.booking-confirmation h2 {
-  color: #28a745;
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-/* 숙소 요약 카드 */
+/* 숙소 요약 */
 .accommodation-summary {
   display: flex;
   align-items: center;
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  gap: 12px;
+  gap: 20px;
+  margin-bottom: 32px;
+  padding: 16px;
+  background: var(--bg-light);
+  border-radius: var(--radius);
 }
 
 .summary-image {
-  width: 100px;
-  height: 80px;
+  width: 140px;
+  height: 100px;
+  border-radius: var(--radius);
   object-fit: cover;
-  border-radius: 6px;
+  flex-shrink: 0;
+  background: #ddd;
 }
 
-.summary-text {
-  text-align: left;
-  flex: 1;
+.summary-image.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gray);
+  font-size: 0.9rem;
 }
 
 .summary-text h3 {
-  margin: 0 0 6px;
-  font-size: 18px;
+  margin: 0 0 8px;
+  font-size: 1.2rem;
 }
 
 .summary-text p {
-  margin: 2px 0;
-  font-size: 14px;
+  margin: 4px 0;
+  color: var(--gray);
+  font-size: 0.95rem;
 }
 
-/* 예약자 정보 박스 */
-.booking-info {
+.summary-text i {
+  margin-right: 4px;
+  color: inherit;
+  /* 텍스트 색상 상속 (파랑 제거) */
+}
+
+/* 구역 */
+.section {
+  margin-bottom: 28px;
+}
+
+.section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  border-left: 4px solid var(--primary);
+  padding-left: 8px;
+}
+
+/* 테이블 */
+table.info {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+table.info th,
+table.info td {
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
   text-align: left;
-  background: #fdfdfd;
-  border: 1px solid #eee;
-  padding: 16px;
+}
+
+table.info th {
+  width: 150px;
+  color: var(--gray);
+  font-weight: 600;
+}
+
+table.info td.text-right {
+  text-align: right;
+}
+
+table.info td.em {
+  font-weight: 700;
+}
+
+/* 상태 뱃지 */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
   border-radius: 8px;
-  margin-bottom: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
-.booking-info p {
-  margin: 6px 0;
-  font-size: 15px;
+.badge--paid {
+  background: #ecfdf5;
+  color: var(--success);
 }
 
-/* 버튼 영역 */
+.badge--pending {
+  background: #fffbeb;
+  color: var(--warning);
+}
+
+.badge--refunded {
+  background: #f3f4f6;
+  color: var(--gray);
+}
+
+.badge--cancel {
+  background: #fef2f2;
+  color: var(--danger);
+}
+
+/* 버튼 */
 .actions {
   display: flex;
   justify-content: center;
   gap: 12px;
-  flex-wrap: wrap;
+  margin-top: 24px;
 }
 
 .actions button {
-  background: #007bff;
-  color: #fff;
-  border: none;
   padding: 10px 18px;
-  border-radius: 8px;
-  font-size: 15px;
+  border: none;
+  border-radius: var(--radius);
+  background: var(--primary);
+  color: white;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.2s;
 }
 
 .actions button:hover {
-  background: #0056b3;
+  background: #1d4ed8;
 }
 
-.actions button:nth-child(1) {
-  background: #17a2b8;
+.actions button:nth-child(3) {
+  background: #6b7280;
 }
 
-.actions button:nth-child(1):hover {
-  background: #117a8b;
-}
-
-/* 예약 정보 없음 */
-.no-data {
-  text-align: center;
-  font-size: 16px;
-  color: #555;
-  padding: 30px;
-}
-
-/* 📱 반응형 스타일 */
-@media (max-width: 768px) {
-  .accommodation-summary {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .summary-image {
-    width: 100%;
-    height: auto;
-  }
-
-  .summary-text {
-    text-align: center;
-  }
-
-  .actions {
-    flex-direction: column;
-  }
-
-  .actions button {
-    width: 100%;
-    font-size: 14px;
-    padding: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .booking-confirmation {
-    padding: 16px;
-  }
-
-  .booking-info p {
-    font-size: 14px;
-  }
-
-  .summary-text h3 {
-    font-size: 16px;
-  }
+.actions button:nth-child(3):hover {
+  background: #4b5563;
 }

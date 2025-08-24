@@ -105,10 +105,7 @@ function App() {
             />
             {/* ✅ 예약 페이지 */}
             <Route path="/booking/:id" element={<BookingPage />} />
-            <Route 
-              path="/booking/confirmation/:accommodationId/:roomTypeId" 
-              element={<BookingConfirmation />} 
-            />
+            <Route path="/booking/confirmation/:id/:roomTypeId" element={<BookingConfirmation />} />
 
             {/* ✅ 마이페이지 */}
             <Route path="/mypage/profile" element={<MyPage />} />
@@ -127,29 +124,29 @@ function App() {
 
             {/* 국내 페이지 */}
             <Route path="/accommodations/jeju" element={<JejuAccommodations />} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
             <Route path="/accommodations/seoul" element={<SeoulAccommodations />} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
             <Route path="/accommodations/busan" element={<BusanAccommodations />} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
-            <Route path="/accommodations/gangneung" element={<GangneungAccommodations/>} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
-            <Route path="/accommodations/incheon" element={<IncheonAccommodations/>} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
+            <Route path="/accommodations/gangneung" element={<GangneungAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
+            <Route path="/accommodations/incheon" element={<IncheonAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
 
             {/* 해외 페이지 */}
-            <Route path="/accommodations/fukuoka" element={<FukuokaAccommodations/>} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
-            <Route path="/accommodations/bangkok" element={<BangkokAccommodations/>} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
-            <Route path="/accommodations/paris" element={<ParisAccommodations/>} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
-            <Route path="/accommodations/rome" element={<RomeAccommodations/>} />
-            <Route path="/accommodations/detail/:id" element={<AccommodationDetail/>} />
-            <Route path="/accommodations/singapore" element={<SingaporeAccommodations/>} />
-            
+            <Route path="/accommodations/fukuoka" element={<FukuokaAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
+            <Route path="/accommodations/bangkok" element={<BangkokAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
+            <Route path="/accommodations/paris" element={<ParisAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
+            <Route path="/accommodations/rome" element={<RomeAccommodations />} />
+            <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
+            <Route path="/accommodations/singapore" element={<SingaporeAccommodations />} />
+
             {/* 찜 목록 */}
-            
+
 
           </Routes>
 
