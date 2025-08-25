@@ -1,7 +1,8 @@
 /* =========================
-   Favorites.css (최종)
-   – Profile/Reservations와 100% 동일 톤
-   – 사이드바 타이포 영향 X
+   Favorites.css (최종본)
+   - 텍스트 가독성/대비 강화
+   - 제목/위치/액션 정렬 딱 맞춤
+   - 버튼 수축 방지 + 줄바꿈 대응
    ========================= */
 
 :root {
@@ -14,17 +15,15 @@
   --muted: #6b7280;
 }
 
-/* 레이아웃(사이드바는 MyPageLayout.css가 담당) */
+/* ===== 레이아웃(사이드바는 별도) ===== */
 .favorites-container {
   display: flex;
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
   gap: 40px;
-  /* ✨ 폰트/색 지정하지 않음 → 사이드바 타이포 보존 */
 }
 
-/* 우측 메인 카드 */
 .favorites-content {
   flex: 1;
   max-width: 900px;
@@ -34,17 +33,20 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+  color: #0f172a;
+  /* 기본 텍스트 컬러 고정 */
+  -webkit-font-smoothing: antialiased;
 }
 
 .favorites-content h2 {
   font-size: 26px;
-  font-weight: 700;
+  font-weight: 800;
   margin: 0 0 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid #eee;
+  color: #0f172a;
 }
 
-/* 헤더 */
 .favorites-header {
   display: flex;
   justify-content: space-between;
@@ -55,17 +57,17 @@
 .favorites-content .sub {
   margin: 6px 0 0;
   font-size: 14px;
-  color: var(--muted);
+  color: #374151;
 }
 
-/* + 새 폴더 버튼 */
+/* ===== 새 폴더 버튼 ===== */
 .favorites-new-folder-btn {
   padding: 10px 16px;
   background: var(--primary);
   color: #fff;
   border: none;
   border-radius: 8px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: background-color .2s, transform .06s;
 }
@@ -78,7 +80,7 @@
   transform: translateY(1px);
 }
 
-/* 배지 */
+/* ===== 배지 ===== */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -86,34 +88,47 @@
   padding: 0 8px;
   margin-left: 8px;
   background: #f3f4f6;
-  color: #374151;
+  color: #1f2937;
   border: 1px solid #e5e7eb;
   border-radius: 999px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
-/* 폴더 카드 */
-.fav-folder {
+/* ===== 폴더 / 미분류 박스 ===== */
+.fav-folder,
+.fav-section {
   background: #fff;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
+  color: #0f172a;
+}
+
+.fav-folder {
   padding: 18px;
   margin-bottom: 16px;
 }
 
-.fav-folder__header {
+.fav-section {
+  margin-top: 22px;
+  padding: 18px;
+}
+
+.fav-folder__header,
+.fav-section__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
 }
 
-.fav-folder__title {
+.fav-folder__title,
+.fav-section__header .title {
   display: flex;
   align-items: center;
   gap: 8px;
+  color: #0f172a;
 }
 
 .fav-folder__title .dot {
@@ -123,45 +138,13 @@
   background: var(--primary);
 }
 
-.fav-folder__title strong {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.fav-folder__actions {
-  display: flex;
-  gap: 8px;
-}
-
-/* 미분류 섹션 */
-.fav-section {
-  margin-top: 22px;
-  padding: 18px;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-}
-
-.fav-section__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.fav-section__header .title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
+.fav-folder__title strong,
 .fav-section__header .title strong {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
-/* 그리드(3→2→1) */
+/* ===== 그리드(3→2→1) ===== */
 .fav-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -180,67 +163,102 @@
   }
 }
 
-/* 카드 */
+/* ===== 카드 ===== */
 .fav-card {
   display: flex;
   flex-direction: column;
   overflow: hidden;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 14px;
   box-shadow: var(--shadow-sm);
+  color: #0f172a;
 }
 
 .fav-card img {
   width: 100%;
-  height: 160px;
+  height: 170px;
   object-fit: cover;
   object-position: center;
   display: block;
   background: #f3f4f6;
 }
 
+/* 본문: 텍스트/액션 정렬 딱맞게 */
 .fav-card__body {
-  padding: 12px;
+  flex: 1;
+  /* 이미지 아래 공간을 가득 채움 */
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  justify-content: space-between;
+  /* 텍스트(위) ↔ 액션(아래) */
+  padding: 14px;
+  background: #fff;
+  gap: 8px;
 }
 
+.fav-card__body * {
+  color: inherit;
+}
+
+/* 제목/위치 */
 .fav-title {
   margin: 0;
-  font-size: 15px;
-  font-weight: 700;
-  color: #111827;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: .1px;
+  display: -webkit-box;
+  /* 2줄 말줄임 */
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .fav-loc {
-  margin: 0 0 8px;
-  font-size: 13px;
-  color: var(--muted);
+  margin: 4px 0 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* 카드 액션 */
+/* 액션: 버튼/셀렉트 간격 + 줄바꿈 대응 */
 .fav-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  /* 좌: 셀렉트 / 우: 버튼 */
+  gap: 10px;
+  flex-wrap: wrap;
+  /* 공간 부족하면 다음 줄 */
   margin-top: auto;
+  /* 항상 카드 하단 쪽에 위치 */
 }
 
+/* 셀렉트: 가독성/최소폭/포커스 */
 .fav-actions select {
-  flex: 1;
-  min-width: 0;
-  height: 36px;
-  padding: 0 10px;
+  flex: 1 1 220px;
+  /* grow=1, shrink=1, 기본폭 220px */
+  min-width: 160px;
+  height: 38px;
+  padding: 0 12px;
   font-size: 14px;
-  color: #374151;
-  border: 1px solid #ccd0d5;
-  border-radius: 8px;
+  font-weight: 700;
+  color: #0f172a;
+  border: 1px solid #bfc5cc;
+  border-radius: 10px;
   background: #fff;
   outline: none;
-  transition: border-color .2s, box-shadow .2s;
   appearance: none;
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.fav-actions select option {
+  color: #0f172a;
+  background: #fff;
 }
 
 .fav-actions select:focus {
@@ -248,16 +266,28 @@
   box-shadow: 0 0 0 3px rgba(0, 123, 255, .25);
 }
 
-/* 버튼 */
+/* 버튼 통일: 높이/폰트/수축 방지 */
+.btn-primary,
+.btn-outline,
+.btn-danger {
+  flex: 0 0 auto;
+  /* 절대 줄어들지 않음 */
+  height: 38px;
+  /* 셀렉트와 높이 통일 */
+  padding: 0 16px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color .2s, border-color .2s, transform .06s;
+}
+
+/* 색상별 버튼 */
 .btn-primary {
-  padding: 8px 12px;
   border: none;
-  border-radius: 8px;
   background: var(--primary);
   color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color .2s, transform .06s;
 }
 
 .btn-primary:hover {
@@ -268,25 +298,14 @@
   transform: translateY(1px);
 }
 
-.btn-primary:disabled {
-  opacity: .55;
-  cursor: not-allowed;
-}
-
 .btn-outline {
-  padding: 8px 12px;
-  border-radius: 8px;
   background: #fff;
-  color: #333;
-  border: 1px solid #ccd0d5;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color .2s, border-color .2s, transform .06s;
+  color: #0f172a;
+  border: 1px solid #bfc5cc;
 }
 
 .btn-outline:hover {
   background: #f3f4f6;
-  border-color: #cbd5e0;
 }
 
 .btn-outline:active {
@@ -294,14 +313,9 @@
 }
 
 .btn-danger {
-  padding: 8px 12px;
   border: none;
-  border-radius: 8px;
-  background: #ff4d4f;
+  background: var(--danger);
   color: #fff;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color .2s, transform .06s;
 }
 
 .btn-danger:hover {
@@ -312,12 +326,12 @@
   transform: translateY(1px);
 }
 
-/* 빈 상태 */
+/* ===== 빈 상태 ===== */
 .empty-box,
 .fav-empty {
   border: 1px dashed #dbeafe;
   background: #f8fafc;
-  color: #64748b;
+  color: #334155;
   border-radius: 12px;
   text-align: center;
 }
@@ -334,8 +348,8 @@
 .empty-title {
   margin: 0 0 6px;
   font-size: 18px;
-  font-weight: 700;
-  color: #111827;
+  font-weight: 900;
+  color: #0f172a;
 }
 
 .empty-sub {
@@ -343,7 +357,7 @@
   font-size: 14px;
 }
 
-/* 모달 */
+/* ===== 모달 ===== */
 .favorites-modal-overlay {
   position: fixed;
   inset: 0;
@@ -363,12 +377,14 @@
   padding: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
   animation: fav-pop .16s ease;
+  color: #0f172a;
 }
 
 .favorites-modal h3 {
   margin: 0 0 12px;
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 900;
+  color: #0f172a;
 }
 
 .favorites-modal input[type="text"] {
@@ -376,11 +392,16 @@
   height: 42px;
   padding: 0 12px;
   font-size: 14px;
-  border: 1px solid #ccd0d5;
+  color: #0f172a;
+  border: 1px solid #bfc5cc;
   border-radius: 10px;
   background: #fff;
   outline: none;
   transition: border-color .2s, box-shadow .2s;
+}
+
+.favorites-modal input[type="text"]::placeholder {
+  color: #9aa3ad;
 }
 
 .favorites-modal input[type="text"]:focus {
@@ -407,7 +428,7 @@
   }
 }
 
-/* 반응형 */
+/* ===== 반응형 ===== */
 @media (max-width:1024px) {
   .favorites-container {
     gap: 24px;
@@ -429,5 +450,10 @@
   .favorites-content {
     margin: 0;
     padding: 24px 16px;
+  }
+
+  .fav-actions select {
+    flex-basis: 180px;
+    min-width: 140px;
   }
 }
