@@ -10,13 +10,20 @@ export default function ChatGPTClone() {
     { sender: 'bot', text: '안녕하세요! 무엇을 도와드릴까요?', avatar: botAvatar }
   ]);
   const [input, setInput] = useState('');
-  const [typing, setTyping] = useState(false); // ✅ AI 입력중 인디케이터
+  const [typing, setTyping] = useState(false); 
   const endRef = useRef(null);
 
-  // 새 메시지 자동 스크롤
+  /* ===== 스크롤 헬퍼: 맨 아래로 부드럽게 ===== */
+  const scrollToEnd = () => {
+    requestAnimationFrame(() => {
+      endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    });
+  };
+
+  // 새 메시지 추가 시 자동 스크롤 (typing은 제외)
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, typing]); // ✅ typing 변경 시에도 스크롤
+    scrollToEnd();
+  }, [messages]);
 
   const send = async () => {
     const txt = input.trim();
@@ -25,10 +32,11 @@ export default function ChatGPTClone() {
     // 유저 메시지 추가
     setMessages(prev => [...prev, { sender: 'user', text: txt }]);
     setInput('');
+    scrollToEnd(); // 입력 직후 한 번 내려주기
 
     let started = 0;
     try {
-      setTyping(true); // ✅ 요청 시작: 입력중 표시
+      setTyping(true); 
       started = Date.now();
 
       // FastAPI로 GET 요청 보내기
@@ -49,7 +57,7 @@ export default function ChatGPTClone() {
       console.error(err);
       setMessages(prev => [
         ...prev,
-        { sender: 'bot', avatar: botAvatar, text: '서버 연결 실패 :울다:' }
+        { sender: 'bot', avatar: botAvatar, text: '서버 연결 실패' }
       ]);
     } finally {
       // ✅ 최소 노출 시간 보장 (500ms)
@@ -59,6 +67,7 @@ export default function ChatGPTClone() {
         await new Promise(r => setTimeout(r, MIN - elapsed));
       }
       setTyping(false);
+      scrollToEnd(); // 응답 렌더 직후 보장 스크롤
     }
   };
 
@@ -124,8 +133,17 @@ export default function ChatGPTClone() {
           value={input}
           onChange={e => setInput(e.target.value)}
           onKeyDown={onKeyDown}
+          onFocus={scrollToEnd}  // ✅ 클릭/포커스 시 맨 아래로
+          onInput={scrollToEnd}  // ✅ 입력 중에도 아래로
+          onClick={scrollToEnd}  // ✅ 클릭 시에도 아래로
         />
-        <button className="chatgpt-button" onClick={send}>
+        <button
+          className="chatgpt-button"
+          onClick={async () => {
+            scrollToEnd(); // 클릭 즉시 한번
+            await send();  // 메시지 추가 후 useEffect로 또 내려감
+          }}
+        >
           전송
         </button>
       </div>
