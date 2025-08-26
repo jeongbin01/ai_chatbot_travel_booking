@@ -39,7 +39,12 @@ import IMG_SINGAPORE_HOTEL from "../../assets/images/overseas/싱가포르 호�
 const isDomesticYes = (v) =>
   v === "Y" || v === "y" || v === true || v === "true" || v === 1 || v === "1";
 const isDomesticNo = (v) =>
-  v === "N" || v === "n" || v === false || v === "false" || v === 0 || v === "0";
+  v === "N" ||
+  v === "n" ||
+  v === false ||
+  v === "false" ||
+  v === 0 ||
+  v === "0";
 
 const pad2 = (n) => String(n).padStart(2, "0");
 const fmtDate = (iso) => {
@@ -79,9 +84,12 @@ const pickImageUrl = (accOrBooking) => {
   if (!raw) return "";
 
   if (/^https?:\/\//i.test(raw)) return raw; // 절대경로면 그대로
-  if (!ASSET_BASE) return raw.replace(/^\/+/, ""); // SSR 안전장치
+  if (!ASSET_BASE) return String(raw).replace(/^\/+/, ""); // SSR 안전장치
 
-  return `${String(ASSET_BASE).replace(/\/+$/, "")}/${String(raw).replace(/^\/+/, "")}`;
+  return `${String(ASSET_BASE).replace(/\/+$/, "")}/${String(raw).replace(
+    /^\/+/,
+    ""
+  )}`;
 };
 
 /** 이름/지역 키워드로 로컬 폴백 */
@@ -106,7 +114,10 @@ const LOCAL_IMAGES = [
   { keys: ["평창"], img: IMG_PYEONGCHANG_RESORT },
   { keys: ["포항"], img: IMG_POHANG_HOTEL },
   /* ✅ 강릉 관련 키워드 확장 */
-  { keys: ["강릉", "경포", "경포대", "주문진", "안목", "사천진", "정동진"], img: IMG_GANGNEUNG_HOTEL },
+  {
+    keys: ["강릉", "경포", "경포대", "주문진", "안목", "사천진", "정동진"],
+    img: IMG_GANGNEUNG_HOTEL,
+  },
   // 해외
   { keys: ["로마", "rome"], img: IMG_ROME_HOTEL },
   { keys: ["방콕", "bangkok"], img: IMG_BANGKOK_HOTEL },
@@ -168,52 +179,65 @@ export default function Reservations() {
       setLoading(true);
       setError("");
       try {
-        const tryUrls = [
-          `/app/bookings/user/${auth.userId}`,
-          `/bookings/user/${auth.userId}`,
+        // ✅ AxiosClient는 "함수" → 먼저 인스턴스를 만들어 사용
+        const apiApp = AxiosClient(""); // base: http://.../app/
+        const apiBookings = AxiosClient("bookings"); // base: http://.../app/bookings
+
+        // 우선순위로 여러 엔드포인트 시도
+        const attempts = [
+          () => apiApp.get(`/bookings/user/${auth.userId}`),
+          () => apiBookings.get(`/user/${auth.userId}`),
         ];
 
         let data = [];
-        for (const url of tryUrls) {
+        for (const run of attempts) {
           try {
-            const res = await AxiosClient.get(url);
+            const res = await run();
             const arr = Array.isArray(res?.data) ? res.data : [];
             if (arr.length) {
               data = arr;
               break;
             }
-          } catch { }
+          } catch {
+            // 개별 실패는 무시하고 다음 시도
+          }
         }
 
+        // 마지막 안전망(혹시 베이스가 다른 경우)
         if (!data.length) {
           try {
-            const res = await AxiosClient("bookings").get(`/user/${auth.userId}`);
+            const res = await AxiosClient("bookings").get(
+              `/user/${auth.userId}`
+            );
             data = Array.isArray(res?.data) ? res.data : [];
-          } catch { }
+          } catch {
+            // noop
+          }
         }
 
+        // ====== 정규화 ======
         const normalize = (b) => {
-          const accRaw =
-            b?.accommodation ||
-            ({
-              id: b?.accommodationId,
-              name: b?.accommodationName,
-              location: b?.accommodationLocation,
-              imageUrl:
-                b?.accommodationImage ||
-                b?.imageUrl ||
-                b?.image_url ||
-                b?.thumbnailUrl ||
-                b?.thumbnail_url ||
-                b?.mainImageUrl ||
-                b?.main_image_url ||
-                b?.image ||
-                b?.images?.[0]?.url ||
-                b?.photos?.[0]?.url,
-              isDomestic: b?.isDomestic ?? b?.accommodationIsDomestic,
-              type: b?.accommodationType ?? b?.type,
-            } ?? {});
+          const accRaw = b?.accommodation ?? {
+            id: b?.accommodationId ?? b?.accommodation_id,
+            name: b?.accommodationName ?? b?.accommodation_name,
+            location: b?.accommodationLocation ?? b?.accommodation_location,
+            imageUrl:
+              b?.accommodationImage ??
+              b?.imageUrl ??
+              b?.image_url ??
+              b?.thumbnailUrl ??
+              b?.thumbnail_url ??
+              b?.mainImageUrl ??
+              b?.main_image_url ??
+              b?.image ??
+              b?.images?.[0]?.url ??
+              b?.photos?.[0]?.url,
+            isDomestic: b?.isDomestic ?? b?.accommodationIsDomestic,
+            type: b?.accommodationType ?? b?.type,
+          };
+
           const statusKey = String(b?.status || "").toUpperCase();
+
           return {
             bookingId: b?.bookingId ?? b?.id ?? b?.booking_id,
             status: statusKey,
@@ -240,7 +264,9 @@ export default function Reservations() {
         );
 
         const nothingClassified =
-          domestic.length === 0 && foreign.length === 0 && activity.length === 0;
+          domestic.length === 0 &&
+          foreign.length === 0 &&
+          activity.length === 0;
         const domesticFinal = nothingClassified ? normalized : domestic;
 
         setReservationList({
@@ -318,7 +344,8 @@ export default function Reservations() {
               onClick={() => setActiveTab(tab)}
               type="button"
             >
-              {tab} <span className="tab-count">{reservationList[tab].length}</span>
+              {tab}{" "}
+              <span className="tab-count">{reservationList[tab].length}</span>
             </button>
           ))}
         </div>
@@ -381,7 +408,8 @@ export default function Reservations() {
                 });
 
               // ① 서버 이미지 → ② 로컬 키워드 폴백 → ③ NO_IMAGE
-              const imgSrc = pickImageUrl(acc) || pickLocalFallback(acc) || NO_IMAGE;
+              const imgSrc =
+                pickImageUrl(acc) || pickLocalFallback(acc) || NO_IMAGE;
 
               return (
                 <li
@@ -400,7 +428,8 @@ export default function Reservations() {
                     alt={acc.name ? `${acc.name} 대표 이미지` : "숙소 이미지"}
                     loading="lazy"
                     onError={(e) => {
-                      if (e.currentTarget.src !== NO_IMAGE) e.currentTarget.src = NO_IMAGE;
+                      if (e.currentTarget.src !== NO_IMAGE)
+                        e.currentTarget.src = NO_IMAGE;
                     }}
                   />
 
@@ -409,7 +438,11 @@ export default function Reservations() {
                     <h4 title={acc.name || "숙소"}>{acc.name || "숙소"}</h4>
 
                     <div className="badges">
-                      {status && <span className={`badge ${status.cls}`}>{status.label}</span>}
+                      {status && (
+                        <span className={`badge ${status.cls}`}>
+                          {status.label}
+                        </span>
+                      )}
                       <span className="badge">{labelOf(acc.isDomestic)}</span>
                     </div>
 
@@ -419,12 +452,18 @@ export default function Reservations() {
                       {acc.location && (
                         <>
                           <span className="dot" />
-                          <i className="bi bi-geo-alt" aria-hidden="true" /> {acc.location}
+                          <i
+                            className="bi bi-geo-alt"
+                            aria-hidden="true"
+                          />{" "}
+                          {acc.location}
                         </>
                       )}
                     </p>
 
-                    <p className="meta-line price">{fmtWon(item.totalAmount)}</p>
+                    <p className="meta-line price">
+                      {fmtWon(item.totalAmount)}
+                    </p>
                   </div>
                 </li>
               );
@@ -434,7 +473,11 @@ export default function Reservations() {
           <div className="empty-box">
             <p className="empty-title">예정된 여행이 없습니다.</p>
             <p className="empty-sub">지금 새로운 예약을 진행해보세요.</p>
-            <button className="find-button" onClick={handleFindTrips} type="button">
+            <button
+              className="find-button"
+              onClick={handleFindTrips}
+              type="button"
+            >
               <i className="bi bi-search" aria-hidden="true" /> 여행지 찾아보기
             </button>
           </div>
