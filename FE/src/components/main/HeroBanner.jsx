@@ -8,10 +8,34 @@ import bg3 from "../../assets/images/Main/제주도.jpg";
 import bg4 from "../../assets/images/Main/두바이.jpg";
 
 const BANNER_DATA = [
-  { id: 1, image: bg1, text: "제주도 캠핑부터 두바이 호텔까지,", subtitle: "여행할 때 여기어때", alt: "캠핑 트레일러" },
-  { id: 2, image: bg2, text: "알프스 설경 속에서", subtitle: "당신의 휴식, 지금 예약", alt: "알프스" },
-  { id: 3, image: bg3, text: "제주의 푸른 바다", subtitle: "바다를 품은 숙소", alt: "제주" },
-  { id: 4, image: bg4, text: "사막의 도시 두바이", subtitle: "이국적인 야경", alt: "두바이" },
+  {
+    id: 1,
+    image: bg1,
+    text: "웅장한 나이아가라 폭포의 감동",
+    subtitle: "자연이 빚어낸 최고의 장관",
+    alt: "나이아가라 폭포"
+  },
+  {
+    id: 2,
+    image: bg2,
+    text: "몽블랑 설산이 선사하는 휴식",
+    subtitle: "순백의 설경 속으로 떠나보세요",
+    alt: "몽블랑"
+  },
+  {
+    id: 3,
+    image: bg3,
+    text: "제주의 푸른 바다와 함께",
+    subtitle: "에메랄드빛 휴양지에서의 특별한 시간",
+    alt: "제주도 바다"
+  },
+  {
+    id: 4,
+    image: bg4,
+    text: "사막의 도시, 두바이의 야경",
+    subtitle: "이국적인 매력을 경험하세요",
+    alt: "두바이 스카이라인"
+  },
 ];
 
 const TABS = [
@@ -63,9 +87,9 @@ export default function HeroBanner() {
   const fmt = (d) => {
     if (!d) return "";
     const dt = new Date(d);
-    const w = ["일","월","화","수","목","금","토"][dt.getDay()];
-    const mm = String(dt.getMonth()+1).padStart(2,"0");
-    const dd = String(dt.getDate()).padStart(2,"0");
+    const w = ["일", "월", "화", "수", "목", "금", "토"][dt.getDay()];
+    const mm = String(dt.getMonth() + 1).padStart(2, "0");
+    const dd = String(dt.getDate()).padStart(2, "0");
     return `${mm}.${dd} ${w}`;
   };
 
@@ -100,11 +124,11 @@ export default function HeroBanner() {
     }
   };
 
-  const handlePrev = () => { setCurrentIndex((i)=>(i-1+BANNER_DATA.length)%BANNER_DATA.length); setProgress(0); };
-  const handleNext = () => { setCurrentIndex((i)=>(i+1)%BANNER_DATA.length); setProgress(0); };
+  const handlePrev = () => { setCurrentIndex((i) => (i - 1 + BANNER_DATA.length) % BANNER_DATA.length); setProgress(0); };
+  const handleNext = () => { setCurrentIndex((i) => (i + 1) % BANNER_DATA.length); setProgress(0); };
 
   const currentBanner = BANNER_DATA[currentIndex];
-  const placeholder = TABS.find(t=>t.key===tab)?.placeholder ?? "검색어를 입력하세요.";
+  const placeholder = TABS.find(t => t.key === tab)?.placeholder ?? "검색어를 입력하세요.";
 
   const openPicker = (id) => {
     const el = document.getElementById(id);
@@ -126,8 +150,8 @@ export default function HeroBanner() {
       const next = new Date(vDate);
       next.setDate(next.getDate() + 1);
       const yyyy = next.getFullYear();
-      const mm = String(next.getMonth() + 1).padStart(2,"0");
-      const dd = String(next.getDate()).padStart(2,"0");
+      const mm = String(next.getMonth() + 1).padStart(2, "0");
+      const dd = String(next.getDate()).padStart(2, "0");
       setCheckOut(`${yyyy}-${mm}-${dd}`);
     }
     setTimeout(() => openPicker("co"), 0);
@@ -150,7 +174,7 @@ export default function HeroBanner() {
       {BANNER_DATA.map((b, i) => (
         <div
           key={b.id}
-          className={`hero__bg ${i===currentIndex ? "is-active" : ""}`}
+          className={`hero__bg ${i === currentIndex ? "is-active" : ""}`}
           style={{ backgroundImage: `url(${b.image})` }}
           role="img"
           aria-label={b.alt}
@@ -174,14 +198,14 @@ export default function HeroBanner() {
         <form className="search-card" onSubmit={search}>
           {/* 탭 */}
           <div className="search-card__tabs" role="tablist">
-            {TABS.map((t)=>(
+            {TABS.map((t) => (
               <button
                 key={t.key}
                 type="button"
                 role="tab"
-                aria-selected={tab===t.key}
-                className={`tab ${tab===t.key ? "is-active":""}`}
-                onClick={()=>setTab(t.key)}
+                aria-selected={tab === t.key}
+                className={`tab ${tab === t.key ? "is-active" : ""}`}
+                onClick={() => setTab(t.key)}
               >
                 {t.label}
               </button>
@@ -198,10 +222,10 @@ export default function HeroBanner() {
                 inputMode="search"
                 placeholder={placeholder}
                 value={destination}
-                onChange={(e)=> setDestination(e.target.value)}
+                onChange={(e) => setDestination(e.target.value)}
                 onKeyDown={handleTextKeyDown}
-                onCompositionStart={()=> setIsComposing(true)}
-                onCompositionEnd={()=> setIsComposing(false)}
+                onCompositionStart={() => setIsComposing(true)}
+                onCompositionEnd={() => setIsComposing(false)}
                 aria-label="여행지 또는 숙소 검색"
               />
               {destination && (
@@ -209,7 +233,7 @@ export default function HeroBanner() {
                   type="button"
                   className="field__clear"
                   aria-label="입력 지우기"
-                  onClick={()=> setDestination("")}
+                  onClick={() => setDestination("")}
                 >
                   <i className="bi bi-x-lg" />
                 </button>
@@ -223,7 +247,7 @@ export default function HeroBanner() {
               aria-label="체크인과 체크아웃 날짜 선택"
             >
               <i className="bi bi-calendar2"></i>
-              <span className={`field__display ${(!checkIn||!checkOut) ? "is-placeholder" : ""}`}>
+              <span className={`field__display ${(!checkIn || !checkOut) ? "is-placeholder" : ""}`}>
                 {dateLabel}
               </span>
               <input
@@ -231,14 +255,14 @@ export default function HeroBanner() {
                 type="date"
                 value={checkIn}
                 min={today}
-                onChange={(e)=> onChangeCheckIn(e.target.value)}
+                onChange={(e) => onChangeCheckIn(e.target.value)}
               />
               <input
                 id="co"
                 type="date"
                 value={checkOut}
                 min={checkIn || today}
-                onChange={(e)=> setCheckOut(e.target.value)}
+                onChange={(e) => setCheckOut(e.target.value)}
               />
             </div>
 
@@ -249,16 +273,16 @@ export default function HeroBanner() {
               <div className="field__counter">
                 <button
                   type="button"
-                  onClick={()=>setGuests((v)=>Math.max(GUEST_LIMITS.MIN, v-1))}
-                  disabled={guests<=GUEST_LIMITS.MIN}
+                  onClick={() => setGuests((v) => Math.max(GUEST_LIMITS.MIN, v - 1))}
+                  disabled={guests <= GUEST_LIMITS.MIN}
                   aria-label="인원 줄이기"
                 >
                   <i className="bi bi-dash"></i>
                 </button>
                 <button
                   type="button"
-                  onClick={()=>setGuests((v)=>Math.min(GUEST_LIMITS.MAX, v+1))}
-                  disabled={guests>=GUEST_LIMITS.MAX}
+                  onClick={() => setGuests((v) => Math.min(GUEST_LIMITS.MAX, v + 1))}
+                  disabled={guests >= GUEST_LIMITS.MAX}
                   aria-label="인원 늘리기"
                 >
                   <i className="bi bi-plus"></i>
@@ -275,7 +299,7 @@ export default function HeroBanner() {
 
         {/* 하단 진행바 */}
         <div className="hero__progress">
-          <div style={{ width: `${(currentIndex*100 + progress) / BANNER_DATA.length}%` }} />
+          <div style={{ width: `${(currentIndex * 100 + progress) / BANNER_DATA.length}%` }} />
         </div>
       </div>
     </section>
