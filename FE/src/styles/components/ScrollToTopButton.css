@@ -19,6 +19,6 @@
 }
 
 .scroll-to-top:hover {
-  background-color: #555;
+  background-color: #fff;
   transform: translateY(-4px);
 }
