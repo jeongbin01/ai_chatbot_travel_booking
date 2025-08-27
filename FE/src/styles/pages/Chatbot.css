@@ -250,7 +250,7 @@ body {
   flex: 0 0 auto;
   padding: 11px 14px;
   font-size: .92rem;
-  background: #1f2025;
+  background: #fff;
   color: var(--txt-invert);
   border: 1px solid #2a2b32;
   border-radius: 12px;
@@ -260,7 +260,7 @@ body {
 }
 
 .chatgpt-button:hover {
-  background: #2a2b32;
+  background: #fff;
 }
 
 .chatgpt-button:active {
