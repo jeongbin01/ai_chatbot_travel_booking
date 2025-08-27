@@ -1,0 +1,173 @@
+:root {
+    --bg: #0b1020;
+    --surface: #0f1630;
+    --text: #111111;
+    /* 글자 진하게 */
+    --muted: #555555;
+    --primary: #2563eb;
+    /* 진한 파랑 */
+    --ring: rgba(90, 160, 255, .28);
+    --radius: 16px;
+    /* ✅ 그림자 살짝 강화 */
+    --shadow: 0 24px 64px rgba(0, 0, 0, 0.30);
+}
+
+.paymodal__backdrop {
+    position: fixed;
+    inset: 0;
+
+    /* ✅ 더 어둡게 + 블러(뒤 배경 흐리게) */
+    background: rgba(13, 16, 27, 0.86);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+
+    display: grid;
+    place-items: center;
+    z-index: 9999;
+    /* ✅ 항상 최상단 */
+    padding: 16px;
+}
+
+.paymodal {
+    width: min(640px, 100%);
+    max-height: 85dvh;
+    overflow: auto;
+    border-radius: 18px;
+
+    background: #ffffff;
+    /* ✅ 완전 불투명 */
+    color: var(--text);
+    box-shadow: var(--shadow);
+
+    /* ✅ 경계선으로 분리감 */
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.paymodal__header,
+.paymodal__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+}
+
+.paymodal__body {
+    padding: 0 16px 16px;
+}
+
+.paymodal__header h3 {
+    font-size: 18px;
+    font-weight: 900;
+    color: #111;
+}
+
+.iconbtn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* 결제 금액 박스 */
+.price {
+    background: #f1f5f9;
+    /* 연회색 */
+    color: #111;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08);
+}
+
+.price strong {
+    margin-left: 8px;
+    color: #000;
+}
+
+/* 결제 방법 pill */
+.method {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.pill {
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    /* ✅ 기본도 흰색으로(가독성↑) */
+    color: #111;
+    cursor: pointer;
+}
+
+.pill.is-active {
+    background: linear-gradient(180deg, #93c5fd, #3b82f6);
+    color: #fff;
+    border: 0;
+}
+
+/* 입력창 */
+.form {
+    display: grid;
+    gap: 10px;
+}
+
+.form .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.form label {
+    display: grid;
+    gap: 6px;
+    color: #111;
+}
+
+.form input,
+.form select {
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    padding: 10px 12px;
+    background: #ffffff;
+    /* 완전 불투명 */
+    color: #111;
+    box-shadow: none;
+}
+
+/* 버튼 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #2563eb, #1e40af);
+    /* 진한 파랑 */
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: linear-gradient(180deg, #1e40af, #1e3a8a);
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: #f9fafb;
+    color: #111;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+}
+
+.btn-outline:hover {
+    background: #e5e7eb;
+}

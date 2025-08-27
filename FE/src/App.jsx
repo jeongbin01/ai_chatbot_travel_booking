@@ -45,6 +45,21 @@ import RomeAccommodations from "./pages/accommodations/해외/RomeAccommodations
 import ParisAccommodations from "./pages/accommodations/해외/ParisAccommodations.jsx";
 import SingaporeAccommodations from "./pages/accommodations/해외/SingaporeAccommodations.jsx";
 
+// ✅ 액티비티 (예약/결제/취소 포함)
+import ActivitiesMain from "./pages/activities/ActivitiesMain";
+import DomesticActivities from "./pages/activities/DomesticActivities";
+import InternationalActivities from "./pages/activities/InternationalActivities";
+import ActivityDetail from "./pages/activities/ActivityDetail";
+
+// ✅ 스타일
+import "./styles/pages/Activities.css";              // 액티비티 리스트
+import "./styles/pages/ActivityDetail.css";          // 액티비티 상세
+import "./styles/pages/ActivityPaymentModal.css";    // 결제 모달
+import "./styles/components/ActivityCard.css";       // 카드
+import "./styles/pages/MyReservations.css";          // 마이페이지 예약(흰 배경)
+import "./styles/main/hero-center.css";              // 메인 슬라이드 중앙정렬
+import "./styles/override/light-force.css";
+
 function App() {
   const location = useLocation();
 
@@ -153,6 +168,13 @@ function App() {
             <Route path="/accommodations/rome" element={<RomeAccommodations />} />
             <Route path="/accommodations/detail/:id" element={<AccommodationDetail />} />
             <Route path="/accommodations/singapore" element={<SingaporeAccommodations />} />
+
+            {/* ✅ 액티비티 라우팅 */}
+            <Route path="/overseas_packagepages" element={<ActivitiesMain />} />
+            <Route path="/activities" element={<ActivitiesMain />} />
+            <Route path="/activities/domestic" element={<DomesticActivities />} />
+            <Route path="/activities/international" element={<InternationalActivities />} />
+            <Route path="/activities/:type/:id" element={<ActivityDetail />} />
           </Routes>
 
           {/* Footer는 특정 경로에서만 제거 */}

@@ -1,0 +1,56 @@
+/* 히어로/프로모션 중앙 + 아래로 이동 */
+:root {
+  --hero-shift-y: 10vh;
+}
+
+/* 더 내리고 싶으면 12~14vh */
+
+.hero-banner,
+.promotion-banner {
+  position: relative;
+}
+
+/* 넓은 선택자: 어떤 클래스여도 잡히게 */
+.hero-banner :is(.banner-content, .content, [data-hero-content]),
+.promotion-banner :is(.banner-content, .content, [data-hero-content]) {
+  position: absolute !important;
+  inset: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  transform: translateY(var(--hero-shift-y)) !important;
+  padding: 0 16px !important;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* 텍스트 가독성 */
+.hero-banner :is(.banner-title, h1, h2),
+.promotion-banner :is(.banner-title, h1, h2) {
+  color: #fff !important;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .35) !important;
+  font-weight: 800 !important;
+  letter-spacing: -.02em;
+}
+
+.hero-banner :is(.banner-subtitle, p.small),
+.promotion-banner :is(.banner-subtitle, p.small) {
+  color: #f3f4f6 !important;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, .3) !important;
+}
+
+/* 검색 패널은 입력 가능 + 중앙 폭 고정 */
+.hero-banner :is(form, input, select, button, textarea, .banner-search, [class*="search"], [class*="Search"]),
+.promotion-banner :is(form, input, select, button, textarea, .banner-search, [class*="search"], [class*="Search"]) {
+  pointer-events: auto;
+}
+
+.hero-banner .banner-search,
+.promotion-banner .banner-search,
+.hero-banner [class*="search"],
+.promotion-banner [class*="search"] {
+  width: min(1100px, 92vw) !important;
+  margin: 14px auto 0 !important;
+}

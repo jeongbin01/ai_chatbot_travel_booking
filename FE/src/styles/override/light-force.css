@@ -1,0 +1,50 @@
+/* === 전역 라이트 테마 강제 === */
+html, body, #root { background:#ffffff !important; color:#111827 !important; }
+
+/* 폼 라이트 */
+input, select, textarea, button { color:#111827 !important; }
+
+/* 토큰 계열 */
+:root{
+  --bg:#ffffff !important; --surface:#ffffff !important; --surface-2:#f7f9fc !important;
+  --text:#111827 !important; --muted:#475467 !important; --primary:#2f6fff !important;
+  --ring:rgba(47,111,255,.25) !important;
+}
+
+/* 범용 섹션/카드 라이트 */
+section, .section, .card, .panel, .container, .wrap, .wrapper {
+  background: unset; color: inherit;
+}
+
+/* ===== 액티비티 상세 안쪽도 모두 라이트 ===== */
+.activity-detail, .activity-detail * { background-color: transparent; color: inherit; }
+
+.activity-detail .booking,
+.activity-detail .reviews{
+  background:#fff !important; border:1px solid #eef2f7 !important;
+  border-radius:16px; box-shadow:0 6px 14px rgba(0,0,0,.04);
+}
+
+.activity-detail input,
+.activity-detail select,
+.activity-detail textarea{
+  background:#fff !important; border:1px solid #e5e7eb !important; color:#111827 !important;
+}
+
+/* ===== 액티비티 목록 라이트 ===== */
+.activities, .activities--white, .activities * { background-color: transparent; color: inherit; }
+
+.activities__container{ max-width:1100px; margin:0 auto; padding:28px 16px 80px; }
+.activities__title{ color:#111827 !important; }
+.activities__subtitle{ color:#475467 !important; }
+.activities__tabs .tab{
+  background:#f2f4f7 !important; color:#475467 !important; border:1px solid #e5e7eb !important;
+}
+.activities__tabs .tab.is-active{
+  color:#fff !important; background:linear-gradient(180deg,#7aa4ff,#2f6fff) !important; border-color:transparent !important;
+}
+.searchbar{ background:#fff !important; color:#111827 !important; border:1px solid #e5e7eb !important; }
+
+/* 상세 히어로 텍스트 */
+.hero__sub{ color:#475467 !important; }
+.hero__desc{ color:#334155 !important; }

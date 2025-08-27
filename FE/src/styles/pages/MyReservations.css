@@ -1,0 +1,203 @@
+/* src/styles/pages/MyReservations.css — 흰 배경 톤 */
+:root {
+    --radius: 16px;
+}
+
+.reservations {
+    min-height: 100dvh;
+    background: #ffffff;
+    color: #111827;
+}
+
+.reservations__container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 16px 80px;
+}
+
+.reservations__title {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 900;
+    letter-spacing: -.02em;
+    margin-bottom: 14px
+}
+
+/* Tabs */
+.reservations__tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap
+}
+
+.tab {
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: #f2f4f7;
+    color: #475467;
+    font-weight: 700;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: .18s
+}
+
+.tab:hover {
+    transform: translateY(-1px);
+    color: #111
+}
+
+/* Empty */
+.reservations__empty {
+    padding: 60px 16px;
+    text-align: center;
+    color: #667085;
+    background: #f9fafb;
+    border-radius: var(--radius);
+    border: 1px solid #eef2f7
+}
+
+/* List */
+.reservations__list {
+    display: grid;
+    gap: 14px
+}
+
+.resv-card {
+    display: grid;
+    grid-template-columns: 240px 1fr auto;
+    gap: 14px;
+    background: #fff;
+    border-radius: var(--radius);
+    border: 1px solid #eef2f7;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, .04);
+    overflow: hidden
+}
+
+.resv-card__media {
+    position: relative;
+    aspect-ratio: 16/10;
+    background: #f2f4f7;
+    overflow: hidden
+}
+
+.resv-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block
+}
+
+.placeholder {
+    width: 100%;
+    height: 100%;
+    background: #eef2f7
+}
+
+.chip {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .03em;
+    color: #061028;
+    background: #9fc6ff
+}
+
+.chip--act {
+    background: #8af0c2
+}
+
+.resv-card__body {
+    display: grid;
+    gap: 8px;
+    padding: 12px 0;
+    align-content: center
+}
+
+.resv-card__title {
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: -.01em
+}
+
+.resv-card__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    color: #667085;
+    font-size: 14px
+}
+
+.resv-card__price {
+    font-weight: 800;
+    letter-spacing: .02em
+}
+
+.resv-card__actions {
+    margin-top: 6px
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #fff;
+    color: #111;
+    border: 1px solid #e5e7eb;
+    cursor: pointer;
+    transition: .18s
+}
+
+.btn-outline:hover {
+    background: #f9fafb;
+    transform: translateY(-1px)
+}
+
+.btn-outline.danger {
+    border-color: #fecaca;
+    color: #b91c1c
+}
+
+.btn-outline.danger:hover {
+    background: #fee2e2
+}
+
+.resv-card__meta {
+    display: grid;
+    align-content: center;
+    justify-items: end;
+    gap: 6px;
+    padding: 12px;
+    color: #667085;
+    font-size: 12px
+}
+
+.resv-card__meta .dot {
+    opacity: .45
+}
+
+@media (max-width:980px) {
+    .resv-card {
+        grid-template-columns: 200px 1fr
+    }
+
+    .resv-card__meta {
+        grid-column: 1/-1;
+        justify-items: start
+    }
+}
+
+@media (max-width:640px) {
+    .resv-card {
+        grid-template-columns: 1fr
+    }
+
+    .resv-card__media {
+        aspect-ratio: 16/9
+    }
+}
